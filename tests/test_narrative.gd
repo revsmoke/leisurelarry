@@ -71,6 +71,7 @@ func _run() -> void:
 	_commands(["talk busker", "look busker", "talk busker"])
 	_check(game.journal.size() == notes_before + 1, "Busker's learned trade survives in the notebook without duplicates")
 	_commands(["go street", "go shop", "buy wine", "go street", "go alley", "give wine to busker"])
+	_check(game.objective().begins_with("Cut the spare stage rope") and not game.objective().contains("get a knife"), "Acquired knife is acknowledged by the next coffee-route objective")
 	_check(game.command("talk busker").contains("knife's yours"), "Busker remembers the completed wine trade")
 	_check(game.command("look busker").contains("gave you"), "Busker LOOK reflects the completed trade")
 	_commands(["take mallet", "take apple core", "use apple core"])

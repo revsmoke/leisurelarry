@@ -524,6 +524,11 @@ func _look(key: String) -> String:
 func _talk(key: String) -> String:
 	_dialogue_target = key
 	match key:
+		"dancefloor": return _talk("dancer")
+		"phone":
+			if flags.get("phone_called", false): return "Stage manager: 'Still here, Larry. " + _manager_followup() + "'"
+			if flags.get("phone_known", false): return "Didi gave you 555-0987. USE the wall phone or CALL that number to reach her stage manager. The receiver is warm; in this town, even a telephone has an active social life."
+			return "The receiver offers a dial tone. Didi knows the stage manager's number; ask her about the show before calling."
 		"bartender": return "Lefty: 'Good trade. He's got his whiskey, you've got the remote, and I've got ten dollars. Everybody's an optimist.'" if flags.get("whiskey_given", false) else "Lefty: 'Whiskey's ten bucks. The regular has the remote. Or help with my bowling-night promotion and I'll vouch for you backstage. Choose a topic.'"
 		"patron":
 			if flags.get("whiskey_given", false): return "The regular raises his whiskey. 'Thanks, pal. That remote's yours. Let the big fellow have his bowling; he's a terrible loser.'"
@@ -1022,14 +1027,20 @@ func _say_password(value: String) -> String:
 	return "'Bellybutton,' you say with improbable confidence. The password checks out. " + ("The bowling has his attention; head backstage." if flags.get("tv_distracted", false) else "He mentions missing the bowling on channel six.")
 
 
+func _manager_followup() -> String:
+	if flags.get("manager_intro", false): return "The hotel receptionist has your name. Tell her you're Didi's cabaret helper."
+	if flags.get("manager_setup", false): return "If you want that hotel introduction, just ask."
+	return "I can hear about Didi's setup before the next cue."
+
+
 func _call(number: String) -> String:
 	if room != "disco": return "The usable telephone is on Studio 69's wall."
 	_dialogue_target = "phone"
 	if not flags.get("phone_known", false): return "Didi has not shared the stage manager's number yet. Help with her show and ask her."
 	if number.replace("-", "").replace(" ", "") != PHONE_NUMBER: return "That number reaches a recording about extended hovercraft warranties. Try the number Didi gave you."
 	if flags.get("phone_called", false):
-		if flags.get("rope_taken", false): return "Stage manager: 'You've got the rope. I've got a show to run. Thanks for helping Didi; we're ready for opening night.'"
-		return "Stage manager: 'Yes, the spare coil is yours. Cut the packaging cord. Thanks for helping Didi with the show.'"
+		if flags.get("rope_taken", false): return "Stage manager: 'You've got the rope. Thanks for helping Didi. " + _manager_followup() + "'"
+		return "Stage manager: 'Yes, the spare coil is yours. Cut the packaging cord. " + _manager_followup() + "'"
 	flags["phone_called"] = true
 	_award("phone_called", "Called 555-0987. Didi's stage manager cleared the spare rope for you.")
 	return "'Didi sent you? Lucky devil. Take the spare rope; a small knife will cut the packaging cord. Tell her I expect a dance at the opening. Ask me about the show's setup if you want an introduction at the hotel.'"
@@ -1074,7 +1085,9 @@ func objective() -> String:
 		if inventory.has("coffee"): return "Bring the espresso to the hotel receptionist."
 		if flags.get("manager_intro", false): return "Introduce yourself to the hotel receptionist as Didi's cabaret helper."
 		if flags.get("manager_setup", false): return "Ask the stage manager for a hotel introduction, or continue the coffee favor."
-		if not flags.get("rope_taken", false): return "For the hotel: ask the stage manager about an introduction, or get a knife for the spare rope and coffee-voucher route."
+		if not flags.get("rope_taken", false):
+			if inventory.has("knife"): return "Cut the spare stage rope at Studio 69 with your pocket knife, or ask the stage manager for a hotel introduction."
+			return "For the hotel: ask the stage manager about an introduction, or get a knife for the spare rope and coffee-voucher route."
 		if not flags.get("rope_anchored", false): return "Tie the stage rope to Lefty's backstage railing, or ask the manager for a hotel introduction."
 		if not flags.get("window_open", false): return "Use a rubber mallet to free the fire escape's service window."
 		if not flags.get("taken_voucher", false): return "Take the espresso voucher from the open service window."

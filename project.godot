@@ -13,7 +13,7 @@ window/size/viewport_width=1440
 window/size/viewport_height=960
 window/size/window_width_override=1296
 window/size/window_height_override=864
-window/stretch/mode="canvas_items"
+window/stretch/mode="disabled"
 window/size/resizable=true
 
 [rendering]

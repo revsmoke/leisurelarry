@@ -86,11 +86,45 @@ func _run() -> void:
 	for path in ["user://autosave.json", "user://savegame.json", "user://preferences.cfg"]:
 		original[path] = FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else null
 	app = TestMain.new()
+	app.music_on = false
+	app.music_volume = 0.35
 	app.size = Vector2(1440, 960)
 	root.add_child(app)
 	await process_frame
 	await process_frame
 	_check(not app.qa_mode, "Tests exercise the ordinary UI, not a QA action adapter")
+	_check(app.music_button.text == "Muted" and is_equal_approx(app.music.volume_db, linear_to_db(0.35) - 9.0), "Startup applies an existing OFF preference to the header and volume")
+	# Godot does not expose paused playback when headless startup has no stream.
+	# A silent, looping test stream lets the real buttons exercise pause/resume.
+	var silent_stream := AudioStreamWAV.new()
+	silent_stream.format = AudioStreamWAV.FORMAT_16_BITS
+	silent_stream.mix_rate = 8000
+	silent_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	silent_stream.loop_end = 8000
+	var silence := PackedByteArray()
+	silence.resize(16000)
+	silent_stream.data = silence
+	app.music.stream = silent_stream
+	app.music.play()
+	app.music_button.pressed.emit()
+	_check(app.music_on and app.music_button.text == "Music" and not app.music.stream_paused, "Header toggle resumes music and updates its label together")
+	app.settings_button.pressed.emit()
+	var initial_music_slider := _slider(app.modal, "Music volume")
+	if initial_music_slider != null: initial_music_slider.value = 0.0
+	_check(initial_music_slider != null and app.music_on and app.music.stream_paused and app.music_volume == 0.0, "Zero music volume pauses playback without changing the ON preference")
+	if initial_music_slider != null: initial_music_slider.value = 0.65
+	_check(not app.music.stream_paused and is_equal_approx(app.music.volume_db, linear_to_db(0.65) - 9.0), "Raising volume resumes an enabled music preference at its new level")
+	var music_close := _find(app.modal, "×")
+	if music_close != null: music_close.pressed.emit()
+	app.music_button.pressed.emit()
+	app.settings_button.pressed.emit()
+	initial_music_slider = _slider(app.modal, "Music volume")
+	if initial_music_slider != null: initial_music_slider.value = 0.25
+	_check(not app.music_on and app.music_button.text == "Muted" and app.music.stream_paused, "Changing volume while music is OFF leaves it muted and paused")
+	music_close = _find(app.modal, "×")
+	if music_close != null: music_close.pressed.emit()
+	app.music_button.pressed.emit()
+	_check(app.music_on and app.music_button.text == "Music" and not app.music.stream_paused and is_equal_approx(app.music.volume_db, linear_to_db(0.25) - 9.0), "Re-enabling music resumes at the retained volume with the correct header")
 	# Parser intentions route through the same offers and conversations as clicking.
 	await _command("take newspaper")
 	var selected_paper := _meta(app.inventory_box, "inventory_id", "newspaper")
@@ -106,8 +140,11 @@ func _run() -> void:
 	_check(app.dialogue_choice_buttons.has("promotion_brief"), "Parser TALK exposes current conversation choices")
 	await _command("choose promotion_brief")
 	_check(app.game.flags.get("promotion_brief", false) and app.dialogue_choice_buttons.has("promotion_regular"), "Parser CHOOSE executes a valid topic and opens its follow-up choices")
-	for command in ["go street", "go casino", "take pass", "go street", "go disco", "talk didi"]:
+	for command in ["go street", "go casino", "take pass", "go street", "go disco"]:
 		await _command(command)
+	_hotspot("dancefloor", "use")
+	_check(app.last_message.contains("Didi:") and not app.last_message.contains("no conversational opening") and app.game.flags.get("dancer_met", false), "First dance-floor USE offers a natural Didi introduction with its choices")
+	await _command("talk didi")
 	_check(app.dialogue_choice_buttons.has("rehearsal_start"), "Parser Didi introduction exposes rehearsal alternatives")
 	await _command("dance")
 	_check(not app.game.flags.get("danced", false) and app.dialogue_choice_buttons.has("dance_careful"), "Parser DANCE asks for a style before performing")
@@ -117,6 +154,8 @@ func _run() -> void:
 	await _command("choose rehearsal_correct")
 	await _command("call 555-0987")
 	_check(app.game.flags.get("phone_called", false) and app.dialogue_choice_buttons.has("manager_setup"), "Parser CALL exposes the stage manager's follow-up choices")
+	await _command("talk phone")
+	_check(app.last_message.contains("Stage manager:") and app.dialogue_choice_buttons.has("manager_setup"), "TALK telephone shows a connected manager response alongside its usable topic")
 	await _command("choose manager_setup")
 	_check(app.dialogue_choice_buttons.has("manager_intro"), "Parser phone dialogue keeps the introduction actionable")
 	_close()
@@ -240,7 +279,13 @@ func _run() -> void:
 	for path in original:
 		var current: Variant = FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else null
 		_check(current == original[path], "UI upgrade tests preserve user data: " + path)
+	app.music.stop()
+	app.music.stream = null
+	silent_stream = null
+	# Let the audio mixer release its playback reference before SceneTree exits.
+	await create_timer(0.15).timeout
 	app.queue_free()
+	await process_frame
 	await process_frame
 	print("Upgrade interface tests: %d assertions, %d failures." % [assertions, failures.size()])
 	quit(0 if failures.is_empty() else 1)

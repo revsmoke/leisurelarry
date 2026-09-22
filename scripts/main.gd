@@ -181,6 +181,9 @@ func _panel(parent: Node, rect: Rect2, color: Color, border: Color = Color.TRANS
 
 func _label(parent: Node, text: String, rect: Rect2, font_size: int = 18, color: Color = CREAM) -> Label:
 	var l := Label.new()
+	# Fixed rectangles must not expand before wrapping is configured. Labels in
+	# containers use zero height so their wrapped content can grow and scroll.
+	l.clip_text = rect.size.y > 0
 	l.text = text
 	l.position = rect.position
 	l.size = rect.size
@@ -641,20 +644,21 @@ func _start_music() -> void:
 	music = AudioStreamPlayer.new()
 	add_child(music)
 	if qa_mode or DisplayServer.get_name() == "headless":
+		_apply_music_preferences()
 		return
 	if ResourceLoader.exists("res://assets/audio/last_call.wav"):
 		music.stream = load("res://assets/audio/last_call.wav")
-		music.volume_db = linear_to_db(maxf(music_volume, 0.00001)) - 9.0
-		music.stream_paused = not music_on
-		music.finished.connect(func(): music.play())
+		music.finished.connect(func():
+			if music_on: music.play()
+		)
 		music.play()
+	_apply_music_preferences()
 
 func _toggle_music() -> void:
 	if qa_mode:
 		return
 	music_on = not music_on
-	music_button.text = "Music" if music_on else "Muted"
-	music.stream_paused = not music_on
+	_apply_music_preferences()
 	_save_preferences()
 
 func _modal_base(title: String, subtitle: String, height: float = 660) -> Control:
@@ -1041,7 +1045,7 @@ func _toggle_effects() -> void:
 
 func _music_level(value: float) -> void:
 	music_volume = value
-	music.volume_db = linear_to_db(maxf(value, 0.00001)) - 9.0
+	_apply_music_preferences()
 	_save_preferences()
 
 func _effects_level(value: float) -> void:
@@ -1074,3 +1078,9 @@ func _use_selected_self() -> void:
 	_say("IN YOUR POCKET", game.interact(selected_item, "use", selected_item))
 	_render()
 	_autosave()
+
+func _apply_music_preferences() -> void:
+	music_button.text = "Music" if music_on else "Muted"
+	if is_instance_valid(music):
+		music.volume_db = linear_to_db(maxf(music_volume, 0.00001)) - 9.0
+		music.stream_paused = not music_on or music_volume == 0.0
