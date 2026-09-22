@@ -15,6 +15,8 @@ var _observation: Dictionary = {}
 var _visible_signature := ""
 var _browser_callback: JavaScriptObject
 var _window: JavaScriptObject
+var _last_callback_ms := 0
+var _last_settled_ms := 0
 
 static func allowed_context(feature: bool, web: bool, origin: String) -> bool:
 	return feature and web and origin == ORIGIN
@@ -40,7 +42,22 @@ func start(owner_app: Control, browser: bool = true) -> void:
 		    callback(JSON.stringify(event.data));
 		  };
 		  window.addEventListener('message', listener);
-		  window.__larryQaRemove = () => window.removeEventListener('message', listener);
+		  let last = 0, count = 0, within20 = 0, hidden = 0, peak = 0, raf = 0;
+		  const bins = new Array(1001).fill(0), start = performance.now();
+		  function sample(now) {
+		    if (last && now - start > 2000) {
+		      const dt = now - last;
+		      if (document.visibilityState === 'visible') { count++; if (dt <= 20) within20++; peak = Math.max(peak, dt); bins[Math.min(1000, Math.ceil(dt))]++; }
+		      else hidden++;
+		    }
+		    last = now; raf = requestAnimationFrame(sample);
+		  }
+		  raf = requestAnimationFrame(sample);
+		  window.__larryQaPerformance = () => {
+		    function quantile(fraction) { let cumulative = 0; const target = Math.ceil(count * fraction); if (!count) return null; for (let i = 0; i < bins.length; i++) { cumulative += bins[i]; if (cumulative >= target) return i; } return null; }
+		    return JSON.stringify({visibleFrameSamples: count, hiddenFrameSamples: hidden, framesWithin20ms: within20, fractionWithin20ms: count ? within20 / count : null, rafP50UpperMs: quantile(0.5), rafP95UpperMs: quantile(0.95), maxRafMs: peak, warmupExcludedMs: 2000, histogramBinMs: 1, histogramOverflowMs: 1000, jsHeapUsedBytes: performance.memory ? performance.memory.usedJSHeapSize : null, jsHeapLimitBytes: performance.memory ? performance.memory.jsHeapSizeLimit : null, heapScope: 'Browser-reported JS heap; may be shared and excludes total Godot/WASM memory', visibility: document.visibilityState});
+		  };
+		  window.__larryQaRemove = () => { window.removeEventListener('message', listener); cancelAnimationFrame(raf); delete window.__larryQaPerformance; };
 		};
 		""", true)
 		_window.__larryQaInstall(_browser_callback)
@@ -83,19 +100,26 @@ func request(message: Dictionary) -> Dictionary:
 		revision += 1
 		_refresh_observation()
 		error = "state_changed"
+	elif not _button_is_current(_actions[message.action]):
+		revision += 1
+		_refresh_observation()
+		error = "stale_control"
 	if not error.is_empty():
 		response.error = error
 		response.observation = _observation.duplicate(true)
 		return response
 	busy = true
 	var chosen: Dictionary = _actions[message.action]
+	var action_started := Time.get_ticks_msec()
 	_execute(chosen)
+	_last_callback_ms = Time.get_ticks_msec() - action_started
 	await _settle_frames()
 	# A slot spin has a visible one-second animation; observe its settled result.
 	var started := Time.get_ticks_msec()
 	while is_instance_valid(app.casino_panel) and app.casino_panel.slot_pending and Time.get_ticks_msec() - started < 4000:
 		await get_tree().process_frame
 	await _settle_frames()
+	_last_settled_ms = Time.get_ticks_msec() - action_started
 	revision += 1
 	_refresh_observation()
 	response.observation = _observation.duplicate(true)
@@ -125,47 +149,58 @@ func _refresh_observation() -> void:
 	for h in room.hotspots:
 		spots.append({"name": str(h.label), "kind": str(h.kind)})
 	var inventory: Array = []
-	for item in app.game.get_inventory(): inventory.append(str(item.name))
+	for item in app.game.get_inventory():
+		if _item_button(str(item.id)) != null: inventory.append(str(item.name))
 	var destinations: Array = []
 	for id in MAP_IDS:
 		destinations.append({"name": str(app.game.get_room(id).name), "locked": not app.game.is_unlocked(id), "current": id == app.game.room})
 	var overlay_text: Array[String] = []
+	var dialogue_options: Array[String] = []
 	if is_instance_valid(app.modal):
 		_collect_text(app.modal, overlay_text)
 		var buttons: Array[Button] = []
 		_collect_buttons(app.modal, buttons)
 		for button in buttons:
+			if button.has_meta("dialogue_choice"): dialogue_options.append(button.text)
 			# Never expose save restoration or new-game controls to the bounded player.
 			if button.text in ["Restore autosave", "One more evening", "Start a new evening"]: continue
-			_add("Press " + button.text, {"kind": "button", "button": button}, choices)
+			_add("Press " + ("× · close dialog and return to the room" if button.text == "×" else button.text), {"kind": "button", "button": button}, choices)
 	else:
 		_add("Look around the current room", {"kind": "parser", "command": "look around"}, choices)
 		for h in room.hotspots:
 			for action in ["look", "talk", "take", "use"]:
 				_add(action.capitalize() + " " + str(h.label), {"kind": "hotspot", "verb": action, "target": str(h.id)}, choices)
 		for item in app.game.get_inventory():
+			if _item_button(str(item.id)) == null: continue
 			_add("Inspect " + str(item.name) + " in inventory", {"kind": "inspect", "item": str(item.id)}, choices)
 			_add("Use " + str(item.name) + " on its own", {"kind": "self", "item": str(item.id)}, choices)
 			for h in room.hotspots:
 				_add("Use " + str(item.name) + " with " + str(h.label), {"kind": "item", "item": str(item.id), "target": str(h.id)}, choices)
+		var controls: Array[Button] = []
+		_collect_buttons(app.canvas, controls)
+		for button in controls:
+			if button.text == "Tidy":
+				_add("Press Tidy: " + ("show all carried items" if app.tidy_pockets else "tuck used souvenirs away"), {"kind": "button", "button": button}, choices)
 		for id in MAP_IDS:
 			if id != app.game.room and app.game.is_unlocked(id):
 				_add("Travel via city map to " + str(app.game.get_room(id).name), {"kind": "map", "destination": id}, choices)
-	_add("Stop: no suitable action", {"kind": "decline"}, choices, "decline")
+	_add("Stop playtest: no suitable action; request human review", {"kind": "decline"}, choices, "decline")
 	_observation = {
 		"revision": revision,
 		"room": {"id": str(app.game.room), "title": app.room_title.text, "subtitle": app.room_subtitle.text},
 		"objective": app.objective_text.text,
 		"dialogue": {"speaker": app.speaker.text, "text": app.dialogue.get_parsed_text()},
-		"inventory": inventory,
+		"inventory": inventory, "pocketView": "active items; souvenirs tucked away" if app.tidy_pockets else "all carried items",
 		"notebook": app.game.journal.duplicate(),
 		"hotspots": spots,
 		"map": destinations,
-		"overlay": overlay_text,
+		"overlay": overlay_text, "dialogueOptions": dialogue_options,
 		"score": int(app.game.score), "money": int(app.game.cash), "completed": bool(app.game.completed),
 		"actions": choices,
-		"diagnostics": {"fps": Engine.get_frames_per_second(), "process_seconds": Performance.get_monitor(Performance.TIME_PROCESS), "candidate_count": choices.size()}
+		"diagnostics": {"fps": Engine.get_frames_per_second(), "process_seconds": Performance.get_monitor(Performance.TIME_PROCESS), "candidate_count": choices.size(), "action_callback_ms": _last_callback_ms, "action_settled_ms": _last_settled_ms, "engine_static_memory_bytes": int(Performance.get_monitor(Performance.MEMORY_STATIC)) if Performance.get_monitor(Performance.MEMORY_STATIC) > 0 else null}
 	}
+	if _window != null:
+		_observation.diagnostics["browser"] = JSON.parse_string(str(_window.__larryQaPerformance()))
 	_visible_signature = _signature()
 	if choices.size() > MAX_ACTIONS:
 		# Fail closed instead of silently dropping a potentially necessary action.
@@ -180,7 +215,7 @@ func _signature() -> String:
 		_collect_text(app.modal, overlay)
 		_collect_buttons(app.modal, modal_buttons)
 	for button in modal_buttons: overlay.append(button.text)
-	return JSON.stringify([app.game.room, app.objective_text.text, app.speaker.text, app.dialogue.text, app.game.get_inventory(), app.game.journal, app.game.score, app.game.cash, app.game.completed, app.game.get_room().hotspots, overlay])
+	return JSON.stringify([app.game.room, app.objective_text.text, app.speaker.text, app.dialogue.text, app.game.get_inventory(), app.game.journal, app.game.score, app.game.cash, app.game.completed, app.game.get_room().hotspots, app.tidy_pockets, overlay])
 
 func _collect_text(node: Node, output: Array[String]) -> void:
 	for child in node.get_children():
@@ -196,9 +231,17 @@ func _collect_buttons(node: Node, output: Array[Button]) -> void:
 		_collect_buttons(child, output)
 
 func _item_button(id: String) -> Button:
+	# Inventory includes headings/arrival cues; identity must not depend on child index.
+	for child in app.inventory_box.get_children():
+		if child is Button and str(child.get_meta("inventory_id", "")) == id:
+			return child
+	# Compatibility with the pre-upgrade UI during migration tests.
+	for child in app.inventory_box.get_children():
+		if child.has_meta("inventory_id"): return null
 	var index: int = app.game.inventory.find(id)
 	if index >= 0 and index < app.inventory_box.get_child_count():
-		return app.inventory_box.get_child(index) as Button
+		var candidate = app.inventory_box.get_child(index)
+		if candidate is Button and not candidate.has_meta("inventory_id"): return candidate
 	return null
 
 func _target_button(id: String) -> Button:
@@ -207,6 +250,10 @@ func _target_button(id: String) -> Button:
 		if str(visible[index].id) == id:
 			return app.hotspots.get_child(index) as Button
 	return null
+
+func _button_is_current(action: Dictionary) -> bool:
+	if action.kind != "button": return true
+	return is_instance_valid(action.button) and not action.button.disabled and action.button.is_visible_in_tree()
 
 func _execute(action: Dictionary) -> void:
 	match action.kind:

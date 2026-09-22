@@ -6,7 +6,7 @@ export const PERSONAS = {
   curious: 'Try to finish the evening while exploring the comedy. Talk to new people and inspect unfamiliar objects, then use learned clues. Avoid revisiting resolved interactions.',
   unguided: 'Try to finish the evening using descriptions, dialogue and acquired clues. The objective panel is deliberately withheld in this experiment. Discover character requests and act on them.'
 };
-export function buildRequest({persona, observation, history = [], memory}) {
+export function buildRequest({persona, observation, history = [], memory, strategy}) {
   if (!Object.hasOwn(PERSONAS, persona)) throw Error('Unknown player profile');
   if (!Array.isArray(observation.actions) || observation.actions.length < 1 || observation.actions.length > 255) throw Error('Invalid action coverage');
   const ids = new Set();
@@ -17,15 +17,19 @@ export function buildRequest({persona, observation, history = [], memory}) {
   const criteria = Object.fromEntries(observation.actions.map(a => [a.id, a.label]));
   if (!ids.has('decline')) criteria.abstain = 'None of these actions is supported, or the player is stuck and needs a human review.';
   if (Object.keys(criteria).length > 255) throw Error('Invalid action coverage');
-  const {actions, diagnostics, ...visible} = observation;
+  const visible = Object.fromEntries(['revision','room','objective','dialogue','inventory','notebook','hotspots','map','overlay','dialogueOptions','pocketView','score','money','completed'].filter(k=>Object.hasOwn(observation,k)).map(k=>[k,observation[k]]));
+  // Independent questions cannot read next_action.criteria. Share only the same
+  // visible labels so the critic and strategy can assess control availability too.
+  visible.available_actions = observation.actions.map(action => action.label);
   if (persona === 'unguided') delete visible.objective;
   return {
     model: MODEL,
     state: {
       player: PERSONAS[persona],
-      controls: 'Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.',
+      controls: 'Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Close an open dialog before using room objects or travelling; the × control returns to the room. Stop/decline ends the entire playtest and asks for review, not merely the current conversation. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.',
       visible,
       ...(memory ? {observed_memory: memory, memory_guidance: 'These are previously observed locations and dialogue, not hidden knowledge. Find missing objects by comparing the current goal or character request to observed hotspots in other rooms. A remembered statement may be outdated; the current visible state wins.'} : {}),
+      ...(strategy ? {previous_strategy: strategy, strategy_guidance: 'This is an earlier tentative player intention, not observed truth. Reconsider it if the visible situation has changed.'} : {}),
       recent_actions: history.slice(-12).map(({action, room, dialogue, score, objective}) => ({action, room, dialogue, score, ...(persona === 'unguided' ? {} : {objective})}))
     },
     questions: {
@@ -33,6 +37,11 @@ export function buildRequest({persona, observation, history = [], memory}) {
         type: 'choice',
         instructions: 'Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.',
         criteria
+      },
+      strategy: {
+        type: 'choice',
+        instructions: 'Which bounded intention best fits the next few actions, using only visible evidence and observed_memory? This independent judgment is carried into the following turn; it does not execute an action or establish any hidden fact.',
+        criteria: {talk:'Learn or continue an unresolved character request.', inspect:'Examine an unfamiliar visible object or acquired item for a clue.', combine:'Use a carried object to satisfy an observed request.', revisit:'Return to a previously observed location with a relevant object or character.', conclude:'Choose a visible conversation topic or scene conclusion.', review:'No supported lead remains; human review is appropriate.'}
       },
       clarity: {
         type: 'score',
@@ -52,13 +61,13 @@ export function buildRequest({persona, observation, history = [], memory}) {
     }
   };
 }
-export async function evaluate(request, {apiKey, fetchImpl = fetch, timeoutMs = 30000} = {}) {
+export async function evaluate(request, {apiKey, fetchImpl = fetch, timeoutMs = 30000, signal} = {}) {
   if (!apiKey) throw Error('TYPESAFE_API_KEY is missing');
   const started = performance.now();
   // No automatic retries: ambiguous timeouts may already have incurred usage.
   const response = await fetchImpl(ENDPOINT, {
     method: 'POST', headers: {'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}`},
-    body: JSON.stringify(request), signal: AbortSignal.timeout(timeoutMs)
+    body: JSON.stringify(request), signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs)
   });
   if (!response.ok) throw Error(`TypeSafe HTTP ${response.status}; request stopped without an automatic retry`);
   const result = await response.json();
@@ -73,7 +82,11 @@ export async function evaluate(request, {apiKey, fetchImpl = fetch, timeoutMs = 
     if (question.type === 'noul' && !unit(answer.noul)) throw Error('Invalid TypeSafe probability');
     if (question.type !== 'noul' && !unit(answer.confidence)) throw Error('Invalid TypeSafe confidence');
     if (question.type === 'score' && !(Number.isFinite(answer.score) && answer.score>=0 && answer.score<=question.criteria.length-1)) throw Error('Invalid TypeSafe score');
-    if (question.type !== 'noul' && (!answer.probabilities || !Object.values(answer.probabilities).every(unit))) throw Error('Invalid TypeSafe distribution');
+    if (question.type !== 'noul') {
+      const expected = question.type === 'choice' ? Object.keys(question.criteria) : question.criteria.map((_,i)=>String(i));
+      if (!answer.probabilities || Object.keys(answer.probabilities).length !== expected.length || !expected.every(k=>unit(answer.probabilities[k])) || Math.abs(Object.values(answer.probabilities).reduce((a,b)=>a+b,0)-1) > 0.025) throw Error('Invalid TypeSafe distribution');
+      if (question.type === 'choice' && !Object.hasOwn(question.criteria, answer.choice)) throw Error('TypeSafe returned an unsupported choice');
+    }
   }
   return {result, apiMs: Math.round(performance.now() - started)};
 }

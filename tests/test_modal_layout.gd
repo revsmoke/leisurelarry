@@ -42,12 +42,12 @@ func _run() -> void:
 	root.add_child(app)
 	await process_frame
 	await process_frame
-	for viewport in [Vector2(1440, 960), Vector2(884, 886), Vector2(720, 480)]:
+	for viewport in [Vector2(1440, 960), Vector2(884, 886), Vector2(1280, 720)]:
 		app.size = viewport
 		app._fit()
 		# Advance only the objective's prerequisites, leaving player saves alone.
 		app.game.new_game()
-		var milestones := ["", "whiskey_given", "password_spoken", "tv_distracted", "taken_candy", "pass", "phone_known", "phone_called", "rope_taken", "rope_anchored", "window_open", "penthouse_access", "apple_grown", "apple_given", "completed"]
+		var milestones := ["", "promotion_brief", "whiskey_given", "password_spoken", "tv_distracted", "taken_candy", "pass", "dancer_met", "danced", "gift_ring", "gift_flowers", "gift_candy", "phone_known", "phone_called", "rope_taken", "rope_anchored", "window_open", "penthouse_access", "eve_met", "apple_grown", "apple_given", "eve_story_shared", "eve_heard", "completed"]
 		for milestone in milestones:
 			if milestone == "pass":
 				app.game.inventory.append("pass")
@@ -64,9 +64,12 @@ func _run() -> void:
 					plan = child
 				if child is Label and child.text == "POCKETS":
 					pockets = child
-			_check(plan.get_global_rect().encloses(app.objective_text.get_global_rect()), "Objective remains inside plan card after '%s' at %s" % [milestone, viewport])
-			_check(not app.objective_text.get_global_rect().intersects(pockets.get_global_rect()), "Objective clears pockets after '%s' at %s" % [milestone, viewport])
-		for method in ["_help", "_journal", "_map", "_new_game_prompt", "_ending"]:
+			_check(plan.get_global_rect().encloses(app.objective_scroll.get_global_rect()), "Objective viewport remains inside plan card after '%s' at %s" % [milestone, viewport])
+			_check(not _visible_rect(app.objective_text).intersects(pockets.get_global_rect()), "Visible objective clears pockets after '%s' at %s" % [milestone, viewport])
+			app.objective_scroll.scroll_vertical = 100000
+			await process_frame
+			_check(app.objective_text.get_global_rect().end.y <= app.objective_scroll.get_global_rect().end.y + 1, "Objective can scroll its final line into view after '%s' at %s" % [milestone, viewport])
+		for method in ["_help", "_journal", "_map", "_new_game_prompt", "_ending", "_settings", "_transcript"]:
 			app.call(method)
 			await process_frame
 			await process_frame
@@ -86,7 +89,16 @@ func _run() -> void:
 					await process_frame
 					_check(body.get_global_rect().end.y <= scroll.get_global_rect().end.y + 1, "Help can scroll its final line into view")
 			if method == "_ending":
-				_check(not labels[2].get_global_rect().intersects(labels[3].get_global_rect()), "Ending prose clears score row at %s" % viewport)
+				var body: Label = labels[2]
+				var score: Label = labels[3]
+				_check(body.get_parent() is ScrollContainer, "Ending prose has its own scroll viewport at %s" % viewport)
+				_check(not _visible_rect(body).intersects(score.get_global_rect()), "Visible ending prose clears score row at %s" % viewport)
+				_check(body.text.contains("LATER THAT MORNING"), "Ending includes the route epilogue at %s" % viewport)
+				var scroll: ScrollContainer = body.get_parent()
+				scroll.scroll_vertical = 100000
+				await process_frame
+				_check(body.get_global_rect().end.y <= scroll.get_global_rect().end.y + 1, "Ending can scroll its final callback into view at %s" % viewport)
+			_check(Rect2(Vector2.ZERO, app.size).encloses(panel.get_global_rect()), "%s panel fits the actual window at %s" % [method, viewport])
 	app._close_modal()
 	app.queue_free()
 	await process_frame

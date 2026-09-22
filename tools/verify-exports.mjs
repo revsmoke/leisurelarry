@@ -38,7 +38,7 @@ function readPack(buffer) {
 
 const references = await readdir(path.join(root, 'reference/screenshots')).catch(() => []);
 const referenceStems = references.filter(name => !name.startsWith('.')).map(name => path.parse(name).name);
-const backgrounds = ['alley', 'backroom', 'balcony', 'bar', 'bathroom', 'casino', 'disco', 'garden', 'hotel', 'penthouse', 'rooftop', 'shop', 'street'];
+const backgrounds = ['alley', 'backroom', 'balcony', 'bar', 'bathroom', 'casino', 'disco', 'garden', 'hotel', 'penthouse', 'rooftop', 'shop', 'street', 'garden-clean', 'penthouse-clean', 'backroom-clean', 'alley-clean', 'balcony-clean', 'balcony-open'];
 const fonts = ['Outfit', 'SpaceGrotesk', 'NotoSansSymbols2'];
 const fontLicenses = ['OFL.txt', 'SpaceGrotesk-OFL.txt', 'NotoSansSymbols2-OFL.txt'];
 const packs = [];
@@ -53,6 +53,7 @@ for (const file of packs) {
   const { files, formatVersion } = readPack(buffer);
   const names = files.map(entry => entry.path.replace(/^res:\/\//, ''));
   const forbidden = names.filter(name => /^(?:docs|reference|tools|tests|\.agents|\.codex|exports)\//.test(name)
+    || /(?:^|\/)\.env(?:\.|$)/.test(name)
     || /softporn_adventure_walkthrought_snippet/.test(name)
     || /\.(?:py|mjs|sh|toml|md|gd)$/.test(name)
     || referenceStems.some(stem => name.includes(stem)));

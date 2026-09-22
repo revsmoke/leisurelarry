@@ -28,7 +28,7 @@ func _run() -> void:
 	var notes_before: int = game.journal.size()
 	var score_before: int = game.score
 	_commands(["talk regular", "talk regular", "look regular"])
-	_check(game.journal.size() == notes_before + 1, "Regular's learned trade is recorded once across LOOK/TALK")
+	_check(game.journal.size() == notes_before + 2, "Regular's learned trade and visible collar ticket are each recorded once across LOOK/TALK")
 	_check(game.score == score_before, "Ordinary conversation notes do not award points")
 	_commands(["buy whiskey", "give whiskey to regular"])
 	_check(game.command("talk regular").contains("remote's yours"), "Regular remembers giving away the remote")

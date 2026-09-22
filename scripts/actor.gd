@@ -4,31 +4,54 @@ var suit := Color("f3e6ce")
 var hair := Color("403349")
 var skin := Color("dca483")
 var shirt := Color("ef6a9d")
-var walking := false
+var walking := false:
+	set(value):
+		walking = value
+		set_process(walking or dance_time_left > 0.0)
+		queue_redraw()
 var is_larry := true
 var role := "larry"
 var tick := 0.0
 var dance_time_left := 0.0
 var dance_elapsed := 0.0
+var dance_style := "confident"
+var reduced_motion := false
+var reaction: Dictionary = {}
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	set_process(walking or dance_time_left > 0.0)
 
 func _process(delta: float) -> void:
 	tick += delta
 	if dance_time_left > 0.0:
 		dance_time_left = maxf(0.0, dance_time_left - delta)
 		dance_elapsed += delta
+	set_process(walking or dance_time_left > 0.0)
 	queue_redraw()
 
 func dance(seconds: float = 2.6) -> void:
 	walking = false
 	dance_elapsed = 0.0
 	dance_time_left = maxf(seconds, 0.0)
+	set_process(dance_time_left > 0.0)
 	queue_redraw()
 
 func stop_dance() -> void:
 	dance_time_left = 0.0
+	set_process(walking)
+	queue_redraw()
+
+func set_reduced_motion(value: bool) -> void:
+	reduced_motion = value
+	queue_redraw()
+
+func set_dance_style(value: String) -> void:
+	dance_style = value if value in ["confident", "careful", "copy"] else "confident"
+	queue_redraw()
+
+func sync_reaction(flags: Dictionary) -> void:
+	reaction = flags.duplicate(true)
 	queue_redraw()
 
 func block(x: float, y: float, w: float, h: float, color: Color) -> void:
@@ -36,14 +59,15 @@ func block(x: float, y: float, w: float, h: float, color: Color) -> void:
 
 func _draw() -> void:
 	var dancing := dance_time_left > 0.0
-	var beat := dance_elapsed * 9.5
-	var stride := sin(beat) * 3.0 if dancing else sin(tick * 12.0) * 2.0 if walking else 0.0
+	var beat := 0.65 if reduced_motion else dance_elapsed * (6.0 if dance_style == "careful" else 10.5 if dance_style == "copy" else 9.5)
+	var stride := sin(beat) * 3.0 if dancing else sin(tick * 12.0) * 2.0 if walking and not reduced_motion else 0.0
 	draw_set_transform(Vector2(0, -3), 0, Vector2(1.0, 0.25))
 	draw_circle(Vector2.ZERO, 26, Color(0.01, 0.01, 0.03, 0.45))
 	# Move the drawing, not the Control: walking tweens retain their stage position.
-	draw_set_transform(Vector2(sin(beat) * 8.0, -absf(sin(beat)) * 7.0) if dancing else Vector2.ZERO, sin(beat) * 0.065 if dancing else 0.0)
+	draw_set_transform(Vector2(sin(beat) * (3.0 if dance_style == "careful" else 8.0), -absf(sin(beat)) * 7.0) if dancing and not reduced_motion else Vector2.ZERO, sin(beat) * 0.065 if dancing and not reduced_motion else 0.0)
 	if role in ["dancer", "eve", "receptionist"]:
 		_draw_guest()
+		_draw_reaction()
 		return
 	block(-6, -17, 5, 15 + stride, suit.darkened(0.12))
 	block(1, -17, 5, 15 - stride, suit)
@@ -54,7 +78,19 @@ func _draw() -> void:
 	block(-5, -32, 3, 6, suit.lightened(0.15))
 	block(2, -32, 3, 6, suit.lightened(0.15))
 	block(-3, -21, 6, 2, Color("d7b45f"))
-	if dancing:
+	if dancing and dance_style == "careful":
+		# Hands at waist, little steps: every move has passed a risk assessment.
+		block(-12, -27, 5, 6, suit)
+		block(-10, -22, 7, 4, skin)
+		block(7, -27, 5, 6, suit)
+		block(4, -22, 7, 4, skin)
+	elif dancing and dance_style == "copy":
+		# Both arms follow Didi's broad, theatrical invitation.
+		block(-16, -31, 11, 5, suit)
+		block(-19, -35, 5, 7, skin)
+		block(6, -31, 11, 5, suit)
+		block(15, -35, 5, 7, skin)
+	elif dancing:
 		# A deliberately stiff disco point: The Nervous Accountant.
 		var point_left := sin(beat * 0.5) >= 0.0
 		block(-12, -37 if point_left else -27, 5, 10, suit.darkened(0.06))
@@ -76,7 +112,11 @@ func _draw() -> void:
 	block(-5, -48, 8, 2, hair)
 	if is_larry:
 		block(-1, -45, 6, 2, skin)
-	block(3, -41, 2, 2, Color("26223b"))
+	if role == "bouncer" and reaction.get("tv_distracted", false):
+		block(-5, -43, 11, 8, hair)
+		block(5, -40, 3, 4, skin)
+	else:
+		block(3, -41, 2, 2, Color("26223b"))
 	block(2, -36, 4, 1, Color("9b5262"))
 	if is_larry:
 		block(-4, -27, 1, 5, Color("e7bb56"))
@@ -87,6 +127,7 @@ func _draw() -> void:
 		block(-5, -52, 10, 5, Color("332c3e"))
 	if role == "bartender":
 		block(-6, -25, 12, 14, Color("e7d4b2"))
+	_draw_reaction()
 
 func _draw_guest() -> void:
 	var dress := Color("dc789e") if role == "eve" else Color("57bbb8")
@@ -112,3 +153,26 @@ func _draw_guest() -> void:
 	block(-5, -21, 10, 2, Color("efc269"))
 	if role == "receptionist":
 		block(-4, -30, 8, 4, Color("eee1c6"))
+
+
+func _draw_reaction() -> void:
+	if role == "bartender" and reaction.get("whiskey_given", false):
+		block(8, -24, 5, 4, skin)
+		block(11, -30, 5, 10, Color("bb8249"))
+		block(12, -34, 3, 5, Color("dcca97"))
+		block(11, -27, 5, 3, Color("c35678"))
+	if role == "eve" and reaction.get("apple_given", false):
+		block(-12, -26, 7, 4, skin)
+		block(-14, -31, 6, 6, Color("e95968"))
+		block(-12, -33, 2, 3, Color("d0b877"))
+	if role == "receptionist" and (reaction.get("coffee_delivered", false) or reaction.get("award_coffee_given", false)):
+		block(7, -24, 5, 4, skin)
+		block(10, -29, 6, 7, Color("eee1c6"))
+		block(10, -30, 6, 2, Color("543441"))
+	if role == "dancer" and reaction.get("rehearsal_started", false):
+		block(-14, -34, 8, 4, skin)
+		block(-16, -40, 4, 7, skin)
+	if role == "dancer" and reaction.get("show_started", false):
+		block(7, -30, 8, 4, skin)
+		block(13, -35, 4, 8, Color("322b43"))
+		block(12, -37, 6, 4, Color("d5c4b3"))

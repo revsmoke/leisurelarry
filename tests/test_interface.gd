@@ -32,13 +32,31 @@ func _find_button(parent: Node, text: String) -> Button:
 	return null
 
 
+func _dismiss_overlay() -> void:
+	if not is_instance_valid(app.modal): return
+	var close := _find_button(app.modal, "×")
+	_check(close != null, "Overlay has a visible close control")
+	if close != null: close.pressed.emit()
+	_check(not is_instance_valid(app.modal), "Overlay closes before world interaction")
+
+
+func _choice(id: String) -> void:
+	_check(is_instance_valid(app.modal) and app.dialogue_choice_buttons.has(id), "Dialogue choice is visibly offered: " + id)
+	if not app.dialogue_choice_buttons.has(id): return
+	var button: Button = app.dialogue_choice_buttons[id]
+	_check(button.get_meta("dialogue_choice", "") == id and not button.disabled, "Dialogue button has matching identity and is enabled: " + id)
+	button.pressed.emit()
+
+
 func _submit(command: String) -> void:
+	_dismiss_overlay()
 	app.parser.text = command
 	app.parser.text_submitted.emit(command)
 	_check(app.parser.text.is_empty(), "Parser consumed: " + command)
 
 
 func _click_hotspot(id: String, verb: String = "use") -> void:
+	_dismiss_overlay()
 	# Select the verb exactly as the toolbar does, clearing any previous item.
 	app.verbs.look.pressed.emit()
 	app.verbs[verb].pressed.emit()
@@ -57,6 +75,7 @@ func _click_current_target(id: String) -> void:
 
 
 func _select_inventory(id: String) -> void:
+	_dismiss_overlay()
 	var button := _find_button(app.inventory_box, str(app.game.items[id].name))
 	_check(button != null, "Inventory button exists: " + id)
 	if button != null:
@@ -71,6 +90,7 @@ func _use_item(id: String, target: String) -> void:
 
 
 func _map_to(destination: String) -> void:
+	_dismiss_overlay()
 	app._map()
 	_check(is_instance_valid(app.modal), "Map modal opens for " + destination)
 	var name: String = app.game.get_room(destination).name
@@ -118,9 +138,22 @@ func _run() -> void:
 	_click_hotspot("bartender", "take")
 	_check(app.game.cash == 70 and not app.game.inventory.has("whiskey"), "TAKE a person cannot make an unexpected purchase")
 	_click_hotspot("bartender", "use")
+	_check(app.game.cash == 70 and not app.game.inventory.has("whiskey"), "USE Lefty opens offers without spending money")
+	_choice("buy_whiskey")
+	_check(app.game.cash == 60 and app.game.inventory.has("whiskey"), "Explicit whiskey offer performs the purchase")
 	_use_item("whiskey", "patron")
 	_check(app.game.inventory.has("remote"), "Click trade receives remote")
 	_submit("go bathroom")
+	var graffiti := _find_button(app.hotspots, "Wall graffiti")
+	_check(graffiti != null, "Graffiti has an actual right-click target")
+	if graffiti != null:
+		var right_click := InputEventMouseButton.new()
+		right_click.button_index = MOUSE_BUTTON_RIGHT
+		right_click.pressed = true
+		graffiti.gui_input.emit(right_click)
+	_check(app.game.flags.get("password_known", false), "Right-click LOOK learns the password in the running model")
+	var right_click_save: Variant = JSON.parse_string(FileAccess.get_file_as_string(AUTOSAVE))
+	_check(right_click_save is Dictionary and right_click_save.get("flags", {}).get("password_known", false), "Right-click clue is immediately persisted to autosave")
 	_click_hotspot("graffiti", "look")
 	_click_hotspot("ring", "take")
 	_submit("go bar")
@@ -148,8 +181,13 @@ func _run() -> void:
 		leave.pressed.emit()
 	_check(not is_instance_valid(app.modal) and not is_instance_valid(app.casino_panel), "Leave table closes casino UI")
 	_map_to("disco")
-	_click_hotspot("dancer", "talk")
+	_click_hotspot("dancer", "use")
+	var dancer_save: Variant = JSON.parse_string(FileAccess.get_file_as_string(AUTOSAVE))
+	_check(dancer_save is Dictionary and dancer_save.get("flags", {}).get("dancer_met", false), "USE Didi's early offer path persists the new introduction")
 	_click_hotspot("dancefloor", "use")
+	_check(not app.game.flags.get("danced", false), "Dance floor offers styles before executing a dance")
+	_choice("dance_confident")
+	_check(app.game.flags.get("dance_confident", false) and app.game.flags.get("danced", false), "Chosen dance style performs the dance")
 	_use_item("ring", "dancer")
 	_use_item("candy", "dancer")
 	_use_item("flowers", "dancer")
@@ -200,12 +238,14 @@ func _run() -> void:
 	_click_hotspot("tree", "take")
 	_map_to("rooftop")
 	_click_hotspot("eve", "talk")
+	_choice("eve_story")
+	_check(not app.game.completed, "Sharing a story before dinner does not finish the evening")
+	_choice("eve_gardens")
+	_check(not app.game.completed, "Listening to Eve does not silently select an ending")
 	_use_item("apple", "eve")
 	_click_hotspot("eve", "talk")
-	_check(not app.game.completed, "First finale line does not skip to ending")
-	_click_hotspot("eve", "talk")
-	_check(not app.game.completed, "Eve shares her own story before ending")
-	_click_hotspot("eve", "talk")
+	_check(not app.game.completed, "Ready conversation waits for explicit ending choice")
+	_choice("ending_flirt")
 	await process_frame
 	await process_frame
 	_check(app.game.completed, "Full UI route completes the adventure")

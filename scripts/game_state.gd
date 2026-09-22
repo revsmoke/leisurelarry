@@ -6,6 +6,8 @@ const SAVE_VERSION := 1
 const max_score := 100
 const PASSWORD := "bellybutton"
 const PHONE_NUMBER := "5550987"
+const SEED_SOURCE_CLUE := "Apple cores contain usable seeds. The Service Alley bin lid is the staff's collection spot: take a core and use it to separate the seeds."
+const DIDI_REHEARSAL_CLUE := "Didi needs help rehearsing her cabaret at Studio 69. A complimentary Studio 69 pass waits in the Lucky Chip casino's clean ashtray. Take a pass, then talk to Didi."
 
 var room: String = "street"
 var inventory: Array[String] = []
@@ -17,6 +19,7 @@ var completed: bool = false
 var journal: Array[String] = []
 var rooms: Dictionary = {}
 var items: Dictionary = {}
+var _dialogue_target: String = ""
 
 
 func _init() -> void:
@@ -32,6 +35,7 @@ func new_game() -> void:
 	score = 0
 	turns = 0
 	completed = false
+	_dialogue_target = ""
 	journal.assign(["Find a little connection before sunrise. Your white suit has already done enough networking."])
 
 
@@ -52,7 +56,7 @@ func _room_label(id: String) -> String:
 
 func _build_content() -> void:
 	items = {
-		"newspaper": {"name": "Newspaper", "description": "The Lost Wages Bugle. Front page: INSTANT APPLES! The hotel garden's experimental planter turns seeds and water into fruit. Science declined to comment."},
+		"newspaper": {"name": "Newspaper", "description": "The Lost Wages Bugle. INSTANT APPLES! The hotel garden's planter turns seeds and water into fruit. Its designer recommends seeds from apple cores; staff leave clean cores on the Service Alley bin lid. Take a core and use it to separate the seeds. Science declined to comment."},
 		"flowers": {"name": "Flowers", "description": "A cheerful bouquet, guaranteed to outlast your opening line."},
 		"whiskey": {"name": "Whiskey", "description": "A miniature bottle of Lefty's premium vintage: Thursday."},
 		"remote": {"name": "TV remote", "description": "The channel 6 button is worn smooth. Competitive bowling: the thinking bouncer's sport."},
@@ -75,7 +79,7 @@ func _build_content() -> void:
 		_spot("newsbox", "Free newspaper", 0.17, 0.72), _spot("flowercart", "Flower cart · $10", 0.70, 0.72), _spot("taxi", "Taxi stand", 0.85, 0.72)
 	], ["bar", "casino", "disco", "shop", "alley", "hotel"])
 	_add_room("bar", "Lefty's Bar", "HAPPY HOUR IS A STATE OF DENIAL", "A bartender polishes the same glass history forgot. A thirsty regular guards a remote; a bouncer guards the backstage door. The television is losing an argument with static.", "bar", [
-		_spot("bartender", "Lefty · whiskey $10", 0.26, 0.46, "person"), _spot("patron", "Thirsty regular", 0.52, 0.64, "person"), _spot("television", "Television", 0.89, 0.22), _spot("bouncer", "Backstage bouncer", 0.84, 0.55, "person")
+		_spot("bartender", "Lefty · bartender", 0.26, 0.46, "person"), _spot("patron", "Thirsty regular", 0.52, 0.64, "person"), _spot("television", "Television", 0.89, 0.22), _spot("bouncer", "Backstage bouncer", 0.84, 0.55, "person"), _spot("promotion", "Bowling-night promotion", 0.70, 0.37)
 	], ["street", "bathroom", "backroom"])
 	_add_room("bathroom", "The Restroom", "THE WRITING IS LITERALLY ON THE WALL", "Avocado tile, optimistic plumbing, and graffiti with unusually good information security. A dish beside the basin offers free costume jewelry.", "bathroom", [
 		_spot("graffiti", "Wall graffiti", 0.35, 0.38), _spot("basin", "Basin & jewelry dish", 0.23, 0.57), _spot("ring", "Costume ring", 0.25, 0.65)
@@ -87,7 +91,7 @@ func _build_content() -> void:
 		_spot("slots", "Demonstration slots · $5", 0.23, 0.49), _spot("blackjack", "Blackjack table", 0.88, 0.56), _spot("cashier", "Casino cashier", 0.54, 0.46, "person"), _spot("ashtray", "Clean ashtray", 0.77, 0.61), _spot("pass", "Studio 69 pass", 0.71, 0.69)
 	], ["street", "hotel"])
 	_add_room("disco", "Studio 69", "THE BEAT IS HOT. THE COLLAR IS HOTTER.", "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone and a tied coil of spare stage rope flank the DJ booth.", "disco", [
-		_spot("dancer", "Didi · stage designer", 0.52, 0.59, "person"), _spot("dancefloor", "Dance floor", 0.34, 0.72), _spot("phone", "Wall telephone", 0.82, 0.34), _spot("rigging", "Spare stage rope", 0.16, 0.35)
+		_spot("dancer", "Didi · stage designer", 0.52, 0.59, "person"), _spot("dancefloor", "Dance floor", 0.34, 0.72), _spot("stage_marks", "Rehearsal marks", 0.45, 0.88), _spot("phone", "Wall telephone", 0.82, 0.34), _spot("rigging", "Spare stage rope", 0.16, 0.35)
 	], ["street"])
 	_add_room("shop", "Quik-E-Mart", "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.", "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee.", "shop", [
 		_spot("clerk", "Shop clerk", 0.89, 0.39, "person"), _spot("wine_shelf", "Wine · $12", 0.21, 0.47), _spot("espresso", "Espresso machine", 0.82, 0.26), _spot("magazines", "Magazine rack", 0.65, 0.57)
@@ -102,10 +106,10 @@ func _build_content() -> void:
 		_spot("window", "Sticking service window", 0.68, 0.27), _spot("voucher", "Espresso voucher", 0.665, 0.62)
 	], ["backroom"])
 	_add_room("garden", "Moonlight Garden", "PATENT PENDING. BOTANY OBJECTING.", "A hotel's experimental instant-fruit planter hums under moonlight. Its instructions are missing, but the local paper reviewed it. A folding stool waits on the equipment loan rack.", "garden", [
-		_spot("planter", "Experimental planter", 0.49, 0.65), _spot("stool", "Loaner folding stool", 0.35, 0.68), _spot("tree", "Miniature apple tree", 0.49, 0.40)
+		_spot("planter", "Experimental planter", 0.49, 0.65), _spot("stool", "Loaner folding stool", 0.35, 0.77), _spot("tree", "Miniature apple tree", 0.49, 0.40)
 	], ["hotel"])
 	_add_room("penthouse", "The Penthouse", "SOMEONE ELSE'S GOOD TASTE", "The receptionist's invitation gets you into the shared rooftop lounge. A water pitcher waits in a cabinet well above collar height. A sink and the roof stairs complete the picture.", "penthouse", [
-		_spot("cabinet", "High cabinet", 0.90, 0.14), _spot("pitcher", "Water pitcher", 0.94, 0.04), _spot("sink", "Kitchenette sink", 0.74, 0.38), _spot("terrace_sign", "Rooftop gathering sign", 0.50, 0.4)
+		_spot("cabinet", "High cabinet", 0.90, 0.14), _spot("pitcher", "Water pitcher", 0.935, 0.10), _spot("sink", "Kitchenette sink", 0.74, 0.38), _spot("terrace_sign", "Rooftop gathering sign", 0.50, 0.4)
 	], ["hotel", "rooftop"])
 	_add_room("rooftop", "Eve's Rooftop", "THE CITY FINALLY LOWERS ITS VOICE", "The pool reflects a pink horizon. Eve, tonight's host, has escaped her own party for a moment by the water. She notices you trying to look like a man who belongs on a rooftop.", "rooftop", [
 		_spot("eve", "Eve · rooftop host", 0.66, 0.56, "person"), _spot("pool", "Moonlit pool", 0.69, 0.70), _spot("skyline", "Lost Wages skyline", 0.43, 0.22)
@@ -155,11 +159,14 @@ func _room_description(id: String) -> String:
 		"backroom":
 			var candy := "The promotional chocolates are gone; you collected them." if flags.get("taken_candy", false) else "Promotional chocolates wait on a table, outnumbered by feathers."
 			var escape := "Your anchored rope makes the fire escape accessible." if flags.get("rope_anchored", false) else "The fire escape has lost a step; a rope tied to the railing could bridge the gap."
-			return "The cabaret is between shows. %s %s" % [candy, escape]
+			var poster := " A cabaret poster says: " + DIDI_REHEARSAL_CLUE if not flags.get("dancer_met", false) else ""
+			return "The cabaret is between shows. %s %s%s" % [candy, escape, poster]
 		"casino":
 			return "Chrome, carpet, and the sound of wallets clearing their throats. " + ("The clean ashtray is empty now that you have the disco pass." if flags.get("taken_pass", false) else "A disco pass rests in a clean ashtray.") + " The cashier offers comeback cash if your luck gets too personal."
 		"disco":
 			var didi := "Didi has her opening-night props and greets you with a grin." if _all_gifts() else "Didi, a stage designer off the clock and on the beat, catches your eye."
+			if flags.get("rehearsal_done", false): didi = "Didi's volunteer rehearsal is ready; the taped X awaits your next public humiliation."
+			if flags.get("show_completed", false): didi = "Didi is basking in the cabaret's applause and planning an after-show gathering."
 			var rope := "You have collected the spare coil; the remaining stage rigging is in use." if flags.get("rope_taken", false) else "A tied coil of spare rope hangs beside the DJ booth."
 			return "The bass line has a mortgage. %s A wall phone connects to the stage crew. %s" % [didi, rope]
 		"alley":
@@ -168,7 +175,9 @@ func _room_description(id: String) -> String:
 			var mallet := "The loan rack has an empty mallet hook." if flags.get("taken_hammer", false) else "A maintenance rack holds a rubber mallet."
 			return "%s %s %s" % [busker, core, mallet]
 		"hotel":
-			if flags.get("penthouse_access", false): return "The receptionist sips your espresso between phone calls. Your name is on Eve's guest list; the penthouse elevator is open to you. The garden is down the hall."
+			if flags.get("penthouse_access", false):
+				var greeting := "The receptionist sips your espresso between phone calls." if _coffee_delivered() else "The receptionist waves to the cabaret's newly credentialed volunteer."
+				return greeting + " Your name is on Eve's guest list; the penthouse elevator is open to you. The garden is down the hall."
 		"balcony":
 			if flags.get("window_open", false):
 				return "Your rope spans the missing step. The service window is open. " + ("You collected the night-shift voucher from its sill." if flags.get("taken_voucher", false) else "The espresso voucher on its sill is now within reach. Take it.")
@@ -177,7 +186,7 @@ func _room_description(id: String) -> String:
 			if flags.get("seeds_planted", false): planter = "Your seeds are in the planter's starter tray, waiting for water."
 			if flags.get("apple_grown", false): planter = "The experimental planter holds a miniature tree with one perfect apple."
 			if flags.get("taken_apple", false): planter = "Your miniature tree is thriving. You have picked its one perfect apple."
-			return "Moonlight shines on the garden. " + planter + (" The stool's place on the loan rack is empty." if flags.get("taken_stool", false) else "A folding stool waits on the equipment loan rack.")
+			return "Moonlight shines on the garden. " + planter + (" The stool's place on the loan rack is empty." if flags.get("taken_stool", false) else " A folding stool waits on the equipment loan rack.")
 		"penthouse":
 			var cabinet := "A water pitcher waits in a cabinet well above collar height."
 			if flags.get("stool_placed", false): cabinet = "Your folding stool makes the cabinet's water pitcher easy to reach."
@@ -208,7 +217,7 @@ func is_unlocked(destination: String) -> bool:
 	if not rooms.has(destination):
 		return false
 	match destination:
-		"backroom": return flags.get("password_spoken", false) and flags.get("tv_distracted", false)
+		"backroom": return flags.get("backstage_social", false) or (flags.get("password_spoken", false) and flags.get("tv_distracted", false))
 		"disco": return inventory.has("pass")
 		"balcony": return flags.get("rope_anchored", false)
 		"penthouse", "rooftop": return flags.get("penthouse_access", false)
@@ -242,7 +251,9 @@ func travel(destination: String) -> String:
 	if not is_unlocked(resolved):
 		return _gate_message(resolved)
 	room = resolved
+	_dialogue_target = ""
 	turns += 1
+	_observe_room()
 	return _room_description(room)
 
 
@@ -332,10 +343,11 @@ func interact(target: String, verb: String = "look", item: String = "") -> Strin
 			return travel(key)
 	turns += 1
 	if action == "talk":
+		_dialogue_target = key
 		return _talk(key)
 	if action == "take" and not verb.strip_edges().to_lower() in ["buy", "order"]:
 		if key in ["bartender", "patron", "bouncer", "cashier", "dancer", "clerk", "busker", "receptionist", "eve"]:
-			return "Lefty stays behind his bar. USE him to buy the $10 whiskey, or type BUY WHISKEY." if key == "bartender" else "People are not pocket-sized favors. TALK to them, or USE an item to offer it."
+			return "Lefty stays behind his bar. TALK to him and choose the $10 whiskey offer, or type BUY WHISKEY." if key == "bartender" else "People are not pocket-sized favors. TALK to them, or USE an item to offer it."
 		if key in ["television", "dancefloor", "phone", "railing", "window", "espresso", "elevator", "cabinet", "sink", "planter", "slots", "blackjack"]:
 			return "That belongs here. LOOK for a clue, or USE it. Your pockets have limits after all."
 	if not held.is_empty():
@@ -361,7 +373,11 @@ func interact(target: String, verb: String = "look", item: String = "") -> Strin
 		"bin": return _look("bin")
 		"patron", "busker", "receptionist", "eve", "clerk": return _talk(key)
 		"bouncer":
+			if flags.get("backstage_social", false): return "Bouncer: 'Lefty vouched for you. You're on the list, collar and all. Head backstage.'"
 			if flags.get("password_known", false): return _say_password(PASSWORD)
+			if flags.get("tv_distracted", false):
+				_note("The bouncer is watching bowling; he still needs the backstage password. Restroom graffiti may help.")
+				return "Bouncer: 'Thanks for the bowling. Still need the password, pal. Try the restroom graffiti.'"
 			return _talk(key)
 		"television":
 			if inventory.has("remote"): return _use_item("remote", "television")
@@ -392,6 +408,9 @@ func interact(target: String, verb: String = "look", item: String = "") -> Strin
 			return "The cabinet is too high. The garden equipment rack has something made for this problem."
 		"sink": return _fill_pitcher()
 		"planter":
+			if flags.get("apple_grown", false): return _look("planter")
+			if flags.get("seeds_planted", false) and not inventory.has("pitcher"):
+				return "The seeds are already planted; now add water. There is a water pitcher in the high penthouse cabinet. The garden's loan stool can help you reach it."
 			if inventory.has("seeds"): return _use_item("seeds", "planter")
 			if inventory.has("pitcher"): return _use_item("pitcher", "planter")
 			return "The instant-fruit planter needs seeds, then water. Read the newspaper for operating instructions."
@@ -404,24 +423,38 @@ func interact(target: String, verb: String = "look", item: String = "") -> Strin
 
 
 func _look(key: String) -> String:
+	_observe_room()
 	if inventory.has(key) and items.has(key):
 		if key == "newspaper":
 			flags["newspaper_read"] = true
 			_award("newspaper_read", "The Bugle explains the garden's instant-fruit planter: plant seeds, then add water.")
+			_note(SEED_SOURCE_CLUE)
 		if key == "pitcher":
 			return "The pitcher is full of water. The experimental garden planter awaits." if flags.get("pitcher_filled", false) else str(items.pitcher.description)
-		return str(items[key].description)
+		return str(items[key].description) + (" Its main job is done; you can keep it in your souvenir pocket." if item_status(key) == "souvenir" else "")
 	match key:
 		"newsbox": return "Free papers. Today's headline: INSTANT APPLES COME TO HOTEL GARDEN. Take a copy, then read it."
 		"flowercart": return "Locally grown flowers, $10. Cash into slot; bouquet out. Romance has discovered vending machines."
 		"taxi": return "A helpful sign says: EVERYTHING IS WALKABLE. The taxi driver is taking this personally."
 		"bartender": return "Lefty polishes a glass and nods at your satisfied trading partner." if flags.get("whiskey_given", false) else "Lefty sells whiskey miniatures for $10. The regular next to him is watching the bottle like it owes him dinner."
+		"promotion":
+			flags["prize_known"] = true
+			_note("Lefty's bowling-night board advertises a golden bowling-pin keyring for winning ticket 37.")
+			return "BOWLING NIGHT: winning ticket 37 claims a GOLDEN BOWLING-PIN KEYRING. Underneath: No cash value. Considerable emotional baggage. Ask Lefty about helping with the promotion."
+		"stage_marks":
+			flags["cue_known"] = true
+			_note("Didi's rehearsal marks say: stand on the X; AUDIT is answered WRITE IT OFF.")
+			return "A taped X and Didi's cue card: AUDIT / WRITE IT OFF. Underlined: DO NOT IMPROVISE A MARRIAGE PROPOSAL."
 		"patron":
-			if flags.get("whiskey_given", false): return "The regular cradles his whiskey. You have his remote; this relationship appears healthier for everyone."
+			flags["winner_known"] = true
+			_note("The regular at Lefty's wears ticket 37 in his collar. He says losing it would be his first bad split tonight.")
+			if flags.get("whiskey_given", false): return "The regular wears ticket 37 in his collar and cradles his whiskey. You have his remote; this relationship appears healthier for everyone."
 			_note("The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender.")
-			return "The regular clutches a TV remote like a tiny plastic soulmate. A whiskey might persuade him to play the field."
+			return "Ticket 37 sticks out of the regular's collar. He clutches a TV remote like a tiny plastic soulmate. A whiskey might persuade him to play the field."
 		"television": return "Championship bowling is on channel 6. The bouncer is emotionally committed to frame seven." if flags.get("tv_distracted", false) else "Channel 6 carries championship bowling. The bouncer's shirt says ASK ME ABOUT MY SPLIT."
-		"bouncer": return "He has accepted your password and is absorbed in the bowling. Head backstage." if is_unlocked("backroom") else "The bouncer checks passwords and dreams of televised bowling. Two separate obstacles, one substantial person."
+		"bouncer":
+			if flags.get("backstage_social", false): return "Lefty vouched for you after the bowling promotion. The bouncer holds the door, visibly struggling with the concept of customer service."
+			return "He has accepted your password and is absorbed in the bowling. Head backstage." if is_unlocked("backroom") else "The bouncer checks passwords and dreams of televised bowling. Two separate obstacles, one substantial person."
 		"graffiti":
 			flags["password_known"] = true
 			_award("graffiti_read", "Restroom graffiti reveals the backstage password: BELLYBUTTON.")
@@ -430,13 +463,18 @@ func _look(key: String) -> String:
 		"ring", "candy", "pass", "hammer", "core", "stool", "voucher", "pitcher": return str(items[key].description)
 		"railing": return "Your rope is securely knotted around the railing. The fire escape is accessible." if flags.get("rope_anchored", false) else "A sturdy railing beside the damaged fire escape. Tie a rope here to get across the gap."
 		"poster":
+			if flags.get("rehearsal_done", false): return "THE ACCOUNTANTS OF DESIRE. Tonight's assistant: LARRY, THANKFULLY UNAUDITED. Didi has written your name in small lights, thanks to you volunteering."
 			if _all_gifts(): return "THE ACCOUNTANTS OF DESIRE. Didi's opening now has its costume ring, flowers, and chocolates, thanks to you. Finally, an investment in the arts with visible returns."
-			return "Tonight: THE ACCOUNTANTS OF DESIRE. Their books are open. Their expenses are intimate. Their matinee is tax-deductible."
+			_note(DIDI_REHEARSAL_CLUE)
+			return "THE ACCOUNTANTS OF DESIRE. Their books are open. Their expenses are intimate. Their matinee is tax-deductible. A handwritten notice adds: " + DIDI_REHEARSAL_CLUE
 		"blackjack": return "Twenty-one, velvet felt, and a dealer with the expression of an unpaid invoice. Use the table to play blackjack."
 		"slots": return "Demo slots cost $5 and pay $0, $15, $0, then $25 in a repeating cycle. The pattern is more reliable than your dating history."
 		"cashier": return "The cashier offers a $20 recovery grant whenever your funds fall below $10. Ask or use the desk."
 		"ashtray": return "The clean ashtray is empty. You already collected the complimentary disco pass." if flags.get("taken_pass", false) else "This ashtray has been retired from smoking and promoted to brochure storage. Take the complimentary disco pass."
-		"dancer": return "Didi recognizes her magnificently overdressed dance partner. Her opening-night props are ready." if _all_gifts() else "Didi is planning her cabaret opening between songs. Talk to her about the props." if flags.get("dancer_met", false) else "Didi designs cabaret sets and wears a smile that suggests she has already redesigned your opening line. Introduce yourself."
+		"dancer":
+			if flags.get("show_completed", false): return "Didi grins after her curtain call. Talk to her about the after-show gathering."
+			if flags.get("rehearsal_done", false): return "Didi's rehearsal is ready, thanks to her magnificently overdressed assistant. Talk to watch the show."
+			return "Didi recognizes her magnificently overdressed dance partner. Her opening-night props are ready." if _all_gifts() else "Didi is planning her cabaret opening between songs. Talk about props or volunteering for her rehearsal." if flags.get("dancer_met", false) else "Didi designs cabaret sets and wears a smile that suggests she has already redesigned your opening line. Introduce yourself."
 		"dancefloor": return "The floor is illuminated. Your dancing is not. Use it anyway; enthusiasm is the point."
 		"phone":
 			if flags.get("didi_message_delivered", false): return "The stage manager cleared the rope, and Didi has his message. Your brief career in theatrical communications is complete."
@@ -452,7 +490,10 @@ func _look(key: String) -> String:
 			_note("The alley busker will trade his spare pocket knife for a $12 bottle of wine from Quik-E-Mart.")
 			return "A blues musician packs for a midnight picnic. He'll trade his spare pocket knife for wine. At least one of you has plans that involve a blanket."
 		"bin": return "The bin lid is clear. You collected its apple core." if flags.get("taken_core", false) else "A clean apple core rests on the bin lid. There are useful seeds inside; take it and use it."
-		"receptionist": return "The receptionist is enjoying the espresso you brought. Your rooftop invitation is on the guest list." if flags.get("penthouse_access", false) else "The receptionist is hosting friends upstairs after her shift. She has clearly earned a coffee break."
+		"receptionist":
+			if _coffee_delivered(): return "The receptionist is enjoying the espresso you brought. Your rooftop invitation is on the guest list."
+			if flags.get("penthouse_access", false): return "The receptionist knows you as Didi's cabaret helper. Your rooftop invitation is on the guest list."
+			return "The receptionist is hosting friends upstairs after her shift. She knows the cabaret crew and has clearly earned a coffee break."
 		"elevator": return "The penthouse elevator is unlocked for you. Eve's rooftop gathering is upstairs." if flags.get("penthouse_access", false) else "The penthouse elevator needs the receptionist's invitation. Being nice is a promising technology."
 		"guestbook": return "Guest comment: 'Good pillows. Unsettlingly fast apples.' Five stars, with reservations."
 		"window":
@@ -463,7 +504,8 @@ func _look(key: String) -> String:
 			if flags.get("taken_apple", false): return "The planter supports a healthy little tree. You have picked its single apple; the machine's work is done."
 			if flags.get("apple_grown", false): return "Your watered seeds have become a miniature tree. One perfect apple is ready to take."
 			if flags.get("seeds_planted", false): return "Your seeds are in the starter tray. Add a pitcher of water to start the growth cycle."
-			return "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+			_note(SEED_SOURCE_CLUE)
+			return "The experimental planter grows an apple tree from seeds and water. A diagram shows seeds being separated from an apple core; its sticker reads STAFF CORE COLLECTION: SERVICE ALLEY BIN LID. The local newspaper explains the controls."
 		"tree": return "The little tree is healthy but picked clean. You collected its one perfect apple." if flags.get("taken_apple", false) else "A tiny tree holds one perfect apple. Take the apple before science asks for it back."
 		"cabinet":
 			if flags.get("taken_pitcher", false): return "The cabinet is empty; you collected the water pitcher. The stool stays beneath it for the next short guest."
@@ -480,14 +522,19 @@ func _look(key: String) -> String:
 
 
 func _talk(key: String) -> String:
+	_dialogue_target = key
 	match key:
-		"bartender": return "Lefty: 'Good trade. He's got his whiskey, you've got the remote, and I've got ten dollars. Everybody's an optimist.'" if flags.get("whiskey_given", false) else "Lefty: 'Whiskey's ten bucks. The regular has the remote. Restroom wisdom is complimentary.'"
+		"bartender": return "Lefty: 'Good trade. He's got his whiskey, you've got the remote, and I've got ten dollars. Everybody's an optimist.'" if flags.get("whiskey_given", false) else "Lefty: 'Whiskey's ten bucks. The regular has the remote. Or help with my bowling-night promotion and I'll vouch for you backstage. Choose a topic.'"
 		"patron":
 			if flags.get("whiskey_given", false): return "The regular raises his whiskey. 'Thanks, pal. That remote's yours. Let the big fellow have his bowling; he's a terrible loser.'"
 			_note("The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender.")
 			return "The regular: 'Whiskey, pal? I'll trade you this remote. My relationship with channel six has become unhealthy.'"
 		"bouncer":
+			if flags.get("backstage_social", false): return "Bouncer: 'Lefty vouched for you. You're on the list, collar and all. Head backstage.'"
 			if flags.get("password_known", false): return _say_password(PASSWORD)
+			if flags.get("tv_distracted", false):
+				_note("The bouncer is watching bowling; he still needs the backstage password. Restroom graffiti may help.")
+				return "Bouncer: 'Thanks for the bowling. Still need the password, pal. Try the restroom graffiti.'"
 			_note("Lefty's bouncer needs the backstage password and wants to watch the bowling finals on channel six.")
 			return "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
 		"cashier": return _recovery_grant()
@@ -495,14 +542,14 @@ func _talk(key: String) -> String:
 			if flags.get("phone_called", false):
 				if not flags.get("didi_message_delivered", false):
 					flags["didi_message_delivered"] = true
-					_note("Passed along the stage manager's dance invitation. Didi says the opening's props are ready, thanks to Larry; she will arrange the dance herself.")
-					return "You pass on the stage manager's dance invitation. Didi laughs. 'He can have the next one. I'll tell him myself. The opening has all its props, thanks to you. Go enjoy your night, handsome.'"
+					_note("Passed along the stage manager's dance invitation. Didi says the opening's setup is ready, thanks to Larry; she will arrange the dance herself.")
+					return "You pass on the stage manager's dance invitation. Didi laughs. 'He can have the next one. I'll tell him myself. The opening has its setup, thanks to you. Go enjoy your night, handsome.'"
 				return "Didi: 'The show's ready, the manager gets his dance, and your name's in the thank-yous. Those small lights I promised? Consider them lit.'"
 			if not flags.get("dancer_met", false):
 				flags["dancer_met"] = true
-				_award("dancer_met", "Met Didi, a stage designer. She needs costume jewelry, flowers, and chocolates for a cabaret opening.")
-				return "Didi: 'Nice suit. Is the rest of the wedding missing? I'm dressing a cabaret opening: costume ring, flowers, chocolates... and I could use a dance partner.'"
-			if _all_gifts() and flags.get("danced", false):
+				_award("dancer_met", "Met Didi, a stage designer. Her cabaret can use costume jewelry, flowers, chocolates and a dance, OR a willing assistant who follows her rehearsal cue.")
+				return "Didi: 'Nice suit. Is the rest of the wedding missing? My opening needs either costume ring, flowers, chocolates and a dance rehearsal, OR a willing assistant. Choose a topic: bring props or volunteer for the cue. Both pay in applause.'"
+			if _help_ready():
 				return _share_number()
 			if _all_gifts(): return "Didi: 'The props are perfect. Now how about that dance, handsome? That part's just for us.'"
 			var missing: Array[String] = []
@@ -511,37 +558,39 @@ func _talk(key: String) -> String:
 			if not flags.get("gift_candy", false): missing.append("chocolates")
 			return "Didi: 'Still needed for the show: %s. %s'" % [", ".join(missing), "Thanks for the props you've brought!" if missing.size() < 3 else "The dance? That part's just for us, handsome."]
 		"clerk":
-			if flags.get("penthouse_access", false): return "Clerk: 'The receptionist got her coffee? Good. I like a customer who finishes a delivery.'"
+			if _coffee_delivered(): return "Clerk: 'The receptionist got her coffee? Good. I like a customer who finishes a delivery.'"
 			if inventory.has("coffee"): return "Clerk: 'Your espresso's ready. The hotel receptionist will appreciate it while it's hot.'"
 			_note("The hotel receptionist likes Quik-E-Mart's deluxe espresso. Its voucher waits at the service window above Lefty's.")
 			return "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
 		"busker":
-			if flags.get("wine_given", false): return "Busker: 'Wine's packed, and the knife's yours. I'm playing one last number for the gentleman in the heroic trousers. Thanks, pal.'"
+			if flags.get("wine_given", false): return "Busker: 'Wine's packed, and the knife's yours. One bottle for the picnic, one for my next act. Ask about the solo, if you dare.'"
 			_note("The alley busker will trade his spare pocket knife for a $12 bottle of wine from Quik-E-Mart.")
 			return "Busker: 'Bring me a red for my picnic and the spare knife is yours. Got a date after this set. Yes, even blues musicians get lucky.'"
 		"receptionist":
-			if completed: return "Receptionist: 'Coffee delivered, sunrise survived. I'd call that a successful night. Thanks again, Larry.'"
+			if completed: return "Receptionist: 'Sunrise survived. I'd call that a successful night. Thanks for helping the crew, Larry.'"
 			if flags.get("penthouse_access", false): return "Receptionist: 'Thanks again! You're invited upstairs. Eve hosts the rooftop gathering. The garden equipment is available to guests.'"
+			if flags.get("manager_intro", false): return "Receptionist: 'The stage manager mentioned a helper. You must be the collar he described. Tell me your name and I'll put it on Eve's list.' Choose the introduction."
 			if inventory.has("coffee"): return "Receptionist: 'Is that a deluxe espresso? If that's for me, hand it over before I answer this stapler.'"
 			_note("The hotel receptionist likes Quik-E-Mart's deluxe espresso. Its voucher waits at the service window above Lefty's.")
 			return "Receptionist: 'The deluxe espresso from Quik-E-Mart would make this shift human. Its voucher is at Lefty's service window. We're having friends upstairs later.'"
 		"eve":
-			if completed: return "Eve: 'Stay for sunrise?' You do. For once, the next line can wait. THE END."
+			if completed: return ending_text() + " THE END."
 			if flags.get("apple_given", false):
-				if not flags.get("eve_story_shared", false):
-					flags["eve_story_shared"] = true
-					_note("Told Eve about the Nervous Accountant dance. She liked that Didi laughed with Larry, not at him.")
-					return "Larry: 'I danced with Didi. My knees filed separate tax returns.' Eve laughs. 'And she kept dancing? Then your night was better than you think.' TALK again to listen."
-				if not flags.get("eve_heard", false):
-					flags["eve_heard"] = true
-					_note("Eve designs hotel gardens. Her instant-fruit experiment was supposed to feed guests; she forgot to feed herself.")
-					return "Eve: 'I design these gardens. Spent all day on that ridiculous fruit planter, then forgot dinner.' Larry: 'So I brought you your own homework?' 'Best delivery all night.' TALK again."
-				completed = true
-				_award("ending", "Shared an apple and a laugh with Eve. She invited you to stay for sunrise. The suit finally earned its keep.")
-				return "Eve pulls her chair close. 'Stay for sunrise, Larry. I like a man who brings breakfast.' You grin. For once, you have absolutely nothing rehearsed to say. THE END — the night is over. Your luck may be just beginning."
+				if flags.get("eve_choices_used", false): return "Eve makes room beside her. 'Tell me what kind of evening you want, Larry.' Choose a story, ask a question, or decide how the night ends."
+				if not flags.get("eve_story_shared", false): return _eve_story()
+				if not flags.get("eve_heard", false): return _eve_gardens()
+				return _finish_evening("ending_flirt")
+			if flags.get("eve_met", false) and dialogue_options("eve").is_empty():
+				if inventory.has("apple"): return "Eve glances at the apple. 'You brought breakfast. Is that for sharing?' Offer her the fresh apple from your pockets."
+				if flags.get("apple_grown", false): return "Eve: 'My planter only makes one apple. It deserves an audience, preferably a hungry one.' Take the ripe apple from Moonlight Garden and bring it back."
+				if flags.get("seeds_planted", false): return "Eve: 'Seeds in? Then it just needs water. There's a pitcher in the penthouse cabinet, and a loan stool in the garden for reaching it. Finally, a use for something with sensible legs.'"
+				if inventory.has("seeds"): return "Eve: 'Those apple seeds go in the garden planter. The newspaper explains the controls; then add water. I'll save you a chair with room for your collar.'"
+				_note(SEED_SOURCE_CLUE)
+				return "Eve: 'For the apple, start with a core from the Service Alley bin lid. Take it and use it to separate the seeds. The newspaper explains the planter; seeds and water do the rest. I'll be here, conducting rigorous hunger research.'"
 			flags["eve_met"] = true
 			_note("Eve missed dinner and asked for something fresh. The hotel's instant-fruit planter could provide an apple.")
-			return "Eve: 'Larry, is it? That's quite a suit. Does it come with landing lights?' She smiles. 'I missed dinner. Bring me something fresh, then tell me how your night went.'"
+			return "Eve: 'Larry, is it? That's quite a suit. Does it come with landing lights?' She smiles. 'I missed dinner while building that garden experiment. An apple would be lovely, but tell me about yourself while we wait.' Choose a topic, or explore the garden."
+
 	return "It offers no conversational opening. Larry recognizes the feeling."
 
 
@@ -549,19 +598,302 @@ func _all_gifts() -> bool:
 	return flags.get("gift_ring", false) and flags.get("gift_flowers", false) and flags.get("gift_candy", false)
 
 
+func _help_ready() -> bool:
+	return flags.get("rehearsal_done", false) or (_all_gifts() and flags.get("danced", false))
+
+
+func _coffee_delivered() -> bool:
+	return flags.get("coffee_delivered", false) or flags.get("spent_coffee", false)
+
+
+func _observe_room() -> void:
+	# These are visible discoveries, never a walkthrough derived from hidden gates.
+	var leads := {
+		"street": "On the Neon Strip: free newspapers and a flower cart selling $10 bouquets.",
+		"bathroom": "In Lefty's restroom: wall graffiti and a FREE COSTUME JEWELRY dish beside the basin.",
+		"backroom": "In the Backstage Lounge: promotional chocolates and a damaged fire escape with a sturdy railing.",
+		"casino": "At the Lucky Chip Casino: a complimentary Studio 69 pass in a clean ashtray.",
+		"disco": "At Studio 69: Didi, a wall telephone, rehearsal marks on the floor, and a spare rope beside the booth.",
+		"alley": "In the Service Alley: an apple core on a bin lid and a loaner rubber mallet on the maintenance rack.",
+		"garden": "In Moonlight Garden: an experimental planter and a folding stool on the loan rack.",
+		"penthouse": "In the Penthouse: a water pitcher in a high cabinet and a working kitchenette sink."
+	}
+	if leads.has(room):
+		var key := "observed_" + room
+		if not flags.get(key, false):
+			flags[key] = true
+			_note(leads[room])
+	if room == "backroom" and not flags.get("dancer_met", false): _note(DIDI_REHEARSAL_CLUE)
+
+
+func get_dialogue_target() -> String:
+	return _dialogue_target
+
+
+func dialogue_options(target: String = "") -> Array:
+	var key := _dialogue_target if target.is_empty() else _resolve_target(target)
+	if key.is_empty() or not _valid_target(key): return []
+	var options: Array = []
+	match key:
+		"bartender":
+			if not inventory.has("whiskey") and not flags.get("spent_whiskey", false): options.append({"id": "buy_whiskey", "label": "Buy a whiskey miniature · $10"})
+			if not flags.get("backstage_social", false):
+				if not flags.get("promotion_brief", false): options.append({"id": "promotion_brief", "label": "Ask how to help with bowling night"})
+				else:
+					options.append({"id": "promotion_regular", "label": "Name the regular as the prize winner"})
+					options.append({"id": "promotion_larry", "label": "Claim the prize for my magnificent collar"})
+					options.append({"id": "promotion_bouncer", "label": "Nominate the bouncer: he looks like a winner"})
+			else: options.append({"id": "lefty_callback", "label": "Ask how the bowling promotion went"})
+		"patron":
+			options.append({"id": "regular_ticket", "label": "Ask about the ticket tucked in his collar"})
+		"bouncer":
+			if flags.get("backstage_social", false): options.append({"id": "bouncer_social", "label": "Enjoy being on an actual guest list"})
+		"dancer", "dancefloor":
+			if not flags.get("dancer_met", false): return []
+			if flags.get("show_started", false) and not flags.get("show_completed", false):
+				return [{"id": "show_next", "label": "Continue Didi's performance"}, {"id": "skip_show", "label": "Skip to the curtain call"}]
+			if not _help_ready():
+				if not flags.get("rehearsal_started", false): options.append({"id": "rehearsal_start", "label": "Volunteer as Didi's hilariously unqualified assistant"})
+				else:
+					options.append({"id": "rehearsal_correct", "label": "On AUDIT: stand on the X and shout WRITE IT OFF!"})
+					options.append({"id": "rehearsal_wrong", "label": "On AUDIT: propose marriage to the accountant"})
+				options.append({"id": "didi_props", "label": "Ask which props the elaborate version still needs"})
+			if not flags.get("danced", false):
+				options.append({"id": "dance_confident", "label": "Dance with catastrophic confidence"})
+				options.append({"id": "dance_careful", "label": "Dance carefully: protect the deposit"})
+				options.append({"id": "dance_copy", "label": "Let Didi lead and copy her steps"})
+			if _help_ready():
+				if not flags.get("show_completed", false): options.append({"id": "show_start", "label": "Watch Didi's Accountants of Desire"})
+				else: options.append({"id": "didi_encore", "label": "Ask what happens after the applause"})
+		"phone":
+			if flags.get("phone_called", false):
+				if not flags.get("manager_setup", false): options.append({"id": "manager_setup", "label": "Discuss Didi's show with the stage manager"})
+				elif not flags.get("manager_intro", false): options.append({"id": "manager_intro", "label": "Ask for an introduction at the hotel"})
+		"receptionist":
+			if flags.get("manager_intro", false) and not flags.get("penthouse_access", false): options.append({"id": "hotel_introduction", "label": "Introduce myself as Didi's cabaret helper"})
+			if inventory.has("coffee"): options.append({"id": "offer_coffee", "label": "Offer the espresso: no strings, just caffeine"})
+		"busker":
+			if flags.get("wine_given", false): options.append({"id": "busker_callback", "label": "Ask how the wine bottle fits into his act"})
+		"eve":
+			if not flags.get("eve_met", false) or completed: return []
+			if not flags.get("eve_story_shared", false):
+				options.append({"id": "eve_story", "label": "Tell Eve what actually happened tonight"})
+				options.append({"id": "eve_boast", "label": "Claim to be an international leisure consultant"})
+			if not flags.get("eve_heard", false): options.append({"id": "eve_gardens", "label": "Ask Eve about her garden experiment"})
+			elif not flags.get("eve_followup", false): options.append({"id": "eve_followup", "label": "Ask what she would grow if nobody were judging"})
+			if not flags.get("eve_dinner", false): options.append({"id": "eve_dinner", "label": "Ask how a party host managed to miss dinner"})
+			if not flags.get("cultivar_named", false): options.append({"id": "cultivar_midlife", "label": "Name the apple variety Midlife Crisps"})
+			if flags.get("apple_given", false) and flags.get("eve_story_shared", false) and flags.get("eve_heard", false):
+				options.append({"id": "ending_flirt", "label": "Flirt: ask Eve to share a sunrise for two"})
+				options.append({"id": "ending_friends", "label": "Stay as friends: good company is enough"})
+				options.append({"id": "ending_afterparty", "label": "Invite Eve to Didi's after-show gathering"})
+	return options
+
+
+func choose_dialogue(id: String) -> String:
+	# A stale/unknown option cannot execute, alter a save, or award a milestone.
+	var available := false
+	for option in dialogue_options():
+		if option.id == id: available = true
+	if not available: return "That conversation has moved on. TALK to someone here to see the current choices."
+	turns += 1
+	if id.begins_with("eve_") or id == "cultivar_midlife": flags["eve_choices_used"] = true
+	match id:
+		"buy_whiskey": return _buy("whiskey", 10)
+		"promotion_brief":
+			flags["promotion_brief"] = true
+			_note("Lefty needs the bowling promotion's advertised prize matched to its winning customer. The bar's promotion board and the regular's collar ticket are visible clues.")
+			return "Lefty: 'I've got a golden bowling-pin keyring and three men claiming they've scored. Check the promotion board and the customers' tickets. Find the real winner and I'll put you on the backstage list.'"
+		"regular_ticket":
+			flags["winner_known"] = true
+			_note("The regular at Lefty's wears ticket 37 in his collar. He says losing it would be his first bad split tonight.")
+			return "He unfolds ticket 37 from his collar. 'Closest thing to a gold medal I've worn. Including my wedding ring.'"
+		"promotion_regular":
+			if not flags.get("prize_known", false) or not flags.get("winner_known", false): return "Lefty: 'Evidence, detective. Read the promotion board and check the regular's ticket. This is bowling, not a confidence trick with shoes.'"
+			flags["backstage_social"] = true
+			_award("promotion_solved", "Matched winning ticket 37 to the regular. Lefty vouched for Larry at the backstage door.")
+			_note(DIDI_REHEARSAL_CLUE)
+			return "You match ticket 37 to the regular. Lefty hands him the golden pin. 'You're my guest backstage. Didi could use a reliable fellow like you: she's rehearsing at Studio 69. Grab a complimentary pass from the casino's clean ashtray and talk to her.' The regular kisses his prize. 'At last, a relationship with a reliable release.'"
+		"promotion_larry": return "Lefty: 'That collar could shelter a bowling team. It still isn't a winning ticket.' Nobody loses anything except a little air from Larry's chest."
+		"promotion_bouncer": return "The bouncer unfolds his empty pockets. 'I don't compete. I supervise disappointment.' Lefty suggests checking the printed ticket."
+		"lefty_callback": return "Lefty: 'He calls that golden pin his little trophy wife. She's already asked for a separate keyring. Good work, Larry.'"
+		"bouncer_social": return "Bouncer: 'Lefty's guest. First person tonight admitted on merit.' Larry straightens his collar. 'Do we get a stamp?' 'Let's not ruin the moment.'"
+		"rehearsal_start":
+			flags["rehearsal_started"] = true
+			flags["cue_known"] = true
+			_note("Didi's simple rehearsal: Larry stands on the taped X; when she calls AUDIT, he answers WRITE IT OFF. Props are an alternate elaborate version, not mandatory gifts.")
+			return "Didi: 'Two versions: props for the big romantic swindle, or you as my assistant. Stand on the taped X. When I shout AUDIT, you shout WRITE IT OFF. No talent required. That's why I thought of you.'"
+		"rehearsal_wrong": return "Larry kneels. Didi raises an imaginary ledger. 'An engagement is a long-term liability, darling. Try the cue: AUDIT gets WRITE IT OFF.' She helps him up; the role is still his."
+		"rehearsal_correct":
+			flags["rehearsal_done"] = true
+			_award("rehearsal_done", "Played Didi's assistant: answered AUDIT with WRITE IT OFF. Her cabaret can run with Larry instead of the three props.")
+			return "'AUDIT!' 'WRITE IT OFF!' Didi snaps the ledger shut on your tie. 'Excellent. You look financially exposed.' The imaginary audience loses its imaginary minds. " + _share_number()
+		"didi_props": return _didi_missing_props()
+		"dance_confident", "dance_careful", "dance_copy":
+			flags[id] = true
+			return _dance()
+		"show_start":
+			flags["show_started"] = true
+			_note("Attended Didi's Accountants of Desire. Larry's earlier help became part of the act.")
+			return "The house lights dim. Didi strides onto Studio 69's tiny stage with a ledger. 'Ladies, gentlemen, and deductible dependents: welcome to THE ACCOUNTANTS OF DESIRE. Keep your receipts. Some of you will want a refund.'"
+		"show_next":
+			if not flags.get("show_beat_1", false):
+				flags["show_beat_1"] = true
+				return "Didi points to your taped X. 'AUDIT!' You shout 'WRITE IT OFF!' She shuts her ledger on your tie. 'At last: a man who can be held accountable.' Your trousers file for an extension." if flags.get("rehearsal_done", false) else "Didi slips on your costume ring. 'He said he wanted a lifelong commitment. I offered quarterly installments.' She tosses your bouquet at an imaginary creditor and pays him in chocolates. Romance has never looked so solvent."
+			if not flags.get("show_beat_2", false):
+				flags["show_beat_2"] = true
+				return "The regular waves his golden-pin keyring from the back: 'STRIKE!' Didi points to him. 'Sir, that's not a pickup line. That's your employment history.' Even the bouncer applauds; Lefty's promotion has acquired a health warning." if flags.get("backstage_social", false) else "Lefty's bowling broadcast booms through an open door: 'A seven-ten split!' Didi does a double take. 'My last divorce had the same score.' The bouncer forgets the television long enough to laugh. Your remote work finally has cultural value."
+			flags["show_completed"] = true
+			_note("Didi's curtain call paid off Larry's backstage approach and his rehearsal help. She invited him to the after-show gathering.")
+			return "Didi takes your hand for the bow. 'My assistant, Larry: depreciating gracefully.' The applause is real. She squeezes your fingers. 'We're gathering after the show. Bring a friend. Or a whole personality, if you find one.'"
+		"skip_show":
+			flags["show_completed"] = true
+			flags["show_skipped"] = true
+			_note("Skipped to Didi's curtain call. She thanked Larry for helping and invited him to the after-show gathering.")
+			return "You catch the curtain call and a flying ledger. Didi thanks you for the help. 'After-show gathering later. Bring a friend. Preferably one with a better tie.' The invitation and every puzzle remain yours."
+		"didi_encore": return "Didi: 'After the applause? We count the till, steal the remaining chocolates, and argue about art. Come back with a friend. Yours is the collar everyone can hide under.'"
+		"manager_setup":
+			flags["manager_setup"] = true
+			_note("The stage manager knows the hotel receptionist. After discussing Didi's completed setup, Larry can ask him for an introduction.")
+			return "Stage manager: 'Didi says you saved the setup. Props or pratfalls, a show needs someone who follows through. I know the hotel night receptionist; we're meeting on Eve's roof after the show. Need an introduction?'"
+		"manager_intro":
+			flags["manager_intro"] = true
+			_note("Didi's stage manager put in a word with the Hotel Lobby receptionist. Introduce yourself there as the cabaret helper; no coffee delivery is required.")
+			return "Stage manager: 'I've called the hotel. Tell the receptionist you're Didi's cabaret helper. Try not to describe yourself as the entertainment package. That costs extra.'"
+		"hotel_introduction":
+			flags["penthouse_access"] = true
+			flags["hotel_social"] = true
+			_award("hotel_introduction", "The receptionist welcomed Didi's cabaret helper upstairs after the stage manager's introduction.")
+			return "Receptionist: 'The manager called. Apparently you can follow a cue without taking your trousers off. An uncommon reference in this town.' She adds you to Eve's list. 'The elevator's yours. Coffee later is welcome, never compulsory.'"
+		"offer_coffee": return _use_item("coffee", "receptionist")
+		"busker_callback":
+			flags["busker_encore"] = true
+			return "The busker blows across the empty prop bottle: one tender, ridiculous note. 'My solo's called Chateau Inadequate.' Larry: 'I've stayed there.' 'Pal, you had a suite.'"
+		"eve_story": return _eve_story()
+		"eve_boast":
+			flags["eve_boasted"] = true
+			flags["eve_story_shared"] = true
+			_note("Claimed to be an international leisure consultant; admitted to Eve that Larry was mostly consulting a map. She appreciated the correction.")
+			return "Larry: 'I'm an international leisure consultant.' Eve: 'And tonight's findings?' 'Mostly that I need better shoes.' She laughs. 'There you are. I was wondering when the man would catch up with the suit.'"
+		"eve_gardens": return _eve_gardens()
+		"eve_followup":
+			flags["eve_followup"] = true
+			_note("Eve would grow a crooked old apple tree with no demonstration schedule. She misses making things that can take their time.")
+			return "Eve: 'A crooked apple tree. Nothing instant. Somewhere to sit while it takes its time.' Larry loosens his collar. 'I may have been overdressed for agriculture.' 'You're learning.'"
+		"eve_dinner":
+			flags["eve_dinner"] = true
+			return "Eve: 'Fed the guests, checked the lights, demonstrated the fruit machine. Forgot the host.' Larry: 'A scandal. I shall form a committee.' 'One apple will do, chairman.'"
+		"cultivar_midlife":
+			flags["cultivar_named"] = true
+			flags["cultivar_midlife"] = true
+			_note("Eve and Larry named the experimental apple Midlife Crisps: a little late to blossom, surprisingly sweet.")
+			return "'Midlife Crisps,' you suggest. Eve considers it. 'Late to blossom. Excessive packaging. Surprisingly sweet.' 'Are we still talking apples?' 'For now.'"
+		"ending_flirt", "ending_friends", "ending_afterparty": return _finish_evening(id)
+	return "The conversation settles into a comfortable pause."
+
+
+func _didi_missing_props() -> String:
+	var missing: Array[String] = []
+	if not flags.get("gift_ring", false): missing.append("a costume ring")
+	if not flags.get("gift_flowers", false): missing.append("flowers")
+	if not flags.get("gift_candy", false): missing.append("chocolates")
+	if missing.is_empty(): return "Didi: 'All three props are here. A dance will shake the rehearsal nerves out.'"
+	return "Didi: 'The elaborate version still needs %s. Or volunteer for the rehearsal: a willing idiot is theatre's most renewable resource.'" % ", ".join(missing)
+
+
+func _eve_story() -> String:
+	flags["eve_story_shared"] = true
+	_note("Told Eve about the evening without turning Didi into a conquest. She liked that Larry could laugh at himself.")
+	if flags.get("rehearsal_done", false): return "Larry: 'I played a cabaret assistant. My tie was audited.' Eve: 'Did it declare everything?' 'It asked for a private accountant.' She laughs. 'Sounds like you helped someone have a good night.'"
+	return "Larry: 'I danced with Didi. My knees filed separate tax returns.' Eve laughs. 'And she kept dancing? Then your night was better than you think.' TALK again to listen, or choose another topic."
+
+
+func _eve_gardens() -> String:
+	flags["eve_heard"] = true
+	_note("Eve designs hotel gardens. Her instant-fruit experiment was supposed to feed guests; she forgot to feed herself.")
+	_note(SEED_SOURCE_CLUE)
+	return "Eve: 'I design these gardens. My fruit planter takes seeds from apple cores. The staff leave clean cores on the Service Alley bin lid: take one and use it to separate the seeds.' Larry: 'So breakfast begins in an alley?' 'That's recycling, not your dating history. The newspaper explains the planter's controls.'"
+
+
+func _finish_evening(tone: String) -> String:
+	if completed: return ending_text()
+	flags[tone] = true
+	completed = true
+	_award("ending", "Finished the evening by choosing: " + {"ending_flirt": "a mutually flirtatious sunrise", "ending_friends": "good company as friends", "ending_afterparty": "Didi's after-show gathering with Eve"}[tone] + ".")
+	return ending_text() + " THE END. You can keep exploring or start a different evening."
+
+
+func ending_title() -> String:
+	if flags.get("ending_friends", false): return "GOOD COMPANY"
+	if flags.get("ending_afterparty", false): return "THE AFTER-SHOW"
+	return "A LITTLE CONNECTION"
+
+
+func ending_text() -> String:
+	if flags.get("ending_friends", false): return "Larry sets the pickup lines aside. 'Good company is enough, you know.' Eve lifts her apple in a toast. 'Then stop interviewing for the job. You've already got it.' You watch the city wake up as friends. No consolation prize, no score to settle: just two adults enjoying the same ridiculous view."
+	if flags.get("ending_afterparty", false): return "'Didi said bring a friend,' you tell Eve. 'Would you like to cause a little trouble?' Eve takes your arm. 'Only the deductible kind.' Back at Studio 69, Didi hands you a ledger and declares the party officially out of balance. The sun comes up. Nobody agrees who owes whom breakfast."
+	return "'Want to share a sunrise for two?' you ask. Eve pulls her chair close. 'Yes. But that collar gets its own chair.' You split the apple and laugh. For once, you have absolutely nothing rehearsed to say. The night is over. Your luck may be just beginning."
+
+
+func epilogue() -> String:
+	var callbacks: Array[String] = []
+	callbacks.append("Lefty's winner still wears the golden pin; the bouncer now checks tickets before biceps." if flags.get("backstage_social", false) else "The bouncer missed the final bowling score while applauding the cabaret. He blames channel six.")
+	callbacks.append("Didi bills you as The Man Who Could Be Written Off. Your tie is considering representation." if flags.get("rehearsal_done", false) else "Didi's ring, flowers, and chocolates earn a standing ovation. The props demand a bigger dressing room.")
+	callbacks.append("At the hotel, your name remains on the guest list under Useful Human, an unexpected promotion." if flags.get("hotel_social", false) else "The receptionist remembers the espresso. The service window has never opened so easily.")
+	if flags.get("eve_boasted", false): callbacks.append("Eve lists your new profession as Regional Honesty Consultant. The territory is small but growing.")
+	if flags.get("cultivar_midlife", false): callbacks.append("Midlife Crisps becomes the hotel's official apple. The label says: Better late than leathery.")
+	return "\n\n".join(callbacks)
+
+
+func item_status(id: String) -> String:
+	match id:
+		"newspaper": return "souvenir" if flags.get("newspaper_read", false) else "active"
+		"remote": return "souvenir" if flags.get("tv_distracted", false) else "active"
+		"pass": return "souvenir" if flags.get("dancer_met", false) else "active"
+		"knife": return "souvenir" if flags.get("rope_taken", false) else "active"
+		"hammer": return "souvenir" if flags.get("window_open", false) else "active"
+		"pitcher": return "souvenir" if flags.get("apple_grown", false) else "active"
+	return "active"
+
+
+func hint_level(level: int) -> String:
+	if level >= 2: return hint()
+	if completed: return "Your evening is complete. The notebook remembers how your choices shaped it."
+	if not is_unlocked("backroom"):
+		return "Lefty's door has two routes: his bouncer's interests, or the bowling-night promotion." if level == 0 else "Ask Lefty about the promotion and compare the board with the regular's ticket; alternatively investigate the restroom and the TV remote."
+	if not inventory.has("pass"):
+		return "The casino gives something away besides optimism." if level == 0 else "Look around the casino's clean ashtray for entry to Studio 69."
+	if not _help_ready():
+		return "Didi needs help putting on a show. Props and a willing performer are two different answers." if level == 0 else "Talk to Didi: either bring the three requested props and dance, or volunteer and listen to the rehearsal cue."
+	if not flags.get("phone_called", false):
+		return "Didi mentioned someone who handles the practical side of the theatre." if level == 0 else "Her stage manager's number is in your notebook; Studio 69 has a wall phone."
+	if not flags.get("penthouse_access", false):
+		return "The hotel receptionist knows the stage crew and enjoys good coffee." if level == 0 else "Ask the stage manager about Didi's setup and an introduction, or follow the service-window voucher lead for a coffee favor."
+	if not flags.get("eve_met", false):
+		return "An invitation is only useful if you meet the host." if level == 0 else "Take the penthouse stairs to Eve's Rooftop and introduce yourself."
+	if not flags.get("apple_given", false):
+		return "Eve missed dinner while building a very peculiar garden. Your earlier discoveries can help." if level == 0 else "The newspaper describes seeds and water. Check the alley's core, the garden's loan stool, and the penthouse's cabinet and sink."
+	return "An honest story and a little listening beat a rehearsed line." if level == 0 else "Choose a story about your evening and ask about Eve's gardens. Then choose how you want the evening to end."
+
+
 func _share_number() -> String:
 	flags["phone_known"] = true
-	_note("Didi shared her stage manager's number: 555-0987. Call from the disco phone about the spare rope.")
-	return "Didi: 'Sweet, funny, and wonderfully overdressed. Call my stage manager at 555-0987 about that spare rope. Tell him you're with me. He'll be jealous.'"
+	_note("Didi shared her stage manager's number: 555-0987. Call from the disco phone about the spare rope or a hotel introduction.")
+	_note("Didi invited Larry to watch her show now or later, and to bring a friend to the after-show gathering.")
+	return "Didi: 'Sweet, funny, and wonderfully overdressed. Call my stage manager at 555-0987 about the spare rope or a hotel introduction. Stay for the show if you like. Bring a friend to our after-show gathering; your help deserves a curtain call.'"
 
 
 func _dance() -> String:
 	if room != "disco": return "This is not the dance floor. The city thanks you for checking."
+	_dialogue_target = "dancer"
 	if not flags.get("dancer_met", false): return "You almost launch into a solo. Introduce yourself to Didi first; this move needs a witness."
 	if flags.get("danced", false): return "You reprise The Nervous Accountant. The floor files no complaint."
 	flags["danced"] = true
 	_award("danced", "Danced with Didi. Neither of you will win a trophy; both had fun.")
 	if _all_gifts(): return "Your enthusiastic shuffle earns a laugh. " + _share_number()
+	if flags.get("dance_confident", false): return "You attempt a pelvic punctuation mark that should require planning permission. Didi catches your elbow. 'Love the confidence. Let's get the rest of you in time.' She laughs with you, then steals the move."
+	if flags.get("dance_careful", false): return "You count the steps like they owe you money. Didi leans close. 'Nobody's grading your hips.' You loosen up; the dance improves immediately. Your accountant remains concerned."
+	if flags.get("dance_copy", false): return "You let Didi lead. Left, turn, gloriously unnecessary shoulder. 'Good listener,' she says. You try not to look surprised that this works better than explaining disco to her."
 	return "Didi takes your hand. 'Show me what those trousers can do.' Your signature move resembles a printer jam. She laughs and pulls you into the beat."
 
 
@@ -625,9 +957,12 @@ func _use_item(held: String, target: String) -> String:
 				return "The machine accepts the voucher and produces a deluxe espresso. Hot, rich, and ready to go. Three qualities you've been advertising all evening."
 		"coffee":
 			if target == "receptionist":
+				var already_invited: bool = flags.get("penthouse_access", false)
 				_consume(held)
 				flags["penthouse_access"] = true
+				flags["coffee_delivered"] = true
 				_award("coffee_given", "Brought the receptionist an espresso. She invited you to the rooftop gathering.")
+				if already_invited: return "She inhales the aroma. 'You're already on the guest list, Larry. This is just considerate.' She raises the cup. 'Look at you, exceeding expectations without an expense account.'"
 				return "She inhales the aroma. 'A man who delivers. How refreshing.' She adds your name to the guest list. 'Join us upstairs. Eve is hosting.' The elevator unlocks."
 		"stool":
 			if target == "cabinet":
@@ -689,6 +1024,7 @@ func _say_password(value: String) -> String:
 
 func _call(number: String) -> String:
 	if room != "disco": return "The usable telephone is on Studio 69's wall."
+	_dialogue_target = "phone"
 	if not flags.get("phone_known", false): return "Didi has not shared the stage manager's number yet. Help with her show and ask her."
 	if number.replace("-", "").replace(" ", "") != PHONE_NUMBER: return "That number reaches a recording about extended hovercraft warranties. Try the number Didi gave you."
 	if flags.get("phone_called", false):
@@ -696,7 +1032,7 @@ func _call(number: String) -> String:
 		return "Stage manager: 'Yes, the spare coil is yours. Cut the packaging cord. Thanks for helping Didi with the show.'"
 	flags["phone_called"] = true
 	_award("phone_called", "Called 555-0987. Didi's stage manager cleared the spare rope for you.")
-	return "'Didi sent you? Lucky devil. Take the spare rope; a small knife will cut the packaging cord. Tell her I expect a dance at the opening.'"
+	return "'Didi sent you? Lucky devil. Take the spare rope; a small knife will cut the packaging cord. Tell her I expect a dance at the opening. Ask me about the show's setup if you want an introduction at the hotel.'"
 
 
 func _recovery_grant() -> String:
@@ -717,68 +1053,77 @@ func _play_slots() -> String:
 
 
 func objective() -> String:
-	if completed: return "You made it to sunrise with good company. For a man in that suit, this is a spectacular result."
-	if not flags.get("whiskey_given", false): return "Explore the Strip and make a useful trade at Lefty's."
-	if not is_unlocked("backroom"): return "Find the backstage password and put bowling on Lefty's TV."
-	if not flags.get("taken_candy", false): return "Collect the promotional chocolates backstage."
+	if completed: return "Evening complete: %s. Keep exploring for optional discoveries, or try different choices next time." % ending_title().to_lower()
+	if not is_unlocked("backroom"):
+		if flags.get("promotion_brief", false): return "Match Lefty's bowling prize to its winning customer, or solve the bouncer's password and TV problem."
+		if flags.get("tv_distracted", false): return "Bowling is on. Find and give the bouncer the backstage password."
+		if flags.get("password_spoken", false): return "The password is accepted. Put bowling on Lefty's TV."
+		return "Get backstage: investigate the bouncer's interests or ask Lefty about his bowling promotion."
 	if not inventory.has("pass"): return "Find a complimentary Studio 69 pass at the casino."
-	if not flags.get("phone_known", false): return "Meet Didi, dance, and help collect props for her cabaret."
-	if not flags.get("phone_called", false): return "Call Didi's stage manager from the disco phone."
-	if not flags.get("rope_taken", false): return "Get a small knife and release the spare stage rope."
-	if not flags.get("rope_anchored", false): return "Tie the stage rope to Lefty's backstage railing."
-	if not flags.get("window_open", false): return "Use a rubber mallet to free the fire escape's service window."
-	if not flags.get("taken_voucher", false): return "Take the espresso voucher from the open service window."
+	if not flags.get("dancer_met", false): return "Meet Didi in Studio 69 and ask what her show needs."
+	if not _help_ready():
+		if flags.get("rehearsal_started", false): return "Rehearse Didi's cue: choose your response to AUDIT."
+		var remaining: Array[String] = []
+		if not flags.get("gift_ring", false): remaining.append("ring")
+		if not flags.get("gift_flowers", false): remaining.append("flowers")
+		if not flags.get("gift_candy", false): remaining.append("chocolates")
+		if not flags.get("danced", false): remaining.append("dance")
+		return "Help Didi: %s still needed for the props route. Or volunteer for her rehearsal." % ", ".join(remaining)
+	if not flags.get("phone_called", false): return "Call Didi's stage manager from the disco phone. " + ("Her curtain-call invitation is in your notebook." if flags.get("show_completed", false) else "You can watch her show now or later.")
 	if not flags.get("penthouse_access", false):
 		if inventory.has("coffee"): return "Bring the espresso to the hotel receptionist."
+		if flags.get("manager_intro", false): return "Introduce yourself to the hotel receptionist as Didi's cabaret helper."
+		if flags.get("manager_setup", false): return "Ask the stage manager for a hotel introduction, or continue the coffee favor."
+		if not flags.get("rope_taken", false): return "For the hotel: ask the stage manager about an introduction, or get a knife for the spare rope and coffee-voucher route."
+		if not flags.get("rope_anchored", false): return "Tie the stage rope to Lefty's backstage railing, or ask the manager for a hotel introduction."
+		if not flags.get("window_open", false): return "Use a rubber mallet to free the fire escape's service window."
+		if not flags.get("taken_voucher", false): return "Take the espresso voucher from the open service window."
 		return "Redeem the voucher at Quik-E-Mart's espresso machine."
 	if flags.get("apple_grown", false) and not flags.get("taken_apple", false): return "Take the ripe apple from the garden's miniature tree."
 	if not flags.get("eve_met", false): return "Join the rooftop gathering and introduce yourself to Eve."
-	if not flags.get("apple_grown", false): return "Grow a fresh apple in the hotel's experimental garden planter."
+	if not flags.get("apple_grown", false): return "Grow a fresh apple in the hotel's experimental garden planter. You can chat with Eve first."
 	if not flags.get("apple_given", false): return "Bring Eve the fresh apple on the rooftop."
-	if flags.get("eve_heard", false): return "Enjoy the moment with Eve. Talk once more."
-	if flags.get("eve_story_shared", false): return "Ask about Eve's night. Keep the conversation going."
-	return "Share an honest conversation with Eve on the rooftop."
+	if flags.get("eve_heard", false) and flags.get("eve_story_shared", false): return "Choose your evening with Eve: a flirtatious sunrise, friendship, or Didi's after-show gathering."
+	if flags.get("eve_story_shared", false): return "Ask about Eve's gardens. Give her a turn to tell her story."
+	return "Share a story about your evening with Eve."
 
 
 func hint() -> String:
-	if completed: return "You finished! %d / %d points. A casino demo spin and every curious LOOK can round out your evening." % [score, max_score]
-	if not inventory.has("newspaper") and not flags.get("newspaper_read", false): return "Take the free newspaper on the Strip, then LOOK at it in your inventory. Its garden story will matter later."
-	if not flags.get("newspaper_read", false): return "Read the newspaper in your inventory. It explains the hotel's instant-fruit planter."
-	if not flags.get("whiskey_given", false):
-		if inventory.has("whiskey"): return "Give the whiskey to the thirsty regular at Lefty's. He will trade his remote."
-		return "At Lefty's, USE the bartender to buy a $10 whiskey, or type BUY WHISKEY. Give it to the regular."
-	if not flags.get("password_known", false): return "Visit Lefty's restroom and LOOK at the graffiti. Take the costume ring while you are there."
-	if not flags.get("taken_ring", false): return "Take the free costume ring beside the restroom basin."
-	if not flags.get("tv_distracted", false): return "Use the TV remote on Lefty's television. The bouncer loves channel six."
-	if not flags.get("password_spoken", false): return "Talk to the bouncer after reading the graffiti, or type BELLYBUTTON while in the bar."
-	if not flags.get("taken_candy", false): return "Enter Lefty's backstage lounge and take the free promotional candy."
+	if completed: return "You finished! %d / %d exploration points. The remaining props, coffee favor, and casino demo are optional discoveries." % [score, max_score]
+	if not is_unlocked("backroom"):
+		if flags.get("promotion_brief", false): return "LOOK at the bowling-night promotion and TALK to the regular about his ticket. TALK to Lefty and name the regular as the winner. Alternatively finish the password/TV route."
+		if not flags.get("whiskey_given", false):
+			if inventory.has("whiskey"): return "Give the whiskey to the regular at Lefty's for his remote. Or TALK to Lefty about his bowling promotion for another route."
+			return "TALK to Lefty and choose Buy whiskey for $10, then give it to the regular. Or choose his bowling promotion, inspect its board and the regular's ticket, and identify the regular."
+		if not flags.get("tv_distracted", false): return "Use the TV remote on Lefty's television. The bouncer loves channel six."
+		if not flags.get("password_known", false): return "Visit Lefty's restroom and LOOK at the graffiti."
+		return "TALK to the bouncer after reading the graffiti, or type BELLYBUTTON in the bar."
 	if not inventory.has("pass"): return "Take the Studio 69 pass from the casino's clean ashtray."
-	if not flags.get("dancer_met", false): return "Enter Studio 69 and TALK to Didi. She is gathering props for a cabaret opening."
-	if not flags.get("danced", false): return "USE the dance floor after meeting Didi, or type DANCE."
-	if not flags.get("gift_ring", false): return "Give Didi the costume ring for her cabaret opening."
-	if not flags.get("gift_candy", false): return "Use the promotional candy on Didi."
-	if not flags.get("gift_flowers", false):
-		if inventory.has("flowers"): return "Use the flowers on Didi to complete her cabaret props."
-		return "Buy a $10 bouquet at the Strip's flower cart, then give it to Didi."
-	if not flags.get("phone_known", false): return "Talk to Didi after dancing and giving all three props."
-	if not flags.get("phone_called", false): return "Use the disco phone, or type CALL 555-0987. The stage manager can release the spare rope."
-	if not inventory.has("knife"):
-		if inventory.has("wine"): return "Give the wine to the alley busker. He trades a pocket knife."
-		return "Buy a $12 wine at Quik-E-Mart and trade it to the alley busker for a pocket knife."
-	if not flags.get("rope_taken", false): return "Use the pocket knife on Studio 69's spare stage rope to cut its packaging cord."
-	if not flags.get("rope_anchored", false): return "Use the stage rope on the railing in Lefty's backstage lounge."
-	if not inventory.has("hammer"): return "Take the loaner rubber mallet from the service alley's maintenance rack."
-	if not flags.get("window_open", false): return "Go from the backstage lounge to the fire escape. Use the rubber mallet on the sticking window."
-	if not flags.get("taken_voucher", false): return "Take the espresso voucher inside the open service window."
+	if not flags.get("dancer_met", false): return "Enter Studio 69 and TALK to Didi."
+	if not _help_ready():
+		if flags.get("rehearsal_started", false): return "TALK to Didi and choose: On AUDIT, stand on the X and shout WRITE IT OFF."
+		if not flags.get("taken_candy", false): return "Either TALK to Didi and volunteer for rehearsal, or collect the costume ring in Lefty's restroom, candy backstage, and $10 flowers on the Strip, then give them to Didi and dance."
+		if not flags.get("gift_ring", false): return "Take the free costume ring beside Lefty's restroom basin and give it to Didi. Or volunteer for her rehearsal instead."
+		if not flags.get("gift_candy", false): return "Use the promotional candy on Didi. Or volunteer for her rehearsal instead."
+		if not flags.get("gift_flowers", false): return "Buy a $10 bouquet at the Strip's flower cart, then give it to Didi. Or volunteer for her rehearsal instead."
+		return "USE the dance floor or choose a dance style with Didi."
+	if not flags.get("phone_called", false): return "Use the Studio 69 phone or CALL 555-0987. The stage manager can release rope and arrange a hotel introduction."
 	if not flags.get("penthouse_access", false):
+		if flags.get("manager_intro", false): return "TALK to the hotel receptionist and choose Introduce myself as Didi's cabaret helper."
+		if inventory.has("coffee"): return "Give the espresso to the hotel receptionist. She will invite you upstairs."
 		if inventory.has("voucher"): return "Use the espresso voucher on Quik-E-Mart's coffee machine."
-		return "Give the espresso to the hotel receptionist. She will invite you upstairs."
+		if not flags.get("rope_taken", false): return "For a social route, USE the phone, discuss Didi's setup, and ask for a hotel introduction. For the coffee caper, trade $12 wine to the alley busker for his knife, then use it on the disco's spare rope."
+		if not flags.get("rope_anchored", false): return "Use the stage rope on the railing in Lefty's backstage lounge."
+		if not inventory.has("hammer"): return "Take the loaner rubber mallet from the Service Alley."
+		if not flags.get("window_open", false): return "Go from the backstage lounge to the Fire Escape. Use the rubber mallet on the sticking window."
+		return "Take the espresso voucher inside the open service window."
 	if flags.get("apple_grown", false) and not flags.get("taken_apple", false): return "TAKE the apple from the miniature tree in the garden."
 	if not flags.get("eve_met", false): return "Go through the penthouse to the rooftop and TALK to Eve. Find out what she would enjoy before planning a grand gesture."
+	if not flags.get("newspaper_read", false): return "Take the free newspaper on the Strip, then LOOK at it in your inventory. It explains the instant-fruit planter."
 	if not flags.get("seeds_found", false):
 		if inventory.has("core"): return "USE the apple core in your inventory to separate its seeds."
 		return "Take the apple core from the alley bin lid, then USE it to extract the seeds."
-	if not flags.get("seeds_planted", false): return "Use the apple seeds on the hotel's garden planter. Read the newspaper first."
+	if not flags.get("seeds_planted", false): return "Use the apple seeds on the hotel's garden planter."
 	if not flags.get("stool_placed", false):
 		if inventory.has("stool"): return "Use the folding stool on the high penthouse cabinet."
 		return "Take the loaner folding stool from the hotel garden."
@@ -786,9 +1131,8 @@ func hint() -> String:
 	if not flags.get("apple_grown", false):
 		if not flags.get("pitcher_filled", false): return "Use the pitcher on the penthouse sink to fill it with water."
 		return "Use the full pitcher on the garden planter to grow an apple tree."
-	if not flags.get("taken_apple", false): return "TAKE the apple from the miniature tree in the garden."
 	if not flags.get("apple_given", false): return "Offer Eve the fresh apple by using it on her."
-	return "TALK to Eve to continue the conversation. Share your night, listen to hers, then stay for sunrise."
+	return "TALK to Eve. Share a story, ask about her gardens, then choose the ending tone you want. No choice is a trap."
 
 
 func _resolve_room(value: String) -> String:
@@ -831,13 +1175,17 @@ func command(text: String) -> String:
 	if input.is_empty(): return "Try LOOK, TALK TO LEFTY, TAKE NEWSPAPER, USE REMOTE ON TV, GO CASINO, INVENTORY, or HINT."
 	if input == PASSWORD: return _say_password(input)
 	if input in ["555-0987", "5550987"]: return _call(input)
-	if input in ["look", "l", "look around"]: return str(get_room().description)
+	if input in ["look", "l", "look around"]:
+		_observe_room()
+		return str(get_room().description)
 	if input in ["inventory", "i", "take inventory"]:
 		var names: Array[String] = []
 		for id in inventory: names.append(str(items[id].name))
 		return "Pockets: %s. Wallet: $%d." % [", ".join(names) if not names.is_empty() else "just lint and ambition", cash]
 	if input == "score": return "Score: %d / %d. Actions: %d. Cash: $%d." % [score, max_score, turns, cash]
-	if input in ["hint", "help me"]: return hint()
+	if input in ["hint", "help me"]: return hint_level(0)
+	if input in ["hint 1", "hint 2", "hint 3"]: return hint_level(int(input.right(1)) - 1)
+	if input.begins_with("choose "): return choose_dialogue(input.substr(7))
 	if input in ["objective", "quest"]: return objective()
 	if input in ["help", "?"]: return "LOOK [thing] · TALK [person] · TAKE [thing] · USE [item] ON [thing] · GIVE [item] TO [person] · GO [exit] · DANCE · CALL [number] · INVENTORY · JOURNAL · HINT · SAVE · LOAD. Click scene targets for the same actions."
 	if input in ["journal", "notes"]: return "\n".join(journal)
@@ -920,4 +1268,5 @@ func load_game(path: String = "user://savegame.json") -> String:
 	turns = maxi(0, int(data.turns))
 	completed = data.completed
 	journal.assign(data.journal)
+	_dialogue_target = ""
 	return "Game restored. Your suit is exactly as you left it, for better or worse."

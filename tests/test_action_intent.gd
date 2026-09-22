@@ -109,7 +109,11 @@ func _run() -> void:
 	_check(not app.game.flags.get("danced", false) and app.larry.dance_time_left == 0.0, "Real TAKE Didi callback does not start model or visual dance")
 	app._set_verb("use")
 	app._hotspot_click(app.game.get_hotspot("dancefloor"))
-	_check(app.game.flags.get("danced", false) and app.larry.dance_time_left > 0.0, "Real USE floor callback starts the dance and its animation")
+	_check(not app.game.flags.get("danced", false) and app.dialogue_choice_buttons.has("dance_careful"), "Real USE floor callback offers a style before starting the dance")
+	if app.dialogue_choice_buttons.has("dance_careful"):
+		app.dialogue_choice_buttons.dance_careful.pressed.emit()
+	_check(app.game.flags.get("danced", false) and app.larry.dance_time_left > 0.0, "Real dance choice starts both the model dance and animation")
+	app._close_modal()
 	app._move_larry(Vector2(700, 490))
 	_check(app.larry.dance_time_left == 0.0 and app.larry.walking, "Walking cancels dance animation")
 	app._command("dance")

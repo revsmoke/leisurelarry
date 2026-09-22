@@ -23,6 +23,9 @@ func _check(ok: bool, message: String) -> void:
 
 func _act(label: String) -> Dictionary:
 	var observation: Dictionary = bridge.observation()
+	if not label.begins_with("Press ") and not observation.get("dialogueOptions", []).is_empty():
+		await _act("Press × · close dialog and return to the room")
+		observation = bridge.observation()
 	max_candidates = maxi(max_candidates, observation.actions.size())
 	for action in observation.actions:
 		if action.label == label:
@@ -32,6 +35,14 @@ func _act(label: String) -> Dictionary:
 			return result.observation
 	_check(false, "Missing visible action: " + label)
 	return observation
+
+func _choice(id: String) -> void:
+	# Test IDs identify authored UI buttons; the model only sees their visible labels.
+	var buttons: Dictionary = app.dialogue_choice_buttons
+	if not buttons.has(id):
+		_check(false, "Missing visible conversation choice: " + id)
+		return
+	await _act("Press " + buttons[id].text)
 
 func _travel(name: String) -> void:
 	await _act("Travel via city map to " + name)
@@ -64,6 +75,8 @@ func _run() -> void:
 	var initial: Dictionary = bridge.observation()
 	_check(initial.room.id == "street" and initial.inventory.is_empty(), "Public initial observation mirrors UI")
 	_check(initial.actions.size() <= 255, "Bounded candidate coverage")
+	_check(initial.diagnostics.has("action_callback_ms") and initial.diagnostics.has("engine_static_memory_bytes"), "Callback and memory diagnostics are recorded separately from player state")
+	_check(not initial.diagnostics.has("browser"), "Native test does not fabricate browser frame samples")
 	_check(not JSON.stringify(initial).contains("flags") and not JSON.stringify(initial).contains("password_known"), "Public observation contains no hidden flags")
 	_check(not JSON.stringify(initial).contains("bellybutton"), "Undiscovered password not leaked")
 	for action in initial.actions:
@@ -74,16 +87,47 @@ func _run() -> void:
 	_check(rejected.error == "stale_revision" and bridge.revision == 0, "Stale revision rejected")
 	rejected = await bridge.request({"type": "other", "revision": 0, "action": "a000"})
 	_check(rejected.error == "unsupported_message", "Unknown message rejected")
+	rejected = await bridge.request({"type": "larry-qa-action", "revision": "0", "action": "a000"})
+	_check(rejected.error == "invalid_revision", "String revision rejected")
+	bridge.busy = true
+	rejected = await bridge.request({"type": "larry-qa-action", "revision": 0, "action": "a000"})
+	_check(rejected.error == "busy", "Concurrent callback rejected before mutation")
+	bridge.busy = false
 	app._command("look around")
 	rejected = await bridge.request({"type": "larry-qa-action", "revision": 0, "action": "a000"})
 	_check(rejected.error == "state_changed" and bridge.revision == 1, "Human UI interaction during inference invalidates old observation")
+	# Reopening the same modal can leave the textual signature unchanged while
+	# replacing its actual buttons. Never report a no-op on a freed button as success.
+	app._map()
+	bridge._refresh_observation()
+	var stale_close := ""
+	for action in bridge.observation().actions:
+		if action.label == "Press × · close dialog and return to the room": stale_close = action.id
+	app._map()
+	await process_frame
+	await process_frame
+	rejected = await bridge.request({"type": "larry-qa-action", "revision": bridge.revision, "action": stale_close})
+	_check(rejected.get("error", "") == "stale_control", "Replaced identical-looking modal rejects its stale control")
+	await _act("Press × · close dialog and return to the room")
 	await _act("Take Free newspaper")
 	_check(app.game.inventory.has("newspaper"), "TAKE through actual hotspot signal picks newspaper")
 	await _act("Inspect Newspaper in inventory")
 	_check(app.game.flags.get("newspaper_read", false), "Inventory right-click records visible clue")
+	await _act("Press Tidy: tuck used souvenirs away")
+	_check(not bridge.observation().inventory.has("Newspaper"), "Tidy observation reflects actual visible pocket controls")
+	var hidden_item := false
+	for action in bridge.observation().actions:
+		if action.label == "Inspect Newspaper in inventory": hidden_item = true
+	_check(not hidden_item, "Hidden souvenir cannot be offered as a clickable item")
+	await _act("Press Tidy: show all carried items")
+	_check(bridge.observation().inventory.has("Newspaper"), "Visible Tidy control restores souvenir access")
 	await _act("Take Flower cart · $10")
 	await _travel("Lefty's Bar")
-	await _act("Use Lefty · whiskey $10")
+	await _act("Talk Lefty · bartender")
+	_check(not bridge.observation().dialogueOptions.is_empty(), "Visible dialogue topics exposed without hidden state")
+	var before_order: int = app.game.cash
+	await _choice("buy_whiskey")
+	_check(app.game.cash == before_order - 10, "Only explicit purchase choice spends money")
 	await _act("Use Whiskey with Thirsty regular")
 	_check(app.game.inventory.has("remote") and not app.game.inventory.has("whiskey"), "Item and target callbacks complete a trade")
 	await _travel("The Restroom")
@@ -105,7 +149,7 @@ func _run() -> void:
 	_check(not is_instance_valid(app.modal), "Real modal close callback used")
 	await _travel("Studio 69")
 	await _act("Talk Didi · stage designer")
-	await _act("Use Dance floor")
+	await _choice("dance_copy")
 	await _act("Use Costume ring with Didi · stage designer")
 	await _act("Use Candy with Didi · stage designer")
 	await _act("Use Flowers with Didi · stage designer")
@@ -131,6 +175,7 @@ func _run() -> void:
 	await _act("Use Espresso with Night receptionist")
 	await _travel("Eve's Rooftop")
 	await _act("Talk Eve · rooftop host")
+	await _choice("eve_dinner")
 	await _travel("Moonlight Garden")
 	await _act("Take Loaner folding stool")
 	await _act("Use Apple seeds with Experimental planter")
@@ -144,8 +189,9 @@ func _run() -> void:
 	await _travel("Eve's Rooftop")
 	await _act("Use Perfect apple with Eve · rooftop host")
 	await _act("Talk Eve · rooftop host")
-	await _act("Talk Eve · rooftop host")
-	await _act("Talk Eve · rooftop host")
+	await _choice("eve_story")
+	await _choice("eve_gardens")
+	await _choice("ending_friends")
 	_check(app.game.completed and bridge.observation().score == 100, "All candidates cover a complete 100-point UI game")
 	_check(not bridge.observation().overlay.is_empty(), "Completed-game ending rendered before observation")
 	await _act("Press Stay a little longer")

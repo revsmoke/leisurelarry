@@ -1,5 +1,6 @@
 extends Control
 
+const SoundEffects = preload("res://scripts/sound_effects.gd")
 const GameState = preload("res://scripts/game_state.gd")
 const Actor = preload("res://scripts/actor.gd")
 const WorldEffects = preload("res://scripts/world_effects.gd")
@@ -24,10 +25,11 @@ var room_title: Label
 var room_subtitle: Label
 var status: Label
 var objective_text: Label
+var objective_scroll: ScrollContainer
 var dialogue: RichTextLabel
 var speaker: Label
 var inventory_box: VBoxContainer
-var exit_box: HBoxContainer
+var exit_box: HFlowContainer
 var hover_label: Label
 var score_label: Label
 var money_label: Label
@@ -41,6 +43,7 @@ var display_font: Font
 var verb := "look"
 var selected_item := ""
 var current_render_room := ""
+var current_background_path := ""
 var show_hotspots := true
 var music: AudioStreamPlayer
 var music_on := true
@@ -50,6 +53,23 @@ var ending_shown := false
 var casino_panel: Control
 var qa_mode := false
 var qa_bridge: Node
+var inventory_scroll: ScrollContainer
+var dialogue_choice_buttons: Dictionary = {}
+var transcript: Array[String] = []
+var inventory_snapshot: Array = []
+var tidy_pockets := false
+var reduced_motion := false
+var effects_on := true
+var music_volume := 0.5
+var effects_volume := 0.5
+var sound_effects: Node
+var web_companion: Node
+var selection_cancel: Button
+var arrival_label: Label
+var base_rects: Dictionary = {}
+var hint_stage := 0
+var hint_objective := ""
+var settings_button: Button
 
 func _qa_enabled() -> bool:
 	return QABridge.runtime_allowed()
@@ -66,12 +86,21 @@ func _ready() -> void:
 	heading_font.variation_opentype = {2003265652: 650.0}
 	display_font = heading_font
 	game.new_game()
+	_load_preferences()
 	_build_ui()
 	resized.connect(_fit)
 	_fit()
 	_render()
 	_say("THE NARRATOR", "Lost Wages, 1987. Eighty bucks. One polyester suit. Absolutely no reason to be this confident. Welcome to your big night, Larry.")
 	_start_music()
+	sound_effects = SoundEffects.new()
+	add_child(sound_effects)
+	sound_effects.set_enabled(effects_on and not qa_mode and DisplayServer.get_name() != "headless")
+	sound_effects.set_volume(effects_volume)
+	if OS.has_feature("web") and not qa_mode:
+		web_companion = load("res://scripts/web_companion.gd").new()
+		add_child(web_companion)
+		web_companion.start(self)
 	if qa_mode:
 		qa_bridge = QABridge.new()
 		add_child(qa_bridge)
@@ -82,9 +111,47 @@ func _ready() -> void:
 		_resume_prompt.call_deferred()
 
 func _fit() -> void:
-	var ratio := minf(size.x / 1440.0, size.y / 960.0)
+	var compact := size.x < 1100 and size.y / maxf(size.x, 1) > 0.85
+	var design := Vector2(1120, 1180) if compact else Vector2(1440, 960)
+	canvas.size = design
+	for node in base_rects:
+		if not is_instance_valid(node): continue
+		var rect: Rect2 = base_rects[node]
+		node.position = rect.position
+		node.size = rect.size
+		node.scale = Vector2.ONE
+		if not compact: continue
+		if rect == Rect2(0, 0, 1440, 960): node.size = design
+		elif rect == Rect2(0, 0, 1440, 88): node.size = Vector2(1120, 128)
+		elif rect == Rect2(0, 88, 246, 872): node.size = Vector2(246, 1092)
+		elif node == money_label: node.position = Vector2(820, 22)
+		elif node == score_label: node.position = Vector2(925, 22)
+		elif rect.position.x >= 1080 and rect.position.y == 23:
+			node.position = Vector2(714 + (rect.position.x - 1080), 75)
+		elif node == settings_button: node.position = Vector2(626, 75)
+		elif node == room_title: node.position.y = 142; node.size.x = 800
+		elif node == room_subtitle: node.position.y = 177; node.size.x = 800
+		elif node == status: node.visible = false
+		elif node == scene_area:
+			node.position = Vector2(270, 210); node.scale = Vector2.ONE * (822.0 / 1140.0)
+		elif rect == Rect2(270, 731, 1140, 112): node.position = Vector2(270, 630); node.size = Vector2(822, 330)
+		elif rect == Rect2(271, 746, 3, 80): node.position = Vector2(271, 646); node.size.y = 294
+		elif node == speaker: node.position = Vector2(292, 646); node.size.x = 776
+		elif node == dialogue: node.position = Vector2(292, 680); node.size = Vector2(776, 255)
+		elif rect.position.y == 860 and node != parser: node.position.y = 975
+		elif node == parser: node.position = Vector2(270, 1036); node.size = Vector2(822, 45)
+		elif node == exit_box: node.position = Vector2(270, 1100); node.size = Vector2(822, 70)
+		elif node == inventory_scroll: node.size.y = 466
+		elif rect.position == Vector2(20, 898): node.position.y = 1140
+	if not compact: status.visible = true
+	var ratio := minf(size.x / design.x, size.y / design.y)
 	canvas.scale = Vector2.ONE * ratio
-	canvas.position = (size - Vector2(1440, 960) * ratio) / 2.0
+	canvas.position = (size - design * ratio) / 2.0
+	if is_instance_valid(modal):
+		modal.size = design
+		modal.get_child(0).size = design
+		var panel: Control = modal.get_child(1)
+		panel.position = (design - panel.size) / 2.0
 
 func _exit_tree() -> void:
 	if is_instance_valid(music):
@@ -163,20 +230,33 @@ func _build_ui() -> void:
 	_button(canvas, "Load", Rect2(1162, 23, 74, 42), _load).disabled = qa_mode
 	music_button = _button(canvas, "Music", Rect2(1244, 23, 82, 42), _toggle_music)
 	music_button.disabled = qa_mode
+	settings_button = _button(canvas, "Options", Rect2(730, 23, 100, 42), _settings)
 	_button(canvas, "?", Rect2(1334, 23, 76, 42), _help)
 	_panel(canvas, Rect2(0, 88, 246, 872), Color("111729"), EDGE, 0)
 	_label(canvas, "YOUR EVENING", Rect2(26, 108, 210, 24), 13, MUTED)
 	_button(canvas, "City map", Rect2(20, 145, 206, 45), _map)
 	_button(canvas, "Notebook", Rect2(20, 201, 206, 45), _journal)
-	_button(canvas, "Show next step", Rect2(20, 257, 206, 45), _hint)
+	_button(canvas, "Need a nudge?", Rect2(20, 257, 206, 45), _hint)
 	_panel(canvas, Rect2(20, 325, 206, 230), Color("1c2436"), EDGE)
 	_label(canvas, "THE PLAN", Rect2(35, 337, 170, 23), 12, MINT)
-	objective_text = _label(canvas, "", Rect2(35, 368, 174, 174), 18)
+	objective_scroll = ScrollContainer.new()
+	objective_scroll.position = Vector2(35, 368)
+	objective_scroll.size = Vector2(174, 174)
+	objective_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	canvas.add_child(objective_scroll)
+	objective_text = _label(objective_scroll, "", Rect2(0, 0, 154, 0), 18)
+	objective_text.custom_minimum_size = Vector2(154, 0)
+	objective_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	objective_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(canvas, "POCKETS", Rect2(26, 575, 170, 26), 13, MUTED)
-	selected_label = _label(canvas, "Select an item to use it.", Rect2(26, 603, 194, 36), 13, MUTED)
+	selected_label = _label(canvas, "Select an item to use it.", Rect2(26, 603, 156, 36), 13, MUTED)
 	selected_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	selection_cancel = _button(canvas, "×", Rect2(190, 603, 36, 36), _cancel_selection)
+	selection_cancel.tooltip_text = "Cancel selected item (Escape)"
+	_button(canvas, "Tidy", Rect2(151, 571, 75, 30), _toggle_tidy).tooltip_text = "Show or hide used souvenirs"
+	arrival_label = _label(scene_area if scene_area else canvas, "", Rect2(278, 694, 900, 24), 15, MINT)
 	var scroll := ScrollContainer.new()
+	inventory_scroll = scroll
 	scroll.position = Vector2(20, 649)
 	scroll.size = Vector2(212, 226)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -216,6 +296,8 @@ func _build_ui() -> void:
 	hotspots.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	scene_area.add_child(hotspots)
 	_panel(scene_area, Rect2(0, 514, 1140, 39), Color(0.04, 0.055, 0.1, 0.87), Color.TRANSPARENT, 0)
+	arrival_label.reparent(scene_area)
+	arrival_label.position = Vector2(16, 486)
 	hover_label = _label(scene_area, "Click the scenery to walk. Explore with the verbs below.", Rect2(16, 521, 1090, 24), 14, CREAM)
 	_panel(canvas, Rect2(270, 731, 1140, 112), PANEL, EDGE)
 	_panel(canvas, Rect2(271, 746, 3, 80), PINK, Color.TRANSPARENT, 0)
@@ -246,11 +328,13 @@ func _build_ui() -> void:
 	parser.add_theme_stylebox_override("focus", _style(PANEL, MINT))
 	parser.text_submitted.connect(_command)
 	canvas.add_child(parser)
-	exit_box = HBoxContainer.new()
+	exit_box = HFlowContainer.new()
 	exit_box.position = Vector2(270, 919)
 	exit_box.size = Vector2(1140, 32)
 	exit_box.add_theme_constant_override("separation", 8)
 	canvas.add_child(exit_box)
+	for child in canvas.get_children():
+		if child is Control: base_rects[child] = child.get_rect()
 	_set_verb("look")
 
 func _clear(node: Node) -> void:
@@ -262,22 +346,28 @@ func _render() -> void:
 	var room: Dictionary = game.get_room()
 	room_title.text = room.get("name", game.room)
 	room_subtitle.text = str(room.get("subtitle", "LOST WAGES / AFTER HOURS")).to_upper()
+	if objective_text.text != game.objective(): objective_scroll.scroll_vertical = 0
 	objective_text.text = game.objective()
 	score_label.text = "%d / 100" % game.score
 	money_label.text = "$%d" % game.cash
 	status.text = "A NIGHT TO REMEMBER" if game.completed else "NO BAD DECISIONS. YET."
+	var art_path: String = WorldEffects.background_path_for(game.room, game.flags)
+	if art_path != current_background_path and ResourceLoader.exists(art_path):
+		background.texture = load(art_path)
+		current_background_path = art_path
 	if current_render_room != game.room:
 		if walk_tween and walk_tween.is_valid():
 			walk_tween.kill()
 		larry.walking = false
 		larry.stop_dance()
+		arrival_label.text = ""
 		current_render_room = game.room
-		var art_path := "res://assets/backgrounds/%s.png" % room.get("background", "street")
-		if ResourceLoader.exists(art_path):
-			background.texture = load(art_path)
-		background.modulate = Color(0.6, 0.6, 0.7)
-		create_tween().tween_property(background, "modulate", Color.WHITE, 0.4)
+		background.modulate = Color.WHITE if reduced_motion else Color(0.6, 0.6, 0.7)
+		if not reduced_motion: create_tween().tween_property(background, "modulate", Color.WHITE, 0.4)
+		_cue("transition")
 		larry.position = Vector2(490, 493)
+	world_effects.set_reduced_motion(reduced_motion)
+	larry.set_reduced_motion(reduced_motion)
 	world_effects.sync_state(game.room, game.flags)
 	_clear(hotspots)
 	_clear(actors)
@@ -292,18 +382,34 @@ func _render() -> void:
 	_clear(inventory_box)
 	if not game.inventory.has(selected_item):
 		selected_item = ""
-	selected_label.text = "Use %s with…" % game.items[selected_item].name if not selected_item.is_empty() else "Select an item to use it."
+	selected_label.text = "Use %s on…" % game.items[selected_item].name if not selected_item.is_empty() else verb.capitalize() + " · choose a target"
+	selection_cancel.visible = not selected_item.is_empty()
 	if game.inventory.is_empty():
 		var empty := _label(inventory_box, "Nothing but optimism.\nAnd a wallet.", Rect2(0, 0, 200, 58), 16, MUTED)
 		empty.custom_minimum_size = Vector2(180, 58)
 	else:
 		for item in game.get_inventory():
 			var id: String = item.id
+			if tidy_pockets and game.item_status(id) == "souvenir" and id != selected_item: continue
 			var b := _button(inventory_box, ("*  " if selected_item == id else "+  ") + str(item.name), Rect2(0, 0, 202, 39), _select_item.bind(id), selected_item == id)
+			b.set_meta("inventory_id", id)
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			b.add_theme_font_size_override("font_size", 15)
 			b.tooltip_text = item.get("description", "")
 			b.gui_input.connect(_inventory_input.bind(id))
+			if selected_item == id:
+				var self_use := _button(inventory_box, "Use %s by itself" % item.name, Rect2(0, 0, 202, 52), _use_selected_self)
+				self_use.add_theme_font_size_override("font_size", 14)
+				self_use.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	var arrived: Array = []
+	for id in game.inventory:
+		if not inventory_snapshot.has(id): arrived.append(id)
+	inventory_snapshot = game.inventory.duplicate()
+	if not arrived.is_empty():
+		arrival_label.text = "POCKETED · " + ", ".join(arrived.map(func(id): return game.items[id].name))
+		_cue("pickup")
+		_scroll_to_item.call_deferred(str(arrived.back()))
+	_refresh_companion()
 	if game.completed and not ending_shown:
 		ending_shown = true
 		_ending.call_deferred()
@@ -321,6 +427,8 @@ func _build_hotspot(h: Dictionary) -> void:
 		npc.position = point + Vector2(0, 76)
 		npc.scale = Vector2.ONE * 0.85
 		actors.add_child(npc)
+		npc.set_reduced_motion(reduced_motion)
+		npc.sync_reaction(game.flags)
 	var label_text := str(h.get("label", h.id))
 	var prefix := ">  " if h.get("kind") == "exit" else "·  "
 	var width := clampf(label_text.length() * 8.3 + 32, 80, 220)
@@ -340,6 +448,8 @@ func _build_hotspot(h: Dictionary) -> void:
 		var offset_y := 41.0 * float((attempt / 2) + 1) * (1.0 if attempt % 2 == 0 else -1.0)
 		pos.y = clampf(point.y - 15 + offset_y, 8, 465)
 	var b := _button(hotspots, prefix + label_text if show_hotspots else "+", Rect2(pos, Vector2(width if show_hotspots else 32.0, 34)), _hotspot_click.bind(h))
+	b.set_meta("hotspot_id", str(h.id))
+	b.tooltip_text = label_text
 	b.add_theme_font_size_override("font_size", 14)
 	b.add_theme_stylebox_override("normal", _style(Color(0.04, 0.07, 0.13, 0.87), Color(0.44, 0.88, 0.8, 0.55), 6))
 	b.add_theme_stylebox_override("hover", _style(Color("172e3c"), MINT, 6))
@@ -351,6 +461,7 @@ func _hotspot_input(event: InputEvent, h: Dictionary) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_say("THE NARRATOR", game.interact(str(h.id), "look"))
 		_render()
+		_autosave()
 
 func _inventory_input(event: InputEvent, id: String) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -363,6 +474,7 @@ func _inventory_input(event: InputEvent, id: String) -> void:
 		_autosave()
 
 func _hotspot_click(h: Dictionary) -> void:
+	arrival_label.text = ""
 	if h.id in ["slots", "blackjack"] and verb == "use" and selected_item.is_empty():
 		_open_casino(str(h.id))
 		return
@@ -370,12 +482,26 @@ func _hotspot_click(h: Dictionary) -> void:
 	if h.get("kind") == "exit":
 		_travel(str(h.id))
 		return
+	if selected_item.is_empty() and verb == "use" and h.id == "bartender":
+		_say("LEFTY", game.interact("bartender", "talk"))
+		_render()
+		_conversation("bartender")
+		_autosave()
+		return
+	if selected_item.is_empty() and verb == "use" and h.id in ["dancer", "dancefloor"] and not game.flags.get("danced", false):
+		_say("DIDI", game.interact(str(h.id), "talk"))
+		_render()
+		_conversation(str(h.id))
+		_autosave()
+		return
 	var result: String = game.interact(str(h.id), "use" if not selected_item.is_empty() else verb, selected_item)
 	if h.id in ["dancer", "dancefloor"] and verb == "use" and selected_item.is_empty() and game.flags.get("danced", false):
 		_play_dance()
 	_say(str(h.get("label", "THE NARRATOR")).to_upper() if verb == "talk" else "THE NARRATOR", result)
 	_render()
 	_autosave()
+	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and h.id == "phone")):
+		_conversation(str(h.id))
 
 func _background_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -385,6 +511,10 @@ func _move_larry(destination: Vector2) -> void:
 	larry.stop_dance()
 	if walk_tween and walk_tween.is_valid():
 		walk_tween.kill()
+	if reduced_motion:
+		larry.position = destination
+		larry.walking = false
+		return
 	larry.walking = true
 	walk_tween = create_tween()
 	walk_tween.tween_property(larry, "position", destination, larry.position.distance_to(destination) / 320.0)
@@ -394,6 +524,7 @@ func _play_dance() -> void:
 	if walk_tween and walk_tween.is_valid():
 		walk_tween.kill()
 	larry.position = Vector2(405, 459)
+	larry.set_dance_style("confident" if game.flags.get("dance_confident", false) else "copy" if game.flags.get("dance_copy", false) else "careful")
 	larry.dance()
 
 func _set_verb(value: String) -> void:
@@ -413,7 +544,7 @@ func _select_item(id: String) -> void:
 	_set_verb("use")
 	_render()
 	if not selected_item.is_empty():
-		_say("IN YOUR POCKET", game.interact(id, "look") + " Select a target to use it; double-click to use it on its own.")
+		_say("IN YOUR POCKET", game.interact(id, "look") + " Select a target, choose Use by itself, or double-click the item.")
 		_render()
 		_autosave()
 
@@ -437,6 +568,16 @@ func _command(text: String) -> void:
 		parser.release_focus()
 		_open_casino("slots" if "slots" in normalized else "blackjack")
 		return
+	var offer_target := ""
+	if game.room == "bar" and normalized in ["use lefty", "use bartender", "use barman"]: offer_target = "bartender"
+	if game.room == "disco" and normalized in ["dance", "dance with didi", "use didi", "use dancer", "use dance floor", "use dancefloor", "use floor"]: offer_target = "dancer"
+	if not offer_target.is_empty():
+		selected_item = ""
+		parser.clear()
+		parser.release_focus()
+		_set_verb("use")
+		_hotspot_click(game.get_hotspot(offer_target))
+		return
 	_say("> " + text.to_upper(), game.command(text))
 	if game.room == "disco" and normalized in ["dance", "dance with didi", "use dance floor", "use floor", "use dancefloor", "use didi"] and game.flags.get("danced", false):
 		_play_dance()
@@ -444,12 +585,17 @@ func _command(text: String) -> void:
 	parser.release_focus()
 	_render()
 	_autosave()
+	if normalized.begins_with("talk ") or normalized.begins_with("call ") or normalized.begins_with("dial ") or normalized.begins_with("choose ") or normalized in ["use phone", "use telephone", "555-0987", "5550987"]:
+		_conversation(game.get_dialogue_target())
 
 func _say(who: String, text: String) -> void:
 	speaker.text = who
 	dialogue.text = text
 	dialogue.scroll_to_line(0)
 	last_message = text
+	transcript.append(who + ": " + text)
+	if transcript.size() > 120: transcript.pop_front()
+	_refresh_companion()
 
 func _save() -> void:
 	if qa_mode:
@@ -472,7 +618,20 @@ func _autosave() -> void:
 	game.save_game("user://autosave.json")
 
 func _hint() -> void:
-	_say("NEXT STEP · CONTAINS SPOILERS", game.hint())
+	if hint_objective != game.objective():
+		hint_stage = 0
+		hint_objective = game.objective()
+	var p := _modal_base("A little help, on your terms.", ["A gentle clue", "A narrower lead", "The exact solution · spoilers"][hint_stage], 450)
+	var body := _label(p, game.hint_level(hint_stage), Rect2(34, 140, 730, 184), 22)
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_button(p, "Back to the evening", Rect2(34, 350, 350, 54), _close_modal)
+	if hint_stage < 2:
+		_button(p, "Narrow the lead" if hint_stage == 0 else "Reveal exact solution", Rect2(403, 350, 363, 54), _next_hint)
+	_refresh_companion()
+
+func _next_hint() -> void:
+	hint_stage = mini(2, hint_stage + 1)
+	_hint()
 
 func _toggle_hotspots() -> void:
 	show_hotspots = not show_hotspots
@@ -485,7 +644,8 @@ func _start_music() -> void:
 		return
 	if ResourceLoader.exists("res://assets/audio/last_call.wav"):
 		music.stream = load("res://assets/audio/last_call.wav")
-		music.volume_db = -15
+		music.volume_db = linear_to_db(maxf(music_volume, 0.00001)) - 9.0
+		music.stream_paused = not music_on
 		music.finished.connect(func(): music.play())
 		music.play()
 
@@ -495,21 +655,23 @@ func _toggle_music() -> void:
 	music_on = not music_on
 	music_button.text = "Music" if music_on else "Muted"
 	music.stream_paused = not music_on
+	_save_preferences()
 
 func _modal_base(title: String, subtitle: String, height: float = 660) -> Control:
 	_close_modal()
 	modal = Control.new()
-	modal.size = Vector2(1440, 960)
+	modal.size = canvas.size
 	canvas.add_child(modal)
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.025, 0.055, 0.86)
 	dim.size = modal.size
 	modal.add_child(dim)
-	var p := _panel(modal, Rect2(350, (960 - height) / 2, 800, height), Color("151e31"), EDGE, 16)
+	var p := _panel(modal, Rect2((canvas.size.x - 800) / 2, (canvas.size.y - height) / 2, 800, height), Color("151e31"), EDGE, 16)
 	p.mouse_filter = Control.MOUSE_FILTER_STOP
 	_label(p, title, Rect2(34, 25, 630, 54), 31)
 	_label(p, subtitle, Rect2(34, 86, 725, 34), 16, MUTED)
 	_button(p, "×", Rect2(711, 27, 52, 43), _close_modal)
+	_refresh_companion()
 	return p
 
 func _close_modal() -> void:
@@ -520,6 +682,8 @@ func _close_modal() -> void:
 		remove_child_if_needed(modal)
 		modal.queue_free()
 	modal = null
+	dialogue_choice_buttons.clear()
+	_refresh_companion()
 
 func _open_casino(mode: String) -> void:
 	var p := _modal_base("The Lucky Chip · " + mode.capitalize(), "A little luck. A little arithmetic. An absolutely enormous collar.", 646)
@@ -603,7 +767,7 @@ func _help() -> void:
 	scroll.size = Vector2(732, 436)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	p.add_child(scroll)
-	var body := _label(scroll, "LOOK at things. TALK to people. TAKE useful objects.\nUSE an item by selecting it in your pockets, then clicking its target.\n\nClick an exit or use the City map to travel. Click the scenery to walk.\nRight-click any object to inspect it. Your notebook keeps the clues.\n\nKeyboard: 1–4 choose verbs · M map · J notebook · H hotspots\nF5 save · F9 load · Enter type a command · Escape close / deselect\n\nTry: look sink, take ring, talk lefty, use whiskey on patron.\nSave writes your manual slot; Load restores it. Progress also autosaves.\n\nA loving, unofficial reimagining of Softporn Adventure and Larry 1.\nOriginal art, dialogue and music. All characters are adults; romance\nstays suggestive and consensual. Polyester remains inexcusable.", Rect2(0, 0, 697, 0), 20)
+	var body := _label(scroll, "LOOK at things. TALK to people. TAKE useful objects.\nUSE an item by selecting it in your pockets, then clicking its target.\n\nConversations offer topics. Choices can open alternate routes.\nNeed a nudge? starts with a clue; exact solutions require another request.\nOptions include reduced motion, separate sound levels and a transcript.\n\nClick an exit or use the City map to travel. Click the scenery to walk.\nRight-click any object to inspect it. Your notebook keeps the clues.\n\nKeyboard: 1–4 verbs · M map · J notebook · H hotspots · O options · T transcript\nF5 save · F9 load · Enter type a command · Escape close / deselect\n\nTry: look sink, take ring, talk lefty, use whiskey on patron.\nSave writes your manual slot; Load restores it. Progress also autosaves.\n\nA loving, unofficial reimagining of Softporn Adventure and Larry 1.\nOriginal art, dialogue and music. All characters are adults; romance\nstays suggestive and consensual. Polyester remains inexcusable.", Rect2(0, 0, 697, 0), 20)
 	body.custom_minimum_size = Vector2(697, 0)
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -632,6 +796,10 @@ func _new_game_prompt() -> void:
 func _new_game() -> void:
 	_close_modal()
 	game.new_game()
+	transcript.clear()
+	inventory_snapshot.clear()
+	arrival_label.text = ""
+	hint_stage = 0
 	selected_item = ""
 	ending_shown = false
 	current_render_room = ""
@@ -640,12 +808,18 @@ func _new_game() -> void:
 	_say("THE NARRATOR", "A fresh evening. A familiar suit. Lefty's looks like the sort of establishment that might lower its standards for you.")
 
 func _ending() -> void:
-	var p := _modal_base("Last call. First connection.", "You survived Lost Wages, and even learned somebody's name.", 630)
-	var body := _label(p, "The city keeps flashing. The ice keeps melting.\nFor once, Larry stops working on his next line and listens.\n\nEve smiles. The skyline does the rest.\n\nA little kindness, a very strange apple, and one resilient suit.\nNot a bad night's work.", Rect2(34, 142, 732, 317), 23)
+	var p := _modal_base(game.ending_title(), "Your evening is complete. Exploration points are optional.", 750)
+	var scroll := ScrollContainer.new()
+	scroll.position = Vector2(34, 142)
+	scroll.size = Vector2(732, 430)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	p.add_child(scroll)
+	var body := _label(scroll, game.ending_text() + "\n\nLATER THAT MORNING…\n\n" + game.epilogue(), Rect2(0, 0, 697, 0), 23)
+	body.custom_minimum_size = Vector2(697, 0)
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_label(p, "%d / 100 POINTS  ·  %d MOVES  ·  ONE GREAT STORY" % [game.score, game.turns], Rect2(34, 465, 730, 31), 16, MINT)
-	_button(p, "Stay a little longer", Rect2(34, 534, 349, 52), _close_modal)
-	_button(p, "One more evening", Rect2(401, 534, 365, 52), _new_game, true)
+	_label(p, "%d / 100 EXPLORATION POINTS  ·  %d MOVES" % [game.score, game.turns], Rect2(34, 594, 730, 31), 16, MINT)
+	_button(p, "Stay a little longer", Rect2(34, 654, 349, 52), _close_modal)
+	_button(p, "One more evening", Rect2(401, 654, 365, 52), _new_game, true)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
@@ -668,6 +842,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_M: _map()
 		KEY_J: _journal()
 		KEY_H: _toggle_hotspots()
+		KEY_O: _settings()
+		KEY_T: _transcript()
 		KEY_F5: _save()
 		KEY_F9: _load()
 		KEY_F11: DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN else DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -749,3 +925,152 @@ func _automation() -> void:
 		await get_tree().process_frame
 		await get_tree().process_frame
 		get_tree().quit()
+
+func _refresh_companion() -> void:
+	if is_instance_valid(web_companion): web_companion.refresh.call_deferred()
+
+func _cue(id: String) -> void:
+	if is_instance_valid(sound_effects): sound_effects.play_cue(id)
+
+func _cancel_selection() -> void:
+	selected_item = ""
+	_render()
+
+func _toggle_tidy() -> void:
+	tidy_pockets = not tidy_pockets
+	_render()
+	_say("YOUR POCKETS", "Used souvenirs are tucked away. Press Tidy again to see them." if tidy_pockets else "All pocket items are visible, including souvenirs from earlier puzzles.")
+
+func _scroll_to_item(id: String) -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not is_inside_tree(): return
+	for child in inventory_box.get_children():
+		if child.get_meta("inventory_id", "") == id:
+			inventory_scroll.ensure_control_visible(child)
+			return
+
+func _conversation(target: String) -> void:
+	var options: Array = game.dialogue_options(target)
+	if options.is_empty() or game.completed: return
+	var title: String = str(game.get_hotspot(target).get("label", target.capitalize()))
+	var p := _modal_base("A word with " + title, "Choose a topic, or close this conversation to explore.", 790)
+	var scroll := ScrollContainer.new()
+	scroll.position = Vector2(34, 138)
+	scroll.size = Vector2(732, 547)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	p.add_child(scroll)
+	_button(p, "Back to the room", Rect2(34, 708, 732, 48), _close_modal)
+	var column := VBoxContainer.new()
+	column.custom_minimum_size = Vector2(710, 0)
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_theme_constant_override("separation", 14)
+	scroll.add_child(column)
+	var reply := _label(column, last_message, Rect2(0, 0, 697, 0), 21)
+	reply.custom_minimum_size = Vector2(697, 0)
+	reply.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	for option in options:
+		var id := str(option.id)
+		var b := _button(column, str(option.label), Rect2(0, 0, 697, 64), _choose_dialogue.bind(id), id.begins_with("ending_"))
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.set_meta("dialogue_choice", id)
+		dialogue_choice_buttons[id] = b
+	if not dialogue_choice_buttons.is_empty(): dialogue_choice_buttons.values()[0].grab_focus()
+	_refresh_companion()
+
+func _choose_dialogue(id: String) -> void:
+	_close_modal()
+	var response: String = game.choose_dialogue(id)
+	_say("THE CONVERSATION", response)
+	if id.begins_with("dance_"): _play_dance()
+	if id in ["show_next", "show_start", "rehearsal_correct"]: _cue("punchline")
+	_render()
+	_autosave()
+	_conversation(game.get_dialogue_target())
+
+func _transcript() -> void:
+	var p := _modal_base("The evening, in your own words.", "The most recent 120 exchanges from this session. Scroll to read.", 750)
+	var scroll := ScrollContainer.new()
+	scroll.position = Vector2(34, 139)
+	scroll.size = Vector2(732, 560)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	p.add_child(scroll)
+	var body := _label(scroll, "\n\n".join(transcript), Rect2(0, 0, 697, 0), 20)
+	body.custom_minimum_size = Vector2(697, 0)
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_refresh_companion()
+
+func _settings() -> void:
+	var p := _modal_base("Make yourself comfortable.", "Every sound has visible feedback. Settings stay on this device.", 650)
+	_button(p, "Reduced motion: " + ("ON" if reduced_motion else "OFF"), Rect2(34, 142, 732, 50), _toggle_motion)
+	_button(p, "Music: " + ("ON" if music_on else "OFF"), Rect2(34, 212, 250, 50), func(): _toggle_music(); _settings())
+	_settings_slider(p, "Music volume", Vector2(320, 229), music_volume, _music_level)
+	_button(p, "Effects: " + ("ON" if effects_on else "OFF"), Rect2(34, 282, 250, 50), _toggle_effects)
+	_settings_slider(p, "Effects volume", Vector2(320, 299), effects_volume, _effects_level)
+	_button(p, "Read conversation transcript", Rect2(34, 371, 732, 55), _transcript)
+	var body := _label(p, "Keyboard: Tab moves focus; Enter activates a button. Escape closes a panel. In the browser, Text & keyboard controls opens a readable version of the current scene and the same actions.", Rect2(34, 454, 732, 125), 20, MUTED)
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_refresh_companion()
+
+func _settings_slider(parent: Node, title: String, pos: Vector2, value: float, changed: Callable) -> void:
+	var slider := HSlider.new()
+	slider.position = pos
+	slider.size = Vector2(435, 28)
+	slider.min_value = 0
+	slider.max_value = 1
+	slider.step = 0.05
+	slider.value = value
+	slider.tooltip_text = title
+	slider.value_changed.connect(changed)
+	parent.add_child(slider)
+
+func _toggle_motion() -> void:
+	reduced_motion = not reduced_motion
+	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
+	larry.walking = false
+	larry.stop_dance()
+	_render()
+	_save_preferences()
+	_settings()
+
+func _toggle_effects() -> void:
+	effects_on = not effects_on
+	sound_effects.set_enabled(effects_on and not qa_mode and DisplayServer.get_name() != "headless")
+	_save_preferences()
+	_settings()
+
+func _music_level(value: float) -> void:
+	music_volume = value
+	music.volume_db = linear_to_db(maxf(value, 0.00001)) - 9.0
+	_save_preferences()
+
+func _effects_level(value: float) -> void:
+	effects_volume = value
+	sound_effects.set_volume(value)
+	_save_preferences()
+
+func _load_preferences() -> void:
+	if qa_mode or DisplayServer.get_name() == "headless": return
+	var config := ConfigFile.new()
+	if config.load("user://preferences.cfg") != OK: return
+	reduced_motion = bool(config.get_value("play", "reduced_motion", false))
+	music_on = bool(config.get_value("audio", "music_on", true))
+	effects_on = bool(config.get_value("audio", "effects_on", true))
+	music_volume = clampf(float(config.get_value("audio", "music_volume", 0.5)), 0, 1)
+	effects_volume = clampf(float(config.get_value("audio", "effects_volume", 0.5)), 0, 1)
+
+func _save_preferences() -> void:
+	if qa_mode or DisplayServer.get_name() == "headless": return
+	var config := ConfigFile.new()
+	config.set_value("play", "reduced_motion", reduced_motion)
+	config.set_value("audio", "music_on", music_on)
+	config.set_value("audio", "effects_on", effects_on)
+	config.set_value("audio", "music_volume", music_volume)
+	config.set_value("audio", "effects_volume", effects_volume)
+	config.save("user://preferences.cfg")
+
+func _use_selected_self() -> void:
+	if selected_item.is_empty() or not game.inventory.has(selected_item): return
+	_say("IN YOUR POCKET", game.interact(selected_item, "use", selected_item))
+	_render()
+	_autosave()
