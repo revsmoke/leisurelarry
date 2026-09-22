@@ -105,3 +105,54 @@ Use Jev to increase coverage and discover suspicious interactions, then use peop
 Implement one phase at a time and ship reviewable builds. Phase 2 is the quality checkpoint: if the small slice is not noticeably more engaging to fresh players, revise its writing and choices instead of adding more rooms. Keep large expansions, voice acting, generated live NPC dialogue, procedural mysteries, and a fully open natural-language parser outside this first upgrade.
 
 Use the installed TypeSafe skill for future integrations. The practical cookbook sequence is [Function calling](https://docs.typesafe.ai/cookbooks/function_calling) for bounded player actions, [Parallel questions](https://docs.typesafe.ai/cookbooks/parallel_questions) for shared-observation judgments, [Self-consistency choices](https://docs.typesafe.ai/cookbooks/consistency_choice_cookbook) for policy stability, and [Composite scoring](https://docs.typesafe.ai/patterns/composite-scoring) for separate editorial dimensions. Consider [feature discovery](https://docs.typesafe.ai/cookbooks/autoresearch_feature_discovery) only after collecting enough human-labeled sessions to justify it. No runtime AI dependency is currently justified by these needs.
+
+
+## Implementation status — 2026-09-22
+
+The proposal above is preserved as the design brief. This status distinguishes delivered code from its acceptance criteria. The [upgrade validation report](audits/gameplay-upgrade-validation.md) is the source for the final tested build, run counts, measured outcomes, browser evidence, and remaining defects. Deterministic suites, exported builds, and live model/browser checks are recorded there; the fresh-player and full performance gates below remain open.
+
+### Phase 1: intentions and clues
+
+- [x] Explicit selected-item action line, one-click cancel, inventory arrival cue and focus, and a reversible Tidy view for used souvenirs.
+- [x] Labeled purchase offer for Lefty's whiskey rather than an unannounced transaction on a person.
+- [x] Player-discovered notebook leads, useful observed item locations, current outstanding objectives, and state-aware bowling/bouncer feedback.
+- [x] Three deliberate hint levels: clue reminder, narrower suggestion, and requested exact solution.
+- [x] Updated action and parser behavior with regressions for misleading purchase/selection cases.
+- [ ] Five-person fresh-player opening pilot and its stated comprehension target. No such recruitment study has been performed by the implementation agents.
+
+### Phase 2: the bar and cabaret slice
+
+- [x] Password/TV backstage route retained; Lefty's bowling-prize observation and conversation route added.
+- [x] Didi's elaborate ring/flowers/candy routine retained as one approach; a volunteer rehearsal with stage marks and a call-and-response cue added as the alternative.
+- [x] Visible authored dialogue topics, three dance intentions, a player-paced performance with route-specific callbacks, and a curtain-call skip that preserves progression.
+- [x] Route and conversation regression coverage authored; current execution results belong in the validation report.
+- [ ] Fresh slice testing and independent comedy recall/preferences. The developer playthrough is informed, not a blind player study.
+
+### Phase 3: connected routes and endings
+
+- [x] Rope/window/espresso caper retained; stage-manager introduction provides the second hotel approach. Coffee remains an optional favor after social admission.
+- [x] Busker callback, Eve's garden/dinner/story/boast/follow-up topics, and the optional Midlife Crisps cultivar naming callback.
+- [x] Three explicit ending choices: flirtatious sunrise, companionable rooftop friendship, and the after-show gathering with Eve. Epilogues reflect actual choices.
+- [x] Eight principal route combinations are represented in deterministic route coverage. Completion is separate from collecting every optional exploration point.
+- [ ] Final live-browser route/ending/save coverage is reported separately; a passing model test alone does not establish every ending's usability.
+
+### Phase 4: responsive presentation
+
+- [x] Six targeted image edits create clean background plates and a real open-window variant; thirteen rooms remain. Independent collectible layers replace the baked stool, core, mallet, pitcher, candy, and voucher. Ring, rope, cabinet, stage props, tree/fruit, coffee, and character reactions have state-driven presentation.
+- [x] Confident/careful/copy-Didi dances; reduced motion preserves puzzle information; idle actors stop unnecessary redraw processing.
+- [x] Desktop and narrower-window layouts, visible focus, selected-action labels, transcript, and a readable HTML companion for normal Web play. Companion actions use the real visible UI controls and are excluded from the QA export.
+- [x] Separate music/effects levels and mute behavior; short original offline item, refusal, transition, and punchline cues.
+- [x] Native before/after prop fixtures inspected; visual-state and companion-control assertions added. [Art provenance and capture commands](art-upgrade.md).
+- [x] Live-browser layout checks at all three supported sizes, keyboard activation/focus, muted-play preferences and visual clues are documented in the validation report. A complete keyboard-only replay remains unverified.
+- [ ] Actual screen-reader testing. Standard HTML controls are implemented; complete assistive-technology compatibility is not claimed.
+
+### Phase 5: testing and release work
+
+- [x] Jev lab supports isolated workers at concurrency 2, 4, and 8, up to 100 fresh runs in bounded waves, varied policies and candidate order, budgets, cancellation, stale-action rejection, cycle detection, and reproducible raw traces.
+- [x] Narrow Jev judgments and independent critics remain development tools. Deterministic code owns gameplay and execution; the ordinary Web/native game remains offline and has no Jev/API dependency.
+- [x] Critic calibration fixtures and a repeatable command exist, including the old TV/bouncer contradiction; measured calibration performance is documented with the experiment evidence rather than presumed from confidence.
+- [x] Final deterministic suites (3,893 Godot assertions and 34 Node tests), exported-build smoke checks, the 100-run and final 12-run Jev campaigns, and informed browser replays are recorded in [the validation report](audits/gameplay-upgrade-validation.md). Failures and incomplete release gates remain explicit.
+- [ ] Ten-person fresh-player usability/enjoyment study, its completion/replay targets, and independent comedy review.
+- [ ] The full frame-time, latency, cold-load, bundle, and repeat-reset memory gates under documented conditions. Partial measurements must retain their scope and limitations.
+
+The update implements the authored adventure and testing infrastructure. “Award-winning” remains a creative ambition, not a test result; genuine player enjoyment needs evidence from people who did not build the game.

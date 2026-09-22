@@ -1,0 +1,379 @@
+{
+  "generatedAt": "2026-09-22T03:00:21.189Z",
+  "batches": [
+    {
+      "browserFrames": {
+        "visibleSamples": 3434,
+        "framesWithin20ms": 3298,
+        "fractionWithin20ms": 0.9603960396039604,
+        "notes": "Visible requestAnimationFrame intervals after 2s warmup, not GPU render duration. Per-worker quantiles use 1ms upper-bound histogram bins."
+      },
+      "directory": "docs/experiments/jev/2026-09-22T02-58-34-237Z/f48b0b64-dd90-41c8-baad-19130da5d72e",
+      "session": "2026-09-22T02-58-34-237Z",
+      "batchId": "f48b0b64-dd90-41c8-baad-19130da5d72e",
+      "buildId": "885fcd4a8828c264a9a9d45a43585fe963c5a8e21a0e7fd6af4976ae7d9ea438",
+      "runnerId": "703a53b491dfbd78d45690ef7eb8717c3dde19c78d89dc57ad63c57209f022a2",
+      "config": {
+        "workers": 4,
+        "runCount": 4,
+        "maxSteps": 160,
+        "maxRequests": 1000,
+        "maxInputTokens": 12000000,
+        "maxCostUSD": 0.6,
+        "memoryEnabled": true,
+        "seed": 1
+      },
+      "memoryEnabled": true,
+      "requests": 233,
+      "inputTokens": 1428140,
+      "apiErrors": 0,
+      "models": [
+        "jev-1.13.0"
+      ],
+      "apiLatencyMs": {
+        "p50": 190,
+        "p95": 314
+      },
+      "estimatedInputCostUSD": 0.05998188000000001,
+      "serverMemory": {
+        "peakRssBytes": 223756288,
+        "currentRssBytes": 179879936
+      },
+      "outcomes": {
+        "completed": 2,
+        "model_abstained": 2
+      },
+      "executed": 4,
+      "completed": 2,
+      "completionRate": 0.5,
+      "loopStops": 0,
+      "loopStopRate": 0,
+      "players": {
+        "f48b0b64-dd90-41c8-baad-19130da5d72e-001-goal": {
+          "persona": "goal",
+          "score": 48,
+          "completed": true,
+          "steps": 84,
+          "reason": "completed",
+          "errors": 0,
+          "rooms": [
+            "bar",
+            "backroom",
+            "casino",
+            "disco",
+            "hotel",
+            "penthouse",
+            "rooftop",
+            "alley",
+            "garden",
+            "street"
+          ],
+          "uniqueActions": 60,
+          "mostRepeated": [
+            [
+              "Press ×",
+              7
+            ],
+            [
+              "Travel via city map to Moonlight Garden",
+              6
+            ],
+            [
+              "Talk Eve · rooftop host",
+              4
+            ]
+          ],
+          "actionMs": {
+            "p50": 67,
+            "p95": 100
+          },
+          "sampledFps": {
+            "min": 5,
+            "p50": 58
+          },
+          "coldLoadMs": 1018,
+          "browser": {
+            "fractionWithin20ms": 0.962178517397882,
+            "framesWithin20ms": 1272,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 209118623,
+            "maxRafMs": 50.6000000000004,
+            "rafP50UpperMs": 17,
+            "rafP95UpperMs": 19,
+            "visibility": "visible",
+            "visibleFrameSamples": 1322,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 4,
+            "p95": 37
+          },
+          "settledMs": {
+            "p50": 52,
+            "p95": 69
+          },
+          "decisionRoundTripMs": {
+            "p50": 196,
+            "p95": 283
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.64
+          },
+          "averageClarity": 2.7572619047619047,
+          "visibility": [
+            "visible"
+          ]
+        },
+        "f48b0b64-dd90-41c8-baad-19130da5d72e-002-curious": {
+          "persona": "curious",
+          "score": 52,
+          "completed": true,
+          "steps": 85,
+          "reason": "completed",
+          "errors": 0,
+          "rooms": [
+            "bar",
+            "backroom",
+            "casino",
+            "disco",
+            "hotel",
+            "penthouse",
+            "rooftop",
+            "alley",
+            "garden",
+            "street"
+          ],
+          "uniqueActions": 69,
+          "mostRepeated": [
+            [
+              "Press ×",
+              5
+            ],
+            [
+              "Travel via city map to Moonlight Garden",
+              5
+            ],
+            [
+              "Travel via city map to Eve's Rooftop",
+              3
+            ]
+          ],
+          "actionMs": {
+            "p50": 68,
+            "p95": 93
+          },
+          "sampledFps": {
+            "min": 13,
+            "p50": 58
+          },
+          "coldLoadMs": 1022,
+          "browser": {
+            "fractionWithin20ms": 0.961089494163424,
+            "framesWithin20ms": 1235,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 208425928,
+            "maxRafMs": 50.5,
+            "rafP50UpperMs": 17,
+            "rafP95UpperMs": 19,
+            "visibility": "visible",
+            "visibleFrameSamples": 1285,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 4,
+            "p95": 36
+          },
+          "settledMs": {
+            "p50": 51,
+            "p95": 74
+          },
+          "decisionRoundTripMs": {
+            "p50": 202,
+            "p95": 256
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.52
+          },
+          "averageClarity": 2.693882352941176,
+          "visibility": [
+            "visible"
+          ]
+        },
+        "f48b0b64-dd90-41c8-baad-19130da5d72e-003-unguided": {
+          "persona": "unguided",
+          "score": 16,
+          "completed": false,
+          "steps": 24,
+          "reason": "model_abstained",
+          "errors": 0,
+          "rooms": [
+            "street",
+            "alley",
+            "garden",
+            "shop",
+            "bar"
+          ],
+          "uniqueActions": 23,
+          "mostRepeated": [
+            [
+              "Press ×",
+              2
+            ],
+            [
+              "Look around the current room",
+              1
+            ],
+            [
+              "Take Free newspaper",
+              1
+            ]
+          ],
+          "actionMs": {
+            "p50": 68,
+            "p95": 99
+          },
+          "sampledFps": {
+            "min": 1,
+            "p50": 56
+          },
+          "coldLoadMs": 1312,
+          "browser": {
+            "fractionWithin20ms": 0.954225352112676,
+            "framesWithin20ms": 271,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 212427095,
+            "maxRafMs": 50.5999999999995,
+            "rafP50UpperMs": 17,
+            "rafP95UpperMs": 19,
+            "visibility": "visible",
+            "visibleFrameSamples": 284,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 3,
+            "p95": 35
+          },
+          "settledMs": {
+            "p50": 51,
+            "p95": 84
+          },
+          "decisionRoundTripMs": {
+            "p50": 192,
+            "p95": 282
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.49
+          },
+          "averageClarity": 2.6719999999999997,
+          "visibility": [
+            "visible"
+          ]
+        },
+        "f48b0b64-dd90-41c8-baad-19130da5d72e-004-goal": {
+          "persona": "goal",
+          "score": 16,
+          "completed": false,
+          "steps": 38,
+          "reason": "model_abstained",
+          "errors": 0,
+          "rooms": [
+            "bar",
+            "backroom",
+            "alley",
+            "shop",
+            "casino",
+            "disco"
+          ],
+          "uniqueActions": 29,
+          "mostRepeated": [
+            [
+              "Press ×",
+              5
+            ],
+            [
+              "Talk Lefty · bartender",
+              3
+            ],
+            [
+              "Travel via city map to Lefty's Bar",
+              2
+            ]
+          ],
+          "actionMs": {
+            "p50": 67,
+            "p95": 104
+          },
+          "sampledFps": {
+            "min": 1,
+            "p50": 56
+          },
+          "coldLoadMs": 1643,
+          "browser": {
+            "fractionWithin20ms": 0.957642725598527,
+            "framesWithin20ms": 520,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 209565651,
+            "maxRafMs": 50.5,
+            "rafP50UpperMs": 17,
+            "rafP95UpperMs": 19,
+            "visibility": "visible",
+            "visibleFrameSamples": 543,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 3,
+            "p95": 35
+          },
+          "settledMs": {
+            "p50": 51,
+            "p95": 91
+          },
+          "decisionRoundTripMs": {
+            "p50": 198,
+            "p95": 316
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.4
+          },
+          "averageClarity": 2.518717948717949,
+          "visibility": [
+            "visible"
+          ]
+        }
+      }
+    }
+  ],
+  "limits": "Observed browser UI callback experiments with text-driven agents. No pixel recognition or human enjoyment measurement. Policies and seeded order vary, but repeated model decisions are not independent human subjects. Sampled FPS and server RSS do not establish frame-time or browser-memory targets. Cost excludes unknown usage on failures and is not a bill."
+}
