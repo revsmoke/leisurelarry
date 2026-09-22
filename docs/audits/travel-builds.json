@@ -1,0 +1,71 @@
+{
+  "artifacts": {
+    "generatedAt": "2026-09-22T18:30:43.056Z",
+    "target": "all",
+    "files": [
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/macos/Last Call in Lost Wages.app",
+        "bytes": 213969405,
+        "decimalMB": "213.97"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-macOS.zip",
+        "bytes": 103279439,
+        "decimalMB": "103.28",
+        "sha256": "234584dfe15ea9ee19db8690a68bbf278696bb975b381b082f888502e0921bc3"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/web",
+        "bytes": 82557099,
+        "decimalMB": "82.56"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-Web.zip",
+        "bytes": 52817369,
+        "decimalMB": "52.82",
+        "sha256": "38a26f6b8724baa77dbb726538634b720a2518ee2a67e54547a966d250096a37"
+      }
+    ],
+    "archivesContainAppleDoubleMetadata": false
+  },
+  "verification": {
+    "verifiedAt": "2026-09-22T18:30:41.400Z",
+    "passed": true,
+    "target": "all",
+    "packs": [
+      {
+        "file": "exports/macos/Last Call in Lost Wages.app/Contents/Resources/Leisure Suit Larry \u2014 Last Call in Lost Wages.pck",
+        "bytes": 42708752,
+        "sha256": "491f84467e6a75bc5cfe59891773733ff7647c2f56a5e1fe6d9d43037522a3e0",
+        "formatVersion": 4,
+        "fileCount": 78,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 19,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true
+      },
+      {
+        "file": "exports/web/index.pck",
+        "bytes": 42708752,
+        "sha256": "491f84467e6a75bc5cfe59891773733ff7647c2f56a5e1fe6d9d43037522a3e0",
+        "formatVersion": 4,
+        "fileCount": 78,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 19,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true
+      }
+    ]
+  },
+  "nativeSmoke": {
+    "passed": true,
+    "exportedApp": "exports/macos/Last Call in Lost Wages.app",
+    "signatureValid": true,
+    "frames": 30,
+    "exitCode": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+  },
+  "finalQaPackSha256": "cb250ab8fe834224c3d1e51f5df2b1dd301ca7e95c4616abb726713f85e769af"
+}

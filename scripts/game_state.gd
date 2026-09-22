@@ -418,7 +418,7 @@ func interact(target: String, verb: String = "look", item: String = "") -> Strin
 			if flags.get("taken_apple", false): return "The tree has completed its contractual obligation. One perfect apple per adventure."
 			return _take("apple")
 		"newspaper": return _look("newspaper")
-		"taxi": return "The driver points out that every main venue is a short walk from the Strip. You keep your fare and a little dignity."
+		"taxi": return "The driver opens the door. 'Courtesy rides tonight, pal. Choose your stop on the City map. Tips are optional; pickup lines cost extra.'"
 	return "That does not need doing. A rare bargain in this city."
 
 
@@ -435,7 +435,7 @@ func _look(key: String) -> String:
 	match key:
 		"newsbox": return "Free papers. Today's headline: INSTANT APPLES COME TO HOTEL GARDEN. Take a copy, then read it."
 		"flowercart": return "Locally grown flowers, $10. Cash into slot; bouquet out. Romance has discovered vending machines."
-		"taxi": return "A helpful sign says: EVERYTHING IS WALKABLE. The taxi driver is taking this personally."
+		"taxi": return "The sign says COURTESY RIDES TONIGHT. USE the taxi stand to choose a destination. Nearby doors are a walk; the farther neon is a free ride. Larry briefly considers tipping with charm."
 		"bartender": return "Lefty polishes a glass and nods at your satisfied trading partner." if flags.get("whiskey_given", false) else "Lefty sells whiskey miniatures for $10. The regular next to him is watching the bottle like it owes him dinner."
 		"promotion":
 			flags["prize_known"] = true

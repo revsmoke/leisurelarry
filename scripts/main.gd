@@ -5,6 +5,7 @@ const GameState = preload("res://scripts/game_state.gd")
 const Actor = preload("res://scripts/actor.gd")
 const WorldEffects = preload("res://scripts/world_effects.gd")
 const QABridge = preload("res://scripts/qa_bridge.gd")
+const TravelCutscene = preload("res://scripts/travel_cutscene.gd")
 const CasinoPanel = preload("res://scripts/casino_panel.gd")
 const INK := Color("0c1020")
 const PANEL := Color("141b2e")
@@ -70,6 +71,11 @@ var base_rects: Dictionary = {}
 var hint_stage := 0
 var hint_objective := ""
 var settings_button: Button
+var travel_cutscene: Control
+var animate_travel_in_tests := false
+var travel_result := ""
+var travel_speaker := "THE NARRATOR"
+var travel_variants: Dictionary = {}
 
 func _qa_enabled() -> bool:
 	return QABridge.runtime_allowed()
@@ -212,7 +218,9 @@ func _button(parent: Node, text: String, rect: Rect2, callback: Callable, accent
 	b.add_theme_stylebox_override("pressed", _style(MINT, MINT))
 	b.add_theme_stylebox_override("focus", _style(Color.TRANSPARENT, PINK))
 	b.add_theme_stylebox_override("disabled", _style(INK, EDGE))
-	b.pressed.connect(callback)
+	b.pressed.connect(func():
+		if not is_travelling(): callback.call()
+	)
 	parent.add_child(b)
 	return b
 
@@ -346,6 +354,7 @@ func _clear(node: Node) -> void:
 		child.queue_free()
 
 func _render() -> void:
+	if is_travelling(): return
 	var room: Dictionary = game.get_room()
 	room_title.text = room.get("name", game.room)
 	room_subtitle.text = str(room.get("subtitle", "LOST WAGES / AFTER HOURS")).to_upper()
@@ -461,12 +470,14 @@ func _build_hotspot(h: Dictionary) -> void:
 	b.gui_input.connect(_hotspot_input.bind(h))
 
 func _hotspot_input(event: InputEvent, h: Dictionary) -> void:
+	if is_travelling(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_say("THE NARRATOR", game.interact(str(h.id), "look"))
 		_render()
 		_autosave()
 
 func _inventory_input(event: InputEvent, id: String) -> void:
+	if is_travelling(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_say("IN YOUR POCKET", game.interact(id, "look"))
 		_render()
@@ -477,7 +488,14 @@ func _inventory_input(event: InputEvent, id: String) -> void:
 		_autosave()
 
 func _hotspot_click(h: Dictionary) -> void:
+	if is_travelling(): return
 	arrival_label.text = ""
+	if h.id == "taxi" and verb == "use" and selected_item.is_empty():
+		_say("THE DRIVER", game.interact("taxi", "use"))
+		_render()
+		_autosave()
+		_map()
+		return
 	if h.id in ["slots", "blackjack"] and verb == "use" and selected_item.is_empty():
 		_open_casino(str(h.id))
 		return
@@ -497,7 +515,11 @@ func _hotspot_click(h: Dictionary) -> void:
 		_conversation(str(h.id))
 		_autosave()
 		return
+	var origin: String = game.room
 	var result: String = game.interact(str(h.id), "use" if not selected_item.is_empty() else verb, selected_item)
+	if origin != game.room:
+		_present_travel(origin, result)
+		return
 	if h.id in ["dancer", "dancefloor"] and verb == "use" and selected_item.is_empty() and game.flags.get("danced", false):
 		_play_dance()
 	_say(str(h.get("label", "THE NARRATOR")).to_upper() if verb == "talk" else "THE NARRATOR", result)
@@ -507,6 +529,7 @@ func _hotspot_click(h: Dictionary) -> void:
 		_conversation(str(h.id))
 
 func _background_input(event: InputEvent) -> void:
+	if is_travelling(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_move_larry(Vector2(clampf(event.position.x, 50, 1090), clampf(event.position.y, 420, 505)))
 
@@ -531,6 +554,7 @@ func _play_dance() -> void:
 	larry.dance()
 
 func _set_verb(value: String) -> void:
+	if is_travelling(): return
 	verb = value
 	if value != "use":
 		selected_item = ""
@@ -541,6 +565,7 @@ func _set_verb(value: String) -> void:
 		_render()
 
 func _select_item(id: String) -> void:
+	if is_travelling(): return
 	if not game.inventory.has(id):
 		return
 	selected_item = "" if selected_item == id else id
@@ -551,14 +576,70 @@ func _select_item(id: String) -> void:
 		_render()
 		_autosave()
 
+func is_travelling() -> bool:
+	return is_instance_valid(travel_cutscene)
+
 func _travel(id: String) -> void:
+	if is_travelling(): return
+	var origin: String = game.room
 	_close_modal()
+	_present_travel(origin, game.travel(id))
+
+func _present_travel(origin: String, result: String, who: String = "THE NARRATOR") -> void:
 	selected_item = ""
-	_say("THE NARRATOR", game.travel(id))
-	_render()
+	# The model decides gates, route length and state exactly once. Animation is
+	# presentation only; skipping never grants progress or replays the journey.
+	if origin == game.room or (DisplayServer.get_name() == "headless" and not animate_travel_in_tests) or "--smoke-ui" in OS.get_cmdline_user_args():
+		_say(who, result)
+		_render()
+		_autosave()
+		return
+	_close_modal()
+	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
+	larry.walking = false
+	larry.stop_dance()
+	parser.release_focus()
+	travel_result = result
+	travel_speaker = who
+	var destination: String = game.room
+	var route_key := origin + ">" + destination
+	var variant := int(travel_variants.get(route_key, 0))
+	travel_variants[route_key] = variant + 1
+	modal = Control.new()
+	modal.size = canvas.size
+	canvas.add_child(modal)
+	var dim := ColorRect.new()
+	dim.color = Color(0.02, 0.025, 0.055, 0.96)
+	dim.size = modal.size
+	modal.add_child(dim)
+	travel_cutscene = TravelCutscene.new()
+	travel_cutscene.size = Vector2(1000, 700)
+	travel_cutscene.position = (canvas.size - travel_cutscene.size) / 2.0
+	modal.add_child(travel_cutscene)
+	travel_cutscene.finished.connect(_finish_travel, CONNECT_ONE_SHOT)
+	var from_art: Texture2D = load(WorldEffects.background_path_for(origin, game.flags))
+	var to_art: Texture2D = load(WorldEffects.background_path_for(destination, game.flags))
+	travel_cutscene.play(origin, destination, game.get_room(origin), game.get_room(destination), from_art, to_art, reduced_motion, variant)
+	_say("ON THE MOVE", TravelCutscene.caption_for(origin, destination, variant))
+	_cue("travel_" + TravelCutscene.mode_for(origin, destination))
+	# Accepted travel is already complete in the model. Persist before the movie
+	# so closing a tab mid-scene cannot lose the destination or duplicate moves.
 	_autosave()
+	_refresh_companion()
+
+func _skip_travel() -> void:
+	if is_travelling(): travel_cutscene.finish()
+
+func _finish_travel() -> void:
+	if not is_travelling(): return
+	travel_cutscene = null
+	_close_modal()
+	_say(travel_speaker, travel_result)
+	travel_result = ""
+	_render()
 
 func _command(text: String) -> void:
+	if is_travelling(): return
 	if text.strip_edges().is_empty():
 		return
 	var normalized := text.strip_edges().to_lower()
@@ -566,10 +647,22 @@ func _command(text: String) -> void:
 		parser.clear()
 		_say("QA SESSION", "Save and load are disabled in this isolated playtest.")
 		return
+	if normalized in ["load", "load game", "restore"]:
+		parser.clear()
+		parser.release_focus()
+		_load()
+		return
 	if game.room == "casino" and normalized in ["blackjack", "play blackjack", "use blackjack", "play 21", "slots", "play slots", "use slots"]:
 		parser.clear()
 		parser.release_focus()
 		_open_casino("slots" if "slots" in normalized else "blackjack")
+		return
+	if game.room == "street" and normalized in ["use taxi", "use cab", "use taxi stand"]:
+		selected_item = ""
+		parser.clear()
+		parser.release_focus()
+		_set_verb("use")
+		_hotspot_click(game.get_hotspot("taxi"))
 		return
 	var offer_target := ""
 	if game.room == "bar" and normalized in ["use lefty", "use bartender", "use barman"]: offer_target = "bartender"
@@ -581,7 +674,14 @@ func _command(text: String) -> void:
 		_set_verb("use")
 		_hotspot_click(game.get_hotspot(offer_target))
 		return
-	_say("> " + text.to_upper(), game.command(text))
+	var origin: String = game.room
+	var result: String = game.command(text)
+	if origin != game.room:
+		parser.clear()
+		parser.release_focus()
+		_present_travel(origin, result, "> " + text.to_upper())
+		return
+	_say("> " + text.to_upper(), result)
 	if game.room == "disco" and normalized in ["dance", "dance with didi", "use dance floor", "use floor", "use dancefloor", "use didi"] and game.flags.get("danced", false):
 		_play_dance()
 	parser.clear()
@@ -601,11 +701,13 @@ func _say(who: String, text: String) -> void:
 	_refresh_companion()
 
 func _save() -> void:
+	if is_travelling(): return
 	if qa_mode:
 		return
 	_say("SAVED FOR POSTERITY", game.save_game())
 
 func _load() -> void:
+	if is_travelling(): return
 	if qa_mode:
 		return
 	_say("PREVIOUSLY, ON LARRY…", game.load_game())
@@ -621,6 +723,7 @@ func _autosave() -> void:
 	game.save_game("user://autosave.json")
 
 func _hint() -> void:
+	if is_travelling(): return
 	if hint_objective != game.objective():
 		hint_stage = 0
 		hint_objective = game.objective()
@@ -679,6 +782,9 @@ func _modal_base(title: String, subtitle: String, height: float = 660) -> Contro
 	return p
 
 func _close_modal() -> void:
+	if is_travelling():
+		_skip_travel()
+		return
 	if is_instance_valid(casino_panel):
 		casino_panel.close_game()
 		casino_panel = null
@@ -690,6 +796,7 @@ func _close_modal() -> void:
 	_refresh_companion()
 
 func _open_casino(mode: String) -> void:
+	if is_travelling(): return
 	var p := _modal_base("The Lucky Chip · " + mode.capitalize(), "A little luck. A little arithmetic. An absolutely enormous collar.", 646)
 	casino_panel = CasinoPanel.new()
 	casino_panel.position = Vector2(34, 136)
@@ -707,6 +814,7 @@ func remove_child_if_needed(node: Node) -> void:
 		node.get_parent().remove_child(node)
 
 func _map() -> void:
+	if is_travelling(): return
 	var p := _modal_base("A small town. Big mistakes.", "Choose a destination. Locked rooms open as you solve their puzzles.", 742)
 	var ids := ["street", "bar", "bathroom", "backroom", "alley", "shop", "casino", "disco", "hotel", "balcony", "garden", "penthouse", "rooftop"]
 	for i in range(ids.size()):
@@ -721,6 +829,7 @@ func _map() -> void:
 	_label(p, "The taxi fare is on the house. Your dignity travels separately.", Rect2(34, 642, 728, 42), 16, MUTED)
 
 func _map_travel(destination: String) -> void:
+	if is_travelling(): return
 	# Follow actual unlocked exits, preserving every puzzle gate and move count.
 	var frontier: Array = [[game.room]]
 	var visited: Dictionary = {game.room: true}
@@ -728,14 +837,12 @@ func _map_travel(destination: String) -> void:
 		var route: Array = frontier.pop_front()
 		var here: String = route.back()
 		if here == destination:
+			var origin: String = game.room
 			_close_modal()
 			var result := "You are already here. The map remains impressed."
 			for i in range(1, route.size()):
 				result = game.travel(route[i])
-			selected_item = ""
-			_say("THE NARRATOR", result)
-			_render()
-			_autosave()
+			_present_travel(origin, result)
 			return
 		for e in game.get_room(here).exits:
 			if not visited.has(e.id) and game.is_unlocked(e.id):
@@ -744,6 +851,7 @@ func _map_travel(destination: String) -> void:
 	_say("THE NARRATOR", "That route is still closed. A few good conversations may open it.")
 
 func _journal() -> void:
+	if is_travelling(): return
 	var p := _modal_base("Notes to a future, wiser Larry", "Clues are recorded here as you discover them.")
 	var scroll := ScrollContainer.new()
 	scroll.position = Vector2(34, 139)
@@ -763,6 +871,7 @@ func _journal() -> void:
 	scroll.add_child(body)
 
 func _help() -> void:
+	if is_travelling(): return
 	var p := _modal_base("How to make an impression", "A point-and-click adventure with a soft spot for the text parser.", 706)
 	# Wrapped Labels grow beyond a requested rectangle; the scrolling viewport
 	# keeps the complete instructions readable above the fixed footer.
@@ -779,6 +888,7 @@ func _help() -> void:
 	_button(p, "Restore autosave", Rect2(514, 609, 252, 48), _restore_autosave)
 
 func _restore_autosave() -> void:
+	if is_travelling(): return
 	if qa_mode:
 		return
 	_close_modal()
@@ -793,14 +903,17 @@ func _resume_prompt() -> void:
 	_button(p, "Start a new evening", Rect2(401, 170, 365, 62), _new_game)
 
 func _new_game_prompt() -> void:
+	if is_travelling(): return
 	var p := _modal_base("Another night, another suit?", "Start over? Your manual save stays available through Load.", 300)
 	_button(p, "Keep this evening", Rect2(34, 162, 344, 62), _close_modal)
 	_button(p, "Start a new evening", Rect2(402, 162, 364, 62), _new_game, true)
 
 func _new_game() -> void:
+	if is_travelling(): return
 	_close_modal()
 	game.new_game()
 	transcript.clear()
+	travel_variants.clear()
 	inventory_snapshot.clear()
 	arrival_label.text = ""
 	hint_stage = 0
@@ -827,6 +940,10 @@ func _ending() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
+		return
+	if is_travelling():
+		if event.keycode in [KEY_ESCAPE, KEY_SPACE, KEY_ENTER]: _skip_travel()
+		get_viewport().set_input_as_handled()
 		return
 	if event.keycode == KEY_ESCAPE:
 		if is_instance_valid(modal):
@@ -955,6 +1072,7 @@ func _scroll_to_item(id: String) -> void:
 			return
 
 func _conversation(target: String) -> void:
+	if is_travelling(): return
 	var options: Array = game.dialogue_options(target)
 	if options.is_empty() or game.completed: return
 	var title: String = str(game.get_hotspot(target).get("label", target.capitalize()))
@@ -983,6 +1101,7 @@ func _conversation(target: String) -> void:
 	_refresh_companion()
 
 func _choose_dialogue(id: String) -> void:
+	if is_travelling(): return
 	_close_modal()
 	var response: String = game.choose_dialogue(id)
 	_say("THE CONVERSATION", response)
@@ -993,6 +1112,7 @@ func _choose_dialogue(id: String) -> void:
 	_conversation(game.get_dialogue_target())
 
 func _transcript() -> void:
+	if is_travelling(): return
 	var p := _modal_base("The evening, in your own words.", "The most recent 120 exchanges from this session. Scroll to read.", 750)
 	var scroll := ScrollContainer.new()
 	scroll.position = Vector2(34, 139)
@@ -1005,6 +1125,7 @@ func _transcript() -> void:
 	_refresh_companion()
 
 func _settings() -> void:
+	if is_travelling(): return
 	var p := _modal_base("Make yourself comfortable.", "Every sound has visible feedback. Settings stay on this device.", 650)
 	_button(p, "Reduced motion: " + ("ON" if reduced_motion else "OFF"), Rect2(34, 142, 732, 50), _toggle_motion)
 	_button(p, "Music: " + ("ON" if music_on else "OFF"), Rect2(34, 212, 250, 50), func(): _toggle_music(); _settings())
@@ -1029,6 +1150,7 @@ func _settings_slider(parent: Node, title: String, pos: Vector2, value: float, c
 	parent.add_child(slider)
 
 func _toggle_motion() -> void:
+	if is_travelling(): return
 	reduced_motion = not reduced_motion
 	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
 	larry.walking = false
@@ -1074,6 +1196,7 @@ func _save_preferences() -> void:
 	config.save("user://preferences.cfg")
 
 func _use_selected_self() -> void:
+	if is_travelling(): return
 	if selected_item.is_empty() or not game.inventory.has(selected_item): return
 	_say("IN YOUR POCKET", game.interact(selected_item, "use", selected_item))
 	_render()

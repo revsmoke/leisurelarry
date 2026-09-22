@@ -6,7 +6,13 @@ const CUE_NOTES := {
 	"pickup": [523.25, 659.25, 783.99],
 	"refusal": [220.0, 185.0],
 	"transition": [329.63, 440.0],
-	"punchline": [392.0, 523.25, 349.23]
+	"punchline": [392.0, 523.25, 349.23],
+	"travel_taxi": [349.23, 349.23, 440.0],
+	"travel_elevator": [659.25, 880.0],
+	"travel_door": [293.66, 220.0],
+	"travel_rope": [220.0, 261.63, 220.0],
+	"travel_walk": [196.0, 220.0],
+	"travel_terrace": [440.0, 523.25]
 }
 var enabled := true
 var volume := 0.5

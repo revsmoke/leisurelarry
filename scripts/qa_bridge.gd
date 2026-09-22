@@ -114,6 +114,15 @@ func request(message: Dictionary) -> Dictionary:
 	_execute(chosen)
 	_last_callback_ms = Time.get_ticks_msec() - action_started
 	await _settle_frames()
+	# Travel is a real UI movie, not a second model action. Wait for its arrival
+	# before publishing new room controls; never bypass the movie or puzzle gates.
+	var travel_started := Time.get_ticks_msec()
+	while app.is_travelling() and Time.get_ticks_msec() - travel_started < 8000:
+		await get_tree().process_frame
+	if app.is_travelling():
+		busy = false
+		response.error = "travel_timeout"
+		return response
 	# A slot spin has a visible one-second animation; observe its settled result.
 	var started := Time.get_ticks_msec()
 	while is_instance_valid(app.casino_panel) and app.casino_panel.slot_pending and Time.get_ticks_msec() - started < 4000:

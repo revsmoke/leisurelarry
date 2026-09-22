@@ -56,14 +56,23 @@ func start(owner_app: Control) -> void:
 	  const transcriptHeading=document.createElement('h3'); transcriptHeading.textContent='Recent conversation'; body.append(transcriptHeading);
 	  const transcript=document.createElement('ol'); transcript.className='transcript'; body.append(transcript);
 	  document.body.append(panel);
-	  // Stop Godot's canvas shortcuts while a player types or presses Space here.
-	  panel.addEventListener('keydown', event => event.stopPropagation());
+	  let travelSkip=null;
+	  // The drawer owns keyboard focus. During travel its visible Skip button
+	  // must still honor the same keys as the canvas, through the same action.
+	  panel.addEventListener('keydown', event => {
+	    event.stopPropagation();
+	    if(travelSkip && ['Escape',' ','Enter'].includes(event.key)) {
+	      event.preventDefault();
+	      if(!event.repeat) send({id:travelSkip});
+	    }
+	  });
 	  panel.addEventListener('keyup', event => event.stopPropagation());
 	  panel.addEventListener('pointerdown', event => event.stopPropagation());
 	  let pending=false, currentRevision=0;
 	  function send(action) { if(pending) return; pending=true; callback(JSON.stringify({...action,revision:currentRevision})); }
 	  window.__larryCompanionRender = function(serialized) {
 	    const state=JSON.parse(serialized); currentRevision=state.revision; pending=false;
+	    travelSkip=state.buttons.find(item=>item.text.startsWith('Skip travel')&&!item.disabled)?.id||null;
 	    const active=document.activeElement, key=active?.dataset?.focusKey, inside=controls.contains(active)||ranges.contains(active), scroll=body.scrollTop;
 	    heading.textContent=state.room; status.textContent=state.status; goal.textContent='Current plan: '+state.objective; selected.textContent=state.selection;
 	    if(live.textContent!==state.dialogue) live.textContent=state.dialogue;

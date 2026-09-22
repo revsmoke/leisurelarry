@@ -94,7 +94,9 @@ func _run() -> void:
 	sounds.enabled = false
 	root.add_child(sounds)
 	await process_frame
-	check(sounds._streams.size() == 4, "Four offline audio cues are prepared")
+	check(sounds._streams.size() == 10, "Gameplay and travel audio cues are prepared offline")
+	for mode in ["door", "walk", "taxi", "elevator", "rope", "terrace"]:
+		check(sounds._streams.has("travel_" + mode), "Travel mode has a prepared cue: " + mode)
 	for cue in sounds._streams:
 		var stream: AudioStreamWAV = sounds._streams[cue]
 		check(stream.mix_rate == 22050 and not stream.stereo and stream.get_length() < 0.3, "%s cue is short mono PCM" % cue)

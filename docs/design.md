@@ -41,7 +41,7 @@ The current content model contains **13 logical locations**, **18 inventory obje
 - A final rooftop conversation over three TALK actions after the apple gift: Larry tells a story, Eve talks about her own work on the gardens, and she invites him to stay for sunrise. Only the conclusion grants the existing ending score. The completion screen allows continued exploration or restart.
 - Thirteen new illustrated backgrounds, independent animated geometric pixel actors with a dance animation, visible planted seeds and a growing apple tree, a looping original music bed and a mute control. Harvesting removes the fruit while leaving the tree.
 
-The narrative tracks an action count but does not simulate an expiring night. The displayed clock is atmosphere, not a countdown. Walking supplies visual feedback; it is not a free-roaming physical simulation with navigation obstacles.
+The narrative tracks an action count but does not simulate an expiring night. The displayed clock is atmosphere, not a countdown. Walking supplies visual feedback; it is not a free-roaming physical simulation with navigation obstacles. Accepted travel now plays a 3.5–4.4 second vignette showing departure, transit and arrival. Doors, walks, taxis, elevators, secured rope crossings and terraces receive distinct staging with authored, rotating innuendo. Each scene is skippable; reduced-motion mode uses a one-second still card. The deterministic model validates the route and commits movement once, before animation; saving/reloading never requires replaying the movie, and a blocked or same-room request has no movie. Map travel follows the existing connected route while showing one montage for the chosen destination. Taxi visuals add no fees.
 
 ## Visual direction
 
@@ -88,7 +88,7 @@ This build does not claim parity with every mechanism, joke, location or branch 
 - Exact original dialogue, sprites, music, score system or age-trivia gate.
 - The original paid-encounter, wedding, honeymoon, inflatable-doll or mushroom-teleport scenes.
 - Blackjack split, double-down or insurance options; simulated taxi service, a dynamic clock or a death system.
-- Fully animated character portraits, lip sync, voice acting or cinematic cutscenes.
+- Fully animated character portraits, lip sync, voice acting or long-form cinematic story sequences. Short animated travel vignettes are included.
 - A physically navigable city, obstacle-aware pathfinding, gamepad support, localization or touch-specific interface layout.
 - A fully open natural-language parser or combinatorial responses for every possible object pair.
 

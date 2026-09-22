@@ -29,7 +29,10 @@ Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inve
 | F5 / F9 | Manual save / load |
 | F11 | Toggle full screen |
 | Enter or command field | Type a parser command |
-| Escape | Close overlay or clear selection |
+| Escape | Skip travel, close overlay or clear selection |
+| Space / Enter during travel | Skip straight to arrival |
+
+Moving through exits, scenery doors, the map, or parser commands plays a short animated travel vignette: doorway entrances, walks, taxi rides, hotel elevators, rope crossings, or terrace arrivals. Use **Skip travel**, Space, Enter, or Escape to arrive immediately. Reduced motion shows a one-second departure/arrival card. The accepted destination autosaves before the scene; skipping costs no extra moves or money.
 
 Use the map to follow connected routes automatically. Locked rooms open through puzzles. **Need a nudge?** starts with a clue reminder, then offers a narrower suggestion, then an explicitly requested exact solution. The notebook records discovered item locations, character requests, and completed favors. Use slots or blackjack at the casino to open the optional games; `play slots` and `play blackjack` work there too. Unfinished blackjack bets are refunded when closing the table.
 
@@ -48,12 +51,15 @@ Manual Save and Load use one slot. Progress also autosaves after actions. When a
 - Responsive desktop and narrower-window layouts, visible keyboard focus, a readable production-Web HTML companion, reduced motion, and separate music/effects controls.
 - Animated slots and blackjack, with a casino recovery mechanic that prevents money from blocking the adventure. Gambling remains optional.
 - Original lounge music, short offline sound cues, independent pixel actors, and visible character reactions.
+- Animated travel and entrance scenes with route-specific movement, rotating adult comedy captions, a skip control and reduced-motion stills. See [travel scene validation](docs/audits/travel-cutscenes.md).
 - **46 historical reference images**: 44 screenshots and two manual scans, with provenance. Open [the searchable reference gallery](reference/index.html).
 - Godot, macOS/Web export templates, local Godot MCP configuration, and installed GDScript and TypeSafe skills.
 
 The adaptation keeps the bar/remote/password, disco gifts, phone/rope, hotel favor and grown-apple chain. It changes motivations and condenses the route. It is **not a scene-for-scene reproduction** of either original: original commercial art/dialogue/music, several bedroom/chapel branches, death timer, taxi simulation, voice acting and full NPC animation are not included. Romance remains suggestive and non-explicit. [Design and scope](docs/design.md) explains the choices.
 
 ## Playtest and verification
+
+The subsequent [animated-travel update](docs/audits/travel-cutscenes.md) passed 4,245 Godot assertions and 34 Node tests. Live Browser checks covered entrances, walking, taxis, elevators, rope travel, skipping, reduced motion and interrupted-travel restoration. Two additional Jev runs completed with 48 real animated transitions; the report distinguishes their build from the final visual correction.
 
 The upgrade includes deterministic route, ending, save, interface, visual-state, companion, and QA-isolation checks. The [current upgrade validation report](docs/audits/gameplay-upgrade-validation.md) records the final tested build, live Jev batches, actual browser playthroughs, defects, and remaining limits. The final source passed 3,893 Godot assertions and 34 Node tests. Jev completed 86/100 evenings in the main campaign and 8/12 on the final corrected build; failures remain documented. Human enjoyment and the full performance gates remain open.
 
@@ -95,6 +101,7 @@ Generated exports and installed dependencies are excluded from Git; the source, 
 ./tools/godot --headless --path . --script tests/test_upgrade_visuals.gd
 ./tools/godot --headless --path . --script tests/test_web_companion.gd
 ./tools/godot --headless --path . --script tests/test_window_responsive.gd
+./tools/godot --headless --path . --script tests/test_travel_cutscenes.gd
 ./tools/godot --headless --path . --script tests/test_qa_bridge.gd
 ./tools/godot --headless --path . --script tests/test_memory_lifecycle.gd
 node --test tests/test_jev_client.mjs
@@ -103,6 +110,6 @@ node tools/mcp-smoke.mjs
 ./tools/package.sh all
 ```
 
-`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables. `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
+`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `travel_cutscene.gd` presents route-aware travel vignettes; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables. `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
 
 The supplied walkthrough is retained untouched at the project root. This is an unofficial fan project; the original game names and characters belong to their respective owners.

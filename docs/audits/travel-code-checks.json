@@ -1,0 +1,158 @@
+{
+  "at": "2026-09-22T18:30:50.251385+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "test": "tests/test_action_intent.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Action intent regression checks: 40 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_casino.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Casino tests: 40 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_game.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Adventure tests: 202 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Interface tests: 207 assertions, 0 failures. Full UI route: 100/100 and ending verified."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_memory_lifecycle.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Native lifecycle: 336 checks, 0 failures; 10 cycles after 2 warmups; static baseline 36772244, final 37639300, ratio 1.02357908861912"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_modal_layout.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Modal layout: 546 assertions, 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_narrative.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Narrative tests: 57 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_qa_bridge.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "QA bridge checks: 210 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_travel_cutscenes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Travel cutscene tests: 334 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Upgrade interface tests: 165 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_routes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Upgrade route tests: 1862 assertions, 0 failures; 8 route combinations \u00d7 3 ending tones."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Upgrade visuals: 79 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_web_companion.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Web companion: 31 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_window_responsive.gd",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "Actual Window responsive layout: 136 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_jev_client.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "\u2139 tests 34",
+        "\u2139 suites 0",
+        "\u2139 pass 34",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 116.372291"
+      ]
+    }
+  ],
+  "scriptSha256": {
+    "scripts/actor.gd": "4fd5282b17c208f9c05c87234d238b50c6b2aadc145af3e9de8edfd1f1257e6f",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/game_state.gd": "1c623cd30d10e506d0fe017f6a955aa8525305ded28eb018206208769e0bd408",
+    "scripts/main.gd": "5dc99a492076495300014f15817b042032eac5f2bec46508b858d968d48895f6",
+    "scripts/qa_bridge.gd": "fb3b996d76e00df0d332d05cf3f72009f69b737fc9caed3fad4a84c80dd2e752",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "cb24f19400617706120570e7c14ae28c4d6f0c3c4caa6f9586dc84919d42282f",
+    "scripts/web_companion.gd": "4ef95ab314b645c05727bbee7203ef8a35d77095a4ce7909b4eb0aa228d9c9b4",
+    "scripts/world_effects.gd": "b1f1416128eb49025ae86e3a3142a1f903d9d6ad296663597ef5a7412ae9143f"
+  }
+}
