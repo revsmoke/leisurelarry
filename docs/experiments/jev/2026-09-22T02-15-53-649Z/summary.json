@@ -1,0 +1,4785 @@
+{
+  "session": "2026-09-22T02-15-53-649Z",
+  "generatedAt": "2026-09-22T02:17:02.781Z",
+  "modelRequested": "jev-latest",
+  "budget": {
+    "maxRequests": 300,
+    "maxInputTokens": 2000000,
+    "maxConcurrent": 3,
+    "requests": 240,
+    "inputTokens": 905027,
+    "outputTokens": 113890,
+    "active": 0,
+    "errors": 0
+  },
+  "apiLatencyMs": {
+    "p50": 177,
+    "p95": 251
+  },
+  "estimatedInputCostUSD": 0.03801113400000001,
+  "priceSource": "https://docs.typesafe.ai/models",
+  "runs": {
+    "unguided": {
+      "status": "finished",
+      "step": 79,
+      "score": 28,
+      "room": {
+        "id": "shop",
+        "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+        "title": "Quik-E-Mart"
+      },
+      "model": "jev-1.13.0",
+      "runId": "unguided",
+      "steps": 80,
+      "money": 58,
+      "completed": false,
+      "observation": {
+        "actions": [
+          {
+            "id": "a000",
+            "label": "Look around the current room"
+          },
+          {
+            "id": "a001",
+            "label": "Look Shop clerk"
+          },
+          {
+            "id": "a002",
+            "label": "Talk Shop clerk"
+          },
+          {
+            "id": "a003",
+            "label": "Take Shop clerk"
+          },
+          {
+            "id": "a004",
+            "label": "Use Shop clerk"
+          },
+          {
+            "id": "a005",
+            "label": "Look Wine · $12"
+          },
+          {
+            "id": "a006",
+            "label": "Talk Wine · $12"
+          },
+          {
+            "id": "a007",
+            "label": "Take Wine · $12"
+          },
+          {
+            "id": "a008",
+            "label": "Use Wine · $12"
+          },
+          {
+            "id": "a009",
+            "label": "Look Espresso machine"
+          },
+          {
+            "id": "a010",
+            "label": "Talk Espresso machine"
+          },
+          {
+            "id": "a011",
+            "label": "Take Espresso machine"
+          },
+          {
+            "id": "a012",
+            "label": "Use Espresso machine"
+          },
+          {
+            "id": "a013",
+            "label": "Look Magazine rack"
+          },
+          {
+            "id": "a014",
+            "label": "Talk Magazine rack"
+          },
+          {
+            "id": "a015",
+            "label": "Take Magazine rack"
+          },
+          {
+            "id": "a016",
+            "label": "Use Magazine rack"
+          },
+          {
+            "id": "a017",
+            "label": "Inspect Newspaper in inventory"
+          },
+          {
+            "id": "a018",
+            "label": "Use Newspaper on its own"
+          },
+          {
+            "id": "a019",
+            "label": "Use Newspaper with Shop clerk"
+          },
+          {
+            "id": "a020",
+            "label": "Use Newspaper with Wine · $12"
+          },
+          {
+            "id": "a021",
+            "label": "Use Newspaper with Espresso machine"
+          },
+          {
+            "id": "a022",
+            "label": "Use Newspaper with Magazine rack"
+          },
+          {
+            "id": "a023",
+            "label": "Inspect Folding stool in inventory"
+          },
+          {
+            "id": "a024",
+            "label": "Use Folding stool on its own"
+          },
+          {
+            "id": "a025",
+            "label": "Use Folding stool with Shop clerk"
+          },
+          {
+            "id": "a026",
+            "label": "Use Folding stool with Wine · $12"
+          },
+          {
+            "id": "a027",
+            "label": "Use Folding stool with Espresso machine"
+          },
+          {
+            "id": "a028",
+            "label": "Use Folding stool with Magazine rack"
+          },
+          {
+            "id": "a029",
+            "label": "Inspect Pocket knife in inventory"
+          },
+          {
+            "id": "a030",
+            "label": "Use Pocket knife on its own"
+          },
+          {
+            "id": "a031",
+            "label": "Use Pocket knife with Shop clerk"
+          },
+          {
+            "id": "a032",
+            "label": "Use Pocket knife with Wine · $12"
+          },
+          {
+            "id": "a033",
+            "label": "Use Pocket knife with Espresso machine"
+          },
+          {
+            "id": "a034",
+            "label": "Use Pocket knife with Magazine rack"
+          },
+          {
+            "id": "a035",
+            "label": "Inspect TV remote in inventory"
+          },
+          {
+            "id": "a036",
+            "label": "Use TV remote on its own"
+          },
+          {
+            "id": "a037",
+            "label": "Use TV remote with Shop clerk"
+          },
+          {
+            "id": "a038",
+            "label": "Use TV remote with Wine · $12"
+          },
+          {
+            "id": "a039",
+            "label": "Use TV remote with Espresso machine"
+          },
+          {
+            "id": "a040",
+            "label": "Use TV remote with Magazine rack"
+          },
+          {
+            "id": "a041",
+            "label": "Inspect Candy in inventory"
+          },
+          {
+            "id": "a042",
+            "label": "Use Candy on its own"
+          },
+          {
+            "id": "a043",
+            "label": "Use Candy with Shop clerk"
+          },
+          {
+            "id": "a044",
+            "label": "Use Candy with Wine · $12"
+          },
+          {
+            "id": "a045",
+            "label": "Use Candy with Espresso machine"
+          },
+          {
+            "id": "a046",
+            "label": "Use Candy with Magazine rack"
+          },
+          {
+            "id": "a047",
+            "label": "Travel via city map to The Neon Strip"
+          },
+          {
+            "id": "a048",
+            "label": "Travel via city map to Lefty's Bar"
+          },
+          {
+            "id": "a049",
+            "label": "Travel via city map to The Restroom"
+          },
+          {
+            "id": "a050",
+            "label": "Travel via city map to Backstage Lounge"
+          },
+          {
+            "id": "a051",
+            "label": "Travel via city map to The Service Alley"
+          },
+          {
+            "id": "a052",
+            "label": "Travel via city map to The Lucky Chip"
+          },
+          {
+            "id": "a053",
+            "label": "Travel via city map to The Come-On Inn"
+          },
+          {
+            "id": "a054",
+            "label": "Travel via city map to Moonlight Garden"
+          },
+          {
+            "id": "decline",
+            "label": "Stop: no suitable action"
+          }
+        ],
+        "completed": false,
+        "diagnostics": {
+          "candidate_count": 56,
+          "fps": 57,
+          "process_seconds": 0.0016
+        },
+        "dialogue": {
+          "speaker": "SHOP CLERK",
+          "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+        },
+        "hotspots": [
+          {
+            "kind": "person",
+            "name": "Shop clerk"
+          },
+          {
+            "kind": "object",
+            "name": "Wine · $12"
+          },
+          {
+            "kind": "object",
+            "name": "Espresso machine"
+          },
+          {
+            "kind": "object",
+            "name": "Magazine rack"
+          }
+        ],
+        "inventory": [
+          "Newspaper",
+          "Folding stool",
+          "Pocket knife",
+          "TV remote",
+          "Candy"
+        ],
+        "map": [
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Neon Strip"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Lefty's Bar"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Restroom"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Backstage Lounge"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Service Alley"
+          },
+          {
+            "current": true,
+            "locked": false,
+            "name": "Quik-E-Mart"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Lucky Chip"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "Studio 69"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Come-On Inn"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Fire Escape"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Moonlight Garden"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Penthouse"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "Eve's Rooftop"
+          }
+        ],
+        "money": 58,
+        "notebook": [
+          "Find a little connection before sunrise. Your white suit has already done enough networking.",
+          "The Bugle explains the garden's instant-fruit planter: plant seeds, then add water.",
+          "The hotel receptionist likes Quik-E-Mart's deluxe espresso. Its voucher waits at the service window above Lefty's.",
+          "The alley busker will trade his spare pocket knife for a $12 bottle of wine from Quik-E-Mart.",
+          "Traded the busker wine for his spare stagecraft knife.",
+          "Lefty's bouncer needs the backstage password and wants to watch the bowling finals on channel six.",
+          "The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender.",
+          "Traded a whiskey for the regular's TV remote.",
+          "Tuned the television to bowling. The bouncer is happily distracted.",
+          "Restroom graffiti reveals the backstage password: BELLYBUTTON.",
+          "Gave the bouncer the backstage password.",
+          "Collected promotional chocolates backstage."
+        ],
+        "objective": "Find a complimentary Studio 69 pass at the casino.",
+        "overlay": [],
+        "revision": 80,
+        "room": {
+          "id": "shop",
+          "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+          "title": "Quik-E-Mart"
+        },
+        "score": 28
+      },
+      "lastAction": "Talk Shop clerk",
+      "apiMs": 180,
+      "actionMs": 62,
+      "clarity": {
+        "type": "score",
+        "score": 2.47,
+        "confidence": 0.47,
+        "legend": {
+          "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+          "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+          "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+          "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+        },
+        "probabilities": {
+          "0": 0.01,
+          "1": 0.06,
+          "2": 0.4,
+          "3": 0.53
+        }
+      },
+      "contradiction": {
+        "type": "noul",
+        "noul": 0.45
+      },
+      "reason": "action_budget",
+      "elapsedMs": 22215,
+      "actionTimesMs": [
+        99,
+        75,
+        65,
+        98,
+        58,
+        68,
+        70,
+        101,
+        61,
+        75,
+        60,
+        99,
+        113,
+        125,
+        133,
+        95,
+        76,
+        105,
+        103,
+        66,
+        111,
+        67,
+        69,
+        67,
+        67,
+        70,
+        71,
+        55,
+        56,
+        97,
+        68,
+        120,
+        63,
+        76,
+        65,
+        71,
+        67,
+        106,
+        64,
+        79,
+        95,
+        102,
+        74,
+        104,
+        89,
+        72,
+        63,
+        88,
+        74,
+        106,
+        58,
+        88,
+        74,
+        61,
+        66,
+        56,
+        95,
+        56,
+        67,
+        71,
+        92,
+        120,
+        129,
+        89,
+        105,
+        57,
+        79,
+        68,
+        57,
+        65,
+        58,
+        57,
+        72,
+        89,
+        66,
+        66,
+        56,
+        98,
+        57,
+        62
+      ],
+      "errors": 0,
+      "history": [
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Pink neon, palm trees, and a city that charges extra for sincerity. A free newspaper and a flower cart offer a promising start."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Free newspaper",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You take the free newspaper. Read it for local news and suspiciously convenient horticulture."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Free newspaper",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Free papers. Today's headline: INSTANT APPLES COME TO HOTEL GARDEN. Take a copy, then read it."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Moonlight Garden",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions.A folding stool waits on the equipment loan rack."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Newspaper with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions.A folding stool waits on the equipment loan rack."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Loaner folding stool",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A sturdy little stool from the garden's loan rack. Useful for high cabinets, poor for tall tales."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Loaner folding stool",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Folding stool. Your pockets ignore the laws of tailoring."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Folding stool with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your folding stool fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "EXPERIMENTAL PLANTER",
+            "text": "It offers no conversational opening. Larry recognizes the feeling."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Shop clerk",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "SHOP CLERK",
+            "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. A thirsty regular guards a remote. The television is losing an argument with static. The bouncer controls the backstage door."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to The Service Alley",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A busker finishes a blues number that sounds suspiciously like your last date. An apple core sits on a bin lid. A maintenance rack holds a rubber mallet."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Blues busker",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "BLUES BUSKER",
+            "text": "Busker: 'Bring me a red for my picnic and the spare knife is yours. Got a date after this set. Yes, even blues musicians get lucky.'"
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $12 for wine. Remaining funds: $68."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to The Service Alley",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A busker finishes a blues number that sounds suspiciously like your last date. An apple core sits on a bin lid. A maintenance rack holds a rubber mallet."
+          },
+          "score": 4,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Wine with Blues busker",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The busker packs the wine for his picnic and gives you his spare pocket knife. 'For cord. Not critics.'"
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. A thirsty regular guards a remote. The television is losing an argument with static. The bouncer controls the backstage door."
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THIRSTY REGULAR",
+            "text": "The regular: 'Whiskey, pal? I'll trade you this remote. My relationship with channel six has become unhealthy.'"
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "LEFTY · WHISKEY $10",
+            "text": "Lefty: 'Whiskey's ten bucks. The regular has the remote. Restroom wisdom is complimentary.'"
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty stays behind his bar. USE him to buy the $10 whiskey, or type BUY WHISKEY."
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $10 for whiskey. Remaining funds: $58."
+          },
+          "score": 8,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Whiskey with Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The regular lifts the whiskey in a toast and hands you the remote. 'Channel six. Bowling. The pins fall for me, at least.'"
+          },
+          "score": 12,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Use TV remote with Television",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You select channel six. The bouncer gasps at a seven-ten split. Provide the password and the backstage door is yours."
+          },
+          "score": 16,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 16,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 16,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Contented regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "CONTENTED REGULAR",
+            "text": "The regular raises his whiskey. 'Thanks, pal. That remote's yours. Let the big fellow have his bowling; he's a terrible loser.'"
+          },
+          "score": 16,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to The Restroom",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Avocado tile, optimistic plumbing, and unusually useful graffiti. A dish beside the basin offers a free costume ring."
+          },
+          "score": 16,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Look Wall graffiti",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Between two questionable poems: 'BACKSTAGE PASSWORD: BELLYBUTTON.' You commit it to your least crowded brain cell."
+          },
+          "score": 20,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The bouncer controls the backstage door."
+          },
+          "score": 20,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "'Bellybutton,' you say with improbable confidence. The password checks out. The bowling has his attention; head backstage."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Travel via city map to Backstage Lounge",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The cabaret is between shows. Promotional chocolates wait on a table, outnumbered by feathers. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Look Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A sturdy railing beside the damaged fire escape. Tie a rope here to get across the gap."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Use Pocket knife with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your pocket knife fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Use Folding stool with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your folding stool fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The cabaret is between shows. Promotional chocolates wait on a table, outnumbered by feathers. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Use Newspaper with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Look Promotional candy",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Promotional chocolates from the cabaret. The centers are softer than your sales pitch."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Look Cabaret poster",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Tonight: THE ACCOUNTANTS OF DESIRE. Their books are open. Their expenses are intimate. Their matinee is tax-deductible."
+          },
+          "score": 24,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Take Promotional candy",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Candy. Your pockets ignore the laws of tailoring."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Talk Shop clerk",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "SHOP CLERK",
+            "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You already handled that purchase. Even this town draws the line at duplicate plot expenses."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The backstage door is open to you."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "The bouncer remembers your password. Head backstage."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Backstage Lounge",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The cabaret is between shows. The promotional chocolates are gone; you collected them. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Pocket knife with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your pocket knife fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Folding stool with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your folding stool fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A sturdy railing beside the damaged fire escape. Tie a rope here to get across the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Newspaper with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The cabaret is between shows. The promotional chocolates are gone; you collected them. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Cabaret poster",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Tonight: THE ACCOUNTANTS OF DESIRE. Their books are open. Their expenses are intimate. Their matinee is tax-deductible."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Moonlight Garden",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Newspaper with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Inspect Newspaper in inventory",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "IN YOUR POCKET",
+            "text": "The Lost Wages Bugle. Front page: INSTANT APPLES! The hotel garden's experimental planter turns seeds and water into fruit. Science declined to comment."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The instant-fruit planter needs seeds, then water. Read the newspaper for operating instructions."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You already handled that purchase. Even this town draws the line at duplicate plot expenses."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Talk Shop clerk",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "SHOP CLERK",
+            "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The backstage door is open to you."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Talk Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "LEFTY · WHISKEY $10",
+            "text": "Lefty: 'Good trade. He's got his whiskey, you've got the remote, and I've got ten dollars. Everybody's an optimist.'"
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Backstage Lounge",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The cabaret is between shows. The promotional chocolates are gone; you collected them. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A sturdy railing beside the damaged fire escape. Tie a rope here to get across the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Pocket knife with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your pocket knife fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Folding stool with Safety railing",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your folding stool fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Cabaret poster",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Tonight: THE ACCOUNTANTS OF DESIRE. Their books are open. Their expenses are intimate. Their matinee is tax-deductible."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The cabaret is between shows. The promotional chocolates are gone; you collected them. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Inspect Newspaper in inventory",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "IN YOUR POCKET",
+            "text": "The Lost Wages Bugle. Front page: INSTANT APPLES! The hotel garden's experimental planter turns seeds and water into fruit. Science declined to comment."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Moonlight Garden",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Use Newspaper with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You already handled that purchase. Even this town draws the line at duplicate plot expenses."
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Talk Shop clerk",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "SHOP CLERK",
+            "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+          },
+          "score": 28,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        }
+      ]
+    },
+    "goal": {
+      "status": "finished",
+      "step": 79,
+      "score": 36,
+      "room": {
+        "id": "shop",
+        "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+        "title": "Quik-E-Mart"
+      },
+      "model": "jev-1.13.0",
+      "runId": "goal",
+      "steps": 80,
+      "money": 58,
+      "completed": false,
+      "observation": {
+        "actions": [
+          {
+            "id": "a000",
+            "label": "Look around the current room"
+          },
+          {
+            "id": "a001",
+            "label": "Look Shop clerk"
+          },
+          {
+            "id": "a002",
+            "label": "Talk Shop clerk"
+          },
+          {
+            "id": "a003",
+            "label": "Take Shop clerk"
+          },
+          {
+            "id": "a004",
+            "label": "Use Shop clerk"
+          },
+          {
+            "id": "a005",
+            "label": "Look Wine · $12"
+          },
+          {
+            "id": "a006",
+            "label": "Talk Wine · $12"
+          },
+          {
+            "id": "a007",
+            "label": "Take Wine · $12"
+          },
+          {
+            "id": "a008",
+            "label": "Use Wine · $12"
+          },
+          {
+            "id": "a009",
+            "label": "Look Espresso machine"
+          },
+          {
+            "id": "a010",
+            "label": "Talk Espresso machine"
+          },
+          {
+            "id": "a011",
+            "label": "Take Espresso machine"
+          },
+          {
+            "id": "a012",
+            "label": "Use Espresso machine"
+          },
+          {
+            "id": "a013",
+            "label": "Look Magazine rack"
+          },
+          {
+            "id": "a014",
+            "label": "Talk Magazine rack"
+          },
+          {
+            "id": "a015",
+            "label": "Take Magazine rack"
+          },
+          {
+            "id": "a016",
+            "label": "Use Magazine rack"
+          },
+          {
+            "id": "a017",
+            "label": "Inspect TV remote in inventory"
+          },
+          {
+            "id": "a018",
+            "label": "Use TV remote on its own"
+          },
+          {
+            "id": "a019",
+            "label": "Use TV remote with Shop clerk"
+          },
+          {
+            "id": "a020",
+            "label": "Use TV remote with Wine · $12"
+          },
+          {
+            "id": "a021",
+            "label": "Use TV remote with Espresso machine"
+          },
+          {
+            "id": "a022",
+            "label": "Use TV remote with Magazine rack"
+          },
+          {
+            "id": "a023",
+            "label": "Inspect Disco pass in inventory"
+          },
+          {
+            "id": "a024",
+            "label": "Use Disco pass on its own"
+          },
+          {
+            "id": "a025",
+            "label": "Use Disco pass with Shop clerk"
+          },
+          {
+            "id": "a026",
+            "label": "Use Disco pass with Wine · $12"
+          },
+          {
+            "id": "a027",
+            "label": "Use Disco pass with Espresso machine"
+          },
+          {
+            "id": "a028",
+            "label": "Use Disco pass with Magazine rack"
+          },
+          {
+            "id": "a029",
+            "label": "Inspect Wine in inventory"
+          },
+          {
+            "id": "a030",
+            "label": "Use Wine on its own"
+          },
+          {
+            "id": "a031",
+            "label": "Use Wine with Shop clerk"
+          },
+          {
+            "id": "a032",
+            "label": "Use Wine with Wine · $12"
+          },
+          {
+            "id": "a033",
+            "label": "Use Wine with Espresso machine"
+          },
+          {
+            "id": "a034",
+            "label": "Use Wine with Magazine rack"
+          },
+          {
+            "id": "a035",
+            "label": "Travel via city map to The Neon Strip"
+          },
+          {
+            "id": "a036",
+            "label": "Travel via city map to Lefty's Bar"
+          },
+          {
+            "id": "a037",
+            "label": "Travel via city map to The Restroom"
+          },
+          {
+            "id": "a038",
+            "label": "Travel via city map to Backstage Lounge"
+          },
+          {
+            "id": "a039",
+            "label": "Travel via city map to The Service Alley"
+          },
+          {
+            "id": "a040",
+            "label": "Travel via city map to The Lucky Chip"
+          },
+          {
+            "id": "a041",
+            "label": "Travel via city map to Studio 69"
+          },
+          {
+            "id": "a042",
+            "label": "Travel via city map to The Come-On Inn"
+          },
+          {
+            "id": "a043",
+            "label": "Travel via city map to Moonlight Garden"
+          },
+          {
+            "id": "decline",
+            "label": "Stop: no suitable action"
+          }
+        ],
+        "completed": false,
+        "diagnostics": {
+          "candidate_count": 45,
+          "fps": 55,
+          "process_seconds": 0.0027
+        },
+        "dialogue": {
+          "speaker": "THE NARRATOR",
+          "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+        },
+        "hotspots": [
+          {
+            "kind": "person",
+            "name": "Shop clerk"
+          },
+          {
+            "kind": "object",
+            "name": "Wine · $12"
+          },
+          {
+            "kind": "object",
+            "name": "Espresso machine"
+          },
+          {
+            "kind": "object",
+            "name": "Magazine rack"
+          }
+        ],
+        "inventory": [
+          "TV remote",
+          "Disco pass",
+          "Wine"
+        ],
+        "map": [
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Neon Strip"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Lefty's Bar"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Restroom"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Backstage Lounge"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Service Alley"
+          },
+          {
+            "current": true,
+            "locked": false,
+            "name": "Quik-E-Mart"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Lucky Chip"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Studio 69"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Come-On Inn"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Fire Escape"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Moonlight Garden"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Penthouse"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "Eve's Rooftop"
+          }
+        ],
+        "money": 58,
+        "notebook": [
+          "Find a little connection before sunrise. Your white suit has already done enough networking.",
+          "The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender.",
+          "Traded a whiskey for the regular's TV remote.",
+          "Tuned the television to bowling. The bouncer is happily distracted.",
+          "Lefty's bouncer needs the backstage password and wants to watch the bowling finals on channel six.",
+          "Restroom graffiti reveals the backstage password: BELLYBUTTON.",
+          "Gave the bouncer the backstage password.",
+          "Collected promotional chocolates backstage.",
+          "The casino's complimentary pass opens Studio 69.",
+          "Met Didi, a stage designer. She needs costume jewelry, flowers, and chocolates for a cabaret opening.",
+          "Gave Didi candy for her cabaret opening.",
+          "Danced with Didi. Neither of you will win a trophy; both had fun."
+        ],
+        "objective": "Meet Didi, dance, and help collect props for her cabaret.",
+        "overlay": [],
+        "revision": 80,
+        "room": {
+          "id": "shop",
+          "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+          "title": "Quik-E-Mart"
+        },
+        "score": 36
+      },
+      "lastAction": "Travel via city map to Quik-E-Mart",
+      "apiMs": 205,
+      "actionMs": 83,
+      "clarity": {
+        "type": "score",
+        "score": 2.44,
+        "confidence": 0.44,
+        "legend": {
+          "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+          "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+          "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+          "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+        },
+        "probabilities": {
+          "0": 0.01,
+          "1": 0.09,
+          "2": 0.36,
+          "3": 0.54
+        }
+      },
+      "contradiction": {
+        "type": "noul",
+        "noul": 0.2
+      },
+      "reason": "action_budget",
+      "elapsedMs": 21931,
+      "actionTimesMs": [
+        89,
+        67,
+        58,
+        59,
+        64,
+        61,
+        74,
+        89,
+        66,
+        85,
+        65,
+        76,
+        61,
+        102,
+        82,
+        133,
+        78,
+        84,
+        93,
+        93,
+        66,
+        109,
+        93,
+        92,
+        68,
+        96,
+        94,
+        74,
+        84,
+        85,
+        98,
+        74,
+        112,
+        84,
+        84,
+        83,
+        84,
+        76,
+        82,
+        70,
+        83,
+        76,
+        83,
+        87,
+        68,
+        82,
+        104,
+        80,
+        83,
+        113,
+        79,
+        141,
+        79,
+        120,
+        103,
+        77,
+        79,
+        63,
+        96,
+        80,
+        85,
+        71,
+        84,
+        107,
+        122,
+        79,
+        72,
+        85,
+        80,
+        84,
+        78,
+        93,
+        76,
+        78,
+        110,
+        82,
+        86,
+        84,
+        119,
+        83
+      ],
+      "errors": 0,
+      "history": [
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. A thirsty regular guards a remote. The television is losing an argument with static. The bouncer controls the backstage door."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "LEFTY · WHISKEY $10",
+            "text": "Lefty: 'Whiskey's ten bucks. The regular has the remote. Restroom wisdom is complimentary.'"
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THIRSTY REGULAR",
+            "text": "The regular: 'Whiskey, pal? I'll trade you this remote. My relationship with channel six has become unhealthy.'"
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $10 for whiskey. Remaining funds: $70."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Whiskey with Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The regular lifts the whiskey in a toast and hands you the remote. 'Channel six. Bowling. The pins fall for me, at least.'"
+          },
+          "score": 4,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Use TV remote with Television",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You select channel six. The bouncer gasps at a seven-ten split. Provide the password and the backstage door is yours."
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to The Restroom",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Avocado tile, optimistic plumbing, and unusually useful graffiti. A dish beside the basin offers a free costume ring."
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Look Wall graffiti",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Between two questionable poems: 'BACKSTAGE PASSWORD: BELLYBUTTON.' You commit it to your least crowded brain cell."
+          },
+          "score": 12,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The bouncer controls the backstage door."
+          },
+          "score": 12,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "'Bellybutton,' you say with improbable confidence. The password checks out. The bowling has his attention; head backstage."
+          },
+          "score": 16,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Travel via city map to Backstage Lounge",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The cabaret is between shows. Promotional chocolates wait on a table, outnumbered by feathers. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 16,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Take Promotional candy",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Candy. Your pockets ignore the laws of tailoring."
+          },
+          "score": 20,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to The Lucky Chip",
+          "room": {
+            "id": "casino",
+            "subtitle": "YOUR LUCK HAS A COVER CHARGE",
+            "title": "The Lucky Chip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Chrome, carpet, and the sound of wallets clearing their throats. A disco pass rests in a clean ashtray. The cashier offers comeback cash if your luck gets too personal."
+          },
+          "score": 20,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Take Studio 69 pass",
+          "room": {
+            "id": "casino",
+            "subtitle": "YOUR LUCK HAS A COVER CHARGE",
+            "title": "The Lucky Chip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Disco pass. Your pockets ignore the laws of tailoring."
+          },
+          "score": 24,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 24,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Nice suit. Is the rest of the wedding missing? I'm dressing a cabaret opening: costume ring, flowers, chocolates... and I could use a dance partner.'"
+          },
+          "score": 28,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Candy with Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Didi takes the candy with a smile. 'Perfect for the show. Keep this up and I'll put your name in lights. Small lights. Don't get cocky.'"
+          },
+          "score": 32,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Didi takes your hand. 'Show me what those trousers can do.' Your signature move resembles a printer jam. She laughs and pulls you into the beat."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $12 for wine. Remaining funds: $58."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Wine with Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your wine fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        }
+      ]
+    },
+    "curious": {
+      "status": "finished",
+      "step": 79,
+      "score": 44,
+      "room": {
+        "id": "disco",
+        "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+        "title": "Studio 69"
+      },
+      "model": "jev-1.13.0",
+      "runId": "curious",
+      "steps": 80,
+      "money": 58,
+      "completed": false,
+      "observation": {
+        "actions": [
+          {
+            "id": "a000",
+            "label": "Look around the current room"
+          },
+          {
+            "id": "a001",
+            "label": "Look Didi · stage designer"
+          },
+          {
+            "id": "a002",
+            "label": "Talk Didi · stage designer"
+          },
+          {
+            "id": "a003",
+            "label": "Take Didi · stage designer"
+          },
+          {
+            "id": "a004",
+            "label": "Use Didi · stage designer"
+          },
+          {
+            "id": "a005",
+            "label": "Look Dance floor"
+          },
+          {
+            "id": "a006",
+            "label": "Talk Dance floor"
+          },
+          {
+            "id": "a007",
+            "label": "Take Dance floor"
+          },
+          {
+            "id": "a008",
+            "label": "Use Dance floor"
+          },
+          {
+            "id": "a009",
+            "label": "Look Wall telephone"
+          },
+          {
+            "id": "a010",
+            "label": "Talk Wall telephone"
+          },
+          {
+            "id": "a011",
+            "label": "Take Wall telephone"
+          },
+          {
+            "id": "a012",
+            "label": "Use Wall telephone"
+          },
+          {
+            "id": "a013",
+            "label": "Look Spare stage rope"
+          },
+          {
+            "id": "a014",
+            "label": "Talk Spare stage rope"
+          },
+          {
+            "id": "a015",
+            "label": "Take Spare stage rope"
+          },
+          {
+            "id": "a016",
+            "label": "Use Spare stage rope"
+          },
+          {
+            "id": "a017",
+            "label": "Inspect Newspaper in inventory"
+          },
+          {
+            "id": "a018",
+            "label": "Use Newspaper on its own"
+          },
+          {
+            "id": "a019",
+            "label": "Use Newspaper with Didi · stage designer"
+          },
+          {
+            "id": "a020",
+            "label": "Use Newspaper with Dance floor"
+          },
+          {
+            "id": "a021",
+            "label": "Use Newspaper with Wall telephone"
+          },
+          {
+            "id": "a022",
+            "label": "Use Newspaper with Spare stage rope"
+          },
+          {
+            "id": "a023",
+            "label": "Inspect TV remote in inventory"
+          },
+          {
+            "id": "a024",
+            "label": "Use TV remote on its own"
+          },
+          {
+            "id": "a025",
+            "label": "Use TV remote with Didi · stage designer"
+          },
+          {
+            "id": "a026",
+            "label": "Use TV remote with Dance floor"
+          },
+          {
+            "id": "a027",
+            "label": "Use TV remote with Wall telephone"
+          },
+          {
+            "id": "a028",
+            "label": "Use TV remote with Spare stage rope"
+          },
+          {
+            "id": "a029",
+            "label": "Inspect Disco pass in inventory"
+          },
+          {
+            "id": "a030",
+            "label": "Use Disco pass on its own"
+          },
+          {
+            "id": "a031",
+            "label": "Use Disco pass with Didi · stage designer"
+          },
+          {
+            "id": "a032",
+            "label": "Use Disco pass with Dance floor"
+          },
+          {
+            "id": "a033",
+            "label": "Use Disco pass with Wall telephone"
+          },
+          {
+            "id": "a034",
+            "label": "Use Disco pass with Spare stage rope"
+          },
+          {
+            "id": "a035",
+            "label": "Inspect Folding stool in inventory"
+          },
+          {
+            "id": "a036",
+            "label": "Use Folding stool on its own"
+          },
+          {
+            "id": "a037",
+            "label": "Use Folding stool with Didi · stage designer"
+          },
+          {
+            "id": "a038",
+            "label": "Use Folding stool with Dance floor"
+          },
+          {
+            "id": "a039",
+            "label": "Use Folding stool with Wall telephone"
+          },
+          {
+            "id": "a040",
+            "label": "Use Folding stool with Spare stage rope"
+          },
+          {
+            "id": "a041",
+            "label": "Inspect Pocket knife in inventory"
+          },
+          {
+            "id": "a042",
+            "label": "Use Pocket knife on its own"
+          },
+          {
+            "id": "a043",
+            "label": "Use Pocket knife with Didi · stage designer"
+          },
+          {
+            "id": "a044",
+            "label": "Use Pocket knife with Dance floor"
+          },
+          {
+            "id": "a045",
+            "label": "Use Pocket knife with Wall telephone"
+          },
+          {
+            "id": "a046",
+            "label": "Use Pocket knife with Spare stage rope"
+          },
+          {
+            "id": "a047",
+            "label": "Travel via city map to The Neon Strip"
+          },
+          {
+            "id": "a048",
+            "label": "Travel via city map to Lefty's Bar"
+          },
+          {
+            "id": "a049",
+            "label": "Travel via city map to The Restroom"
+          },
+          {
+            "id": "a050",
+            "label": "Travel via city map to Backstage Lounge"
+          },
+          {
+            "id": "a051",
+            "label": "Travel via city map to The Service Alley"
+          },
+          {
+            "id": "a052",
+            "label": "Travel via city map to Quik-E-Mart"
+          },
+          {
+            "id": "a053",
+            "label": "Travel via city map to The Lucky Chip"
+          },
+          {
+            "id": "a054",
+            "label": "Travel via city map to The Come-On Inn"
+          },
+          {
+            "id": "a055",
+            "label": "Travel via city map to Moonlight Garden"
+          },
+          {
+            "id": "decline",
+            "label": "Stop: no suitable action"
+          }
+        ],
+        "completed": false,
+        "diagnostics": {
+          "candidate_count": 57,
+          "fps": 55,
+          "process_seconds": 0.0052
+        },
+        "dialogue": {
+          "speaker": "THE NARRATOR",
+          "text": "You reprise The Nervous Accountant. The floor files no complaint."
+        },
+        "hotspots": [
+          {
+            "kind": "person",
+            "name": "Didi · stage designer"
+          },
+          {
+            "kind": "object",
+            "name": "Dance floor"
+          },
+          {
+            "kind": "object",
+            "name": "Wall telephone"
+          },
+          {
+            "kind": "object",
+            "name": "Spare stage rope"
+          }
+        ],
+        "inventory": [
+          "Newspaper",
+          "TV remote",
+          "Disco pass",
+          "Folding stool",
+          "Pocket knife"
+        ],
+        "map": [
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Neon Strip"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Lefty's Bar"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Restroom"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Backstage Lounge"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Service Alley"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Quik-E-Mart"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Lucky Chip"
+          },
+          {
+            "current": true,
+            "locked": false,
+            "name": "Studio 69"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "The Come-On Inn"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Fire Escape"
+          },
+          {
+            "current": false,
+            "locked": false,
+            "name": "Moonlight Garden"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "The Penthouse"
+          },
+          {
+            "current": false,
+            "locked": true,
+            "name": "Eve's Rooftop"
+          }
+        ],
+        "money": 58,
+        "notebook": [
+          "Find a little connection before sunrise. Your white suit has already done enough networking.",
+          "The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender.",
+          "Lefty's bouncer needs the backstage password and wants to watch the bowling finals on channel six.",
+          "Traded a whiskey for the regular's TV remote.",
+          "Tuned the television to bowling. The bouncer is happily distracted.",
+          "Restroom graffiti reveals the backstage password: BELLYBUTTON.",
+          "Gave the bouncer the backstage password.",
+          "Collected promotional chocolates backstage.",
+          "The casino's complimentary pass opens Studio 69.",
+          "Met Didi, a stage designer. She needs costume jewelry, flowers, and chocolates for a cabaret opening.",
+          "Gave Didi candy for her cabaret opening.",
+          "Danced with Didi. Neither of you will win a trophy; both had fun.",
+          "The Bugle explains the garden's instant-fruit planter: plant seeds, then add water.",
+          "The hotel receptionist likes Quik-E-Mart's deluxe espresso. Its voucher waits at the service window above Lefty's.",
+          "The alley busker will trade his spare pocket knife for a $12 bottle of wine from Quik-E-Mart.",
+          "Traded the busker wine for his spare stagecraft knife."
+        ],
+        "objective": "Meet Didi, dance, and help collect props for her cabaret.",
+        "overlay": [],
+        "revision": 80,
+        "room": {
+          "id": "disco",
+          "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+          "title": "Studio 69"
+        },
+        "score": 44
+      },
+      "lastAction": "Use Dance floor",
+      "apiMs": 188,
+      "actionMs": 58,
+      "clarity": {
+        "type": "score",
+        "score": 2.56,
+        "confidence": 0.56,
+        "legend": {
+          "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+          "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+          "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+          "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+        },
+        "probabilities": {
+          "0": 0,
+          "1": 0.05,
+          "2": 0.33,
+          "3": 0.62
+        }
+      },
+      "contradiction": {
+        "type": "noul",
+        "noul": 0.27
+      },
+      "reason": "action_budget",
+      "elapsedMs": 22231,
+      "actionTimesMs": [
+        62,
+        60,
+        65,
+        66,
+        90,
+        66,
+        66,
+        67,
+        60,
+        66,
+        64,
+        72,
+        58,
+        55,
+        82,
+        61,
+        75,
+        57,
+        101,
+        103,
+        93,
+        128,
+        89,
+        69,
+        56,
+        84,
+        70,
+        60,
+        67,
+        67,
+        65,
+        65,
+        75,
+        87,
+        99,
+        85,
+        84,
+        82,
+        96,
+        109,
+        79,
+        100,
+        105,
+        65,
+        54,
+        71,
+        66,
+        63,
+        71,
+        56,
+        106,
+        56,
+        88,
+        73,
+        77,
+        96,
+        58,
+        105,
+        55,
+        55,
+        109,
+        106,
+        131,
+        128,
+        72,
+        72,
+        80,
+        84,
+        93,
+        80,
+        69,
+        70,
+        63,
+        89,
+        63,
+        67,
+        55,
+        126,
+        72,
+        58
+      ],
+      "errors": 0,
+      "history": [
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Pink neon, palm trees, and a city that charges extra for sincerity. A free newspaper and a flower cart offer a promising start."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Free newspaper",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You take the free newspaper. Read it for local news and suspiciously convenient horticulture."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Free newspaper",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Free papers. Today's headline: INSTANT APPLES COME TO HOTEL GARDEN. Take a copy, then read it."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Flower cart · $10",
+          "room": {
+            "id": "street",
+            "subtitle": "LOST WAGES · 11:47 PM",
+            "title": "The Neon Strip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Locally grown flowers, $10. Cash into slot; bouquet out. Romance has discovered vending machines."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. A thirsty regular guards a remote. The television is losing an argument with static. The bouncer controls the backstage door."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "LEFTY · WHISKEY $10",
+            "text": "Lefty: 'Whiskey's ten bucks. The regular has the remote. Restroom wisdom is complimentary.'"
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THIRSTY REGULAR",
+            "text": "The regular: 'Whiskey, pal? I'll trade you this remote. My relationship with channel six has become unhealthy.'"
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Look Television",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Channel 6 carries championship bowling. The bouncer's shirt says ASK ME ABOUT MY SPLIT."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Take Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty stays behind his bar. USE him to buy the $10 whiskey, or type BUY WHISKEY."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Lefty · whiskey $10",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $10 for whiskey. Remaining funds: $70."
+          },
+          "score": 0,
+          "objective": "Explore the Strip and make a useful trade at Lefty's."
+        },
+        {
+          "action": "Use Whiskey with Thirsty regular",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The regular lifts the whiskey in a toast and hands you the remote. 'Channel six. Bowling. The pins fall for me, at least.'"
+          },
+          "score": 4,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Use TV remote with Television",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You select channel six. The bouncer gasps at a seven-ten split. Provide the password and the backstage door is yours."
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "Bouncer: 'Password first. And if anyone finds the remote, the finals are on channel six.'"
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to The Restroom",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Avocado tile, optimistic plumbing, and unusually useful graffiti. A dish beside the basin offers a free costume ring."
+          },
+          "score": 8,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Look Wall graffiti",
+          "room": {
+            "id": "bathroom",
+            "subtitle": "THE WRITING IS LITERALLY ON THE WALL",
+            "title": "The Restroom"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Between two questionable poems: 'BACKSTAGE PASSWORD: BELLYBUTTON.' You commit it to your least crowded brain cell."
+          },
+          "score": 12,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The bouncer controls the backstage door."
+          },
+          "score": 12,
+          "objective": "Find the backstage password and put bowling on Lefty's TV."
+        },
+        {
+          "action": "Talk Backstage bouncer",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "BACKSTAGE BOUNCER",
+            "text": "'Bellybutton,' you say with improbable confidence. The password checks out. The bowling has his attention; head backstage."
+          },
+          "score": 16,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Travel via city map to Backstage Lounge",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The cabaret is between shows. Promotional chocolates wait on a table, outnumbered by feathers. The fire escape has lost a step; a rope tied to the railing could bridge the gap."
+          },
+          "score": 16,
+          "objective": "Collect the promotional chocolates backstage."
+        },
+        {
+          "action": "Take Promotional candy",
+          "room": {
+            "id": "backroom",
+            "subtitle": "THE FEATHERS GET THEIR OWN DRESSING ROOM",
+            "title": "Backstage Lounge"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Candy. Your pockets ignore the laws of tailoring."
+          },
+          "score": 20,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Travel via city map to The Lucky Chip",
+          "room": {
+            "id": "casino",
+            "subtitle": "YOUR LUCK HAS A COVER CHARGE",
+            "title": "The Lucky Chip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Chrome, carpet, and the sound of wallets clearing their throats. A disco pass rests in a clean ashtray. The cashier offers comeback cash if your luck gets too personal."
+          },
+          "score": 20,
+          "objective": "Find a complimentary Studio 69 pass at the casino."
+        },
+        {
+          "action": "Take Studio 69 pass",
+          "room": {
+            "id": "casino",
+            "subtitle": "YOUR LUCK HAS A COVER CHARGE",
+            "title": "The Lucky Chip"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Disco pass. Your pockets ignore the laws of tailoring."
+          },
+          "score": 24,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 24,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Nice suit. Is the rest of the wedding missing? I'm dressing a cabaret opening: costume ring, flowers, chocolates... and I could use a dance partner.'"
+          },
+          "score": 28,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Candy with Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Didi takes the candy with a smile. 'Perfect for the show. Keep this up and I'll put your name in lights. Small lights. Don't get cocky.'"
+          },
+          "score": 32,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Didi takes your hand. 'Show me what those trousers can do.' Your signature move resembles a printer jam. She laughs and pulls you into the beat."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A wall phone. Didi knows the stage manager's number."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Spare stage rope",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "An unused coil tied with packaging cord. A tag says CALL STAGE MANAGER. Even the rope has a better social calendar than you."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You need a number. Didi knows the local stage crew."
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 36,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Inspect Newspaper in inventory",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "IN YOUR POCKET",
+            "text": "The Lost Wages Bugle. Front page: INSTANT APPLES! The hotel garden's experimental planter turns seeds and water into fruit. Science declined to comment."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Moonlight Garden",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions.A folding stool waits on the equipment loan rack."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Newspaper with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Loaner folding stool",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A sturdy little stool from the garden's loan rack. Useful for high cabinets, poor for tall tales."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Take Loaner folding stool",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Taken: Folding stool. Your pockets ignore the laws of tailoring."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The floor is illuminated. Your dancing is not. Use it anyway; enthusiasm is the point."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You reprise The Nervous Accountant. The floor files no complaint."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "WALL TELEPHONE",
+            "text": "It offers no conversational opening. Larry recognizes the feeling."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Spare stage rope",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "An unused coil tied with packaging cord. A tag says CALL STAGE MANAGER. Even the rope has a better social calendar than you."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Take Spare stage rope",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The spare rope is tied with stubborn packaging cord. Call the stage manager about the coil, then find a small cutting tool."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You need a number. Didi knows the local stage crew."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Shop clerk",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "SHOP CLERK",
+            "text": "Clerk: 'Wine is twelve. Deluxe espresso takes a voucher from the service window above Lefty's. The night receptionist loves it.'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Lefty's Bar",
+          "room": {
+            "id": "bar",
+            "subtitle": "HAPPY HOUR IS A STATE OF DENIAL",
+            "title": "Lefty's Bar"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Lefty polishes the same glass history forgot. The regular raises the whiskey you brought him. Championship bowling fills the television; the bouncer follows every frame. The backstage door is open to you."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to The Service Alley",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A busker finishes a blues number that sounds suspiciously like your last date. An apple core sits on a bin lid. A maintenance rack holds a rubber mallet."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Blues busker",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "BLUES BUSKER",
+            "text": "Busker: 'Bring me a red for my picnic and the spare knife is yours. Got a date after this set. Yes, even blues musicians get lucky.'"
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Quik-E-Mart",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Wine, postcards, and a deluxe espresso machine with a voucher slot. The clerk says the hotel's night receptionist is a particular fan of that coffee."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Take Wine · $12",
+          "room": {
+            "id": "shop",
+            "subtitle": "OPEN ALL NIGHT. FEELINGS NOT INCLUDED.",
+            "title": "Quik-E-Mart"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You pay $12 for wine. Remaining funds: $58."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to The Service Alley",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "A busker finishes a blues number that sounds suspiciously like your last date. An apple core sits on a bin lid. A maintenance rack holds a rubber mallet."
+          },
+          "score": 40,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Wine with Blues busker",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The busker packs the wine for his picnic and gives you his spare pocket knife. 'For cord. Not critics.'"
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "alley",
+            "subtitle": "EVERY GREAT ROMANCE HAS A LOADING DOCK",
+            "title": "The Service Alley"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The busker's picnic wine is packed; he plays you a grateful blues riff. An apple core sits on a bin lid. A maintenance rack holds a rubber mallet."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "WALL TELEPHONE",
+            "text": "It offers no conversational opening. Larry recognizes the feeling."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Moonlight Garden",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Newspaper with Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Your newspaper fails to make a connection. It takes the rejection rather better than you usually do."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The experimental planter grows a mature apple tree from seeds and water. The local newspaper has the instructions."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "Moonlight shines on the garden. The experimental planter awaits seeds and water; the newspaper has its instructions. The stool's place on the loan rack is empty."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Inspect Newspaper in inventory",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "IN YOUR POCKET",
+            "text": "The Lost Wages Bugle. Front page: INSTANT APPLES! The hotel garden's experimental planter turns seeds and water into fruit. Science declined to comment."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Experimental planter",
+          "room": {
+            "id": "garden",
+            "subtitle": "PATENT PENDING. BOTANY OBJECTING.",
+            "title": "Moonlight Garden"
+          },
+          "dialogue": {
+            "speaker": "EXPERIMENTAL PLANTER",
+            "text": "It offers no conversational opening. Larry recognizes the feeling."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Travel via city map to Studio 69",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Spare stage rope",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "An unused coil tied with packaging cord. A tag says CALL STAGE MANAGER. Even the rope has a better social calendar than you."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Spare stage rope",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The coil's tag says RESERVED. Didi's stage manager can clear that up over the phone."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Wall telephone",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You need a number. Didi knows the local stage crew."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look around the current room",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "> LOOK AROUND",
+            "text": "The bass line has a mortgage. Didi, a stage designer off the clock and on the beat, catches your eye. A wall phone connects to the stage crew. A tied coil of spare rope hangs beside the DJ booth."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "Didi is planning her cabaret opening between songs. Talk to her about the props."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Talk Didi · stage designer",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "DIDI · STAGE DESIGNER",
+            "text": "Didi: 'Still needed for the show: a costume ring, flowers. Thanks for the props you've brought!'"
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Look Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "The floor is illuminated. Your dancing is not. Use it anyway; enthusiasm is the point."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        },
+        {
+          "action": "Use Dance floor",
+          "room": {
+            "id": "disco",
+            "subtitle": "THE BEAT IS HOT. THE COLLAR IS HOTTER.",
+            "title": "Studio 69"
+          },
+          "dialogue": {
+            "speaker": "THE NARRATOR",
+            "text": "You reprise The Nervous Accountant. The floor files no complaint."
+          },
+          "score": 44,
+          "objective": "Meet Didi, dance, and help collect props for her cabaret."
+        }
+      ]
+    }
+  }
+}

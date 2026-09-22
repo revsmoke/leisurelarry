@@ -1,0 +1,618 @@
+{
+  "generatedAt": "2026-09-22T02:15:31.278Z",
+  "purpose": "Six simple API/closed-choice sanity checks; not a blind game completion test",
+  "records": [
+    {
+      "fixture": "trade_request",
+      "repeat": 0,
+      "expected": "buy",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 1,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Make a useful trade at Lefty's.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Bring me a whiskey from Lefty and this TV remote is yours."
+            },
+            "inventory": [],
+            "score": 0,
+            "money": 80
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "take": "Take the thirsty regular",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "buy",
+            "confidence": 0.93,
+            "probabilities": {
+              "leave": 0,
+              "abstain": 0.03,
+              "buy": 0.95,
+              "take": 0.02
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.65,
+            "confidence": 0.65,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.02,
+              "2": 0.3,
+              "3": 0.68
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 826,
+          "output_tokens": 81
+        }
+      },
+      "apiMs": 369
+    },
+    {
+      "fixture": "trade_request",
+      "repeat": 1,
+      "expected": "buy",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 1,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Make a useful trade at Lefty's.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Bring me a whiskey from Lefty and this TV remote is yours."
+            },
+            "inventory": [],
+            "score": 0,
+            "money": 80
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "take": "Take the thirsty regular",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "buy",
+            "confidence": 0.93,
+            "probabilities": {
+              "buy": 0.95,
+              "leave": 0,
+              "abstain": 0.03,
+              "take": 0.02
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.67,
+            "confidence": 0.67,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.02,
+              "2": 0.3,
+              "3": 0.68
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 826,
+          "output_tokens": 81
+        }
+      },
+      "apiMs": 357
+    },
+    {
+      "fixture": "trade_request",
+      "repeat": 2,
+      "expected": "buy",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 1,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Make a useful trade at Lefty's.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Bring me a whiskey from Lefty and this TV remote is yours."
+            },
+            "inventory": [],
+            "score": 0,
+            "money": 80
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "take": "Take the thirsty regular",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "buy",
+            "confidence": 0.92,
+            "probabilities": {
+              "buy": 0.94,
+              "take": 0.03,
+              "leave": 0,
+              "abstain": 0.03
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.62,
+            "confidence": 0.62,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.03,
+              "2": 0.33,
+              "3": 0.64
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 826,
+          "output_tokens": 81
+        }
+      },
+      "apiMs": 346
+    },
+    {
+      "fixture": "completed_trade",
+      "repeat": 0,
+      "expected": "television",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 2,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Use the remote on the television to distract the bouncer.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Thanks for the whiskey. The remote is yours."
+            },
+            "inventory": [
+              "TV remote"
+            ],
+            "score": 12,
+            "money": 70
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "television": "Use TV remote on television",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "television",
+            "confidence": 1,
+            "probabilities": {
+              "abstain": 0,
+              "buy": 0,
+              "television": 1,
+              "leave": 0
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.4,
+            "confidence": 0.4,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.13,
+              "2": 0.34,
+              "3": 0.53
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.06
+          }
+        },
+        "usage": {
+          "input_tokens": 833,
+          "output_tokens": 85
+        }
+      },
+      "apiMs": 153
+    },
+    {
+      "fixture": "completed_trade",
+      "repeat": 1,
+      "expected": "television",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 2,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Use the remote on the television to distract the bouncer.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Thanks for the whiskey. The remote is yours."
+            },
+            "inventory": [
+              "TV remote"
+            ],
+            "score": 12,
+            "money": 70
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "television": "Use TV remote on television",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "television",
+            "confidence": 1,
+            "probabilities": {
+              "leave": 0,
+              "abstain": 0,
+              "buy": 0,
+              "television": 1
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.44,
+            "confidence": 0.44,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.13,
+              "2": 0.3,
+              "3": 0.57
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.07
+          }
+        },
+        "usage": {
+          "input_tokens": 833,
+          "output_tokens": 85
+        }
+      },
+      "apiMs": 172
+    },
+    {
+      "fixture": "completed_trade",
+      "repeat": 2,
+      "expected": "television",
+      "matched": true,
+      "request": {
+        "model": "jev-latest",
+        "state": {
+          "player": "Follow the displayed objective and try to finish the evening. Prefer a direct action supported by acquired clues. Examine or talk when evidence is missing.",
+          "controls": "Look examines; Talk converses; Take collects; Use operates. An inventory item can be used on a target or itself. Map travels. Avoid repeating an action that just failed or already fulfilled its purpose. Read the recent outcomes before selecting.",
+          "visible": {
+            "revision": 2,
+            "room": {
+              "id": "bar",
+              "title": "Lefty's Bar"
+            },
+            "objective": "Use the remote on the television to distract the bouncer.",
+            "dialogue": {
+              "speaker": "Regular",
+              "text": "Thanks for the whiskey. The remote is yours."
+            },
+            "inventory": [
+              "TV remote"
+            ],
+            "score": 12,
+            "money": 70
+          },
+          "recent_actions": []
+        },
+        "questions": {
+          "next_action": {
+            "type": "choice",
+            "instructions": "Which single available action should this player take next? Use the player style, current visible evidence and recent outcomes. Make progress toward a complete evening. Do not repeat a completed trade or failed action without changed circumstances. Criteria describe available controls, not facts that the actions will succeed.",
+            "criteria": {
+              "buy": "Use Lefty: whiskey $10",
+              "television": "Use TV remote on television",
+              "leave": "Travel to hotel",
+              "abstain": "None of these actions is supported, or the player is stuck and needs a human review."
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "instructions": "How clearly does the visible evidence establish a useful next step for a new player? Judge the displayed clues, not your own prior knowledge of this game.",
+            "criteria": [
+              "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "A purpose exists, but the next lead or relevant interaction is missing.",
+              "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            ]
+          },
+          "contradiction": {
+            "type": "noul",
+            "instructions": "Does the current dialogue or objective contradict a completed action recorded in recent_actions? Count a concrete inconsistency such as still requesting an item already delivered. Do not count comic exaggeration, a new request, or a failed action.",
+            "criteria": {
+              "true": "A concrete contradiction is supported by these observations.",
+              "false": "No concrete contradiction is supported."
+            }
+          }
+        }
+      },
+      "result": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_action": {
+            "type": "choice",
+            "choice": "television",
+            "confidence": 1,
+            "probabilities": {
+              "abstain": 0,
+              "leave": 0,
+              "buy": 0,
+              "television": 1
+            }
+          },
+          "clarity": {
+            "type": "score",
+            "score": 2.25,
+            "confidence": 0.25,
+            "legend": {
+              "0": "No identifiable purpose or useful lead is provided by the displayed evidence.",
+              "1": "A purpose exists, but the next lead or relevant interaction is missing.",
+              "2": "A useful next lead is inferable from the displayed evidence, with some interpretation.",
+              "3": "A specific next interaction or destination is explicitly explained in the displayed evidence."
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.17,
+              "2": 0.42,
+              "3": 0.41
+            }
+          },
+          "contradiction": {
+            "type": "noul",
+            "noul": 0.07
+          }
+        },
+        "usage": {
+          "input_tokens": 833,
+          "output_tokens": 85
+        }
+      },
+      "apiMs": 314
+    }
+  ]
+}

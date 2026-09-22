@@ -1,0 +1,322 @@
+{
+  "generatedAt": "2026-09-22T02:22:22.211Z",
+  "runs": [
+    {
+      "session": "2026-09-22T02-15-53-649Z",
+      "memoryEnabled": false,
+      "requests": 240,
+      "inputTokens": 905027,
+      "outputTokens": 113890,
+      "apiErrors": 0,
+      "models": [
+        "jev-1.13.0"
+      ],
+      "apiLatencyMs": {
+        "p50": 177,
+        "p95": 251
+      },
+      "estimatedInputCostUSD": 0.03801113400000001,
+      "players": {
+        "unguided": {
+          "score": 28,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "street",
+            "garden",
+            "shop",
+            "bar",
+            "alley",
+            "bathroom",
+            "backroom"
+          ],
+          "uniqueActions": 37,
+          "maxConsecutiveActionsWithoutScore": 36,
+          "mostRepeated": [
+            [
+              "Look around the current room",
+              6
+            ],
+            [
+              "Travel via city map to Quik-E-Mart",
+              5
+            ],
+            [
+              "Travel via city map to Lefty's Bar",
+              5
+            ]
+          ],
+          "actionMs": {
+            "p50": 71,
+            "p95": 120
+          },
+          "sampledFps": {
+            "min": 50,
+            "p50": 55
+          },
+          "choiceConfidence": {
+            "p50": 0.32
+          },
+          "averageClarity": 2.6072499999999996
+        },
+        "goal": {
+          "score": 36,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "bar",
+            "bathroom",
+            "backroom",
+            "casino",
+            "disco",
+            "shop"
+          ],
+          "uniqueActions": 21,
+          "maxConsecutiveActionsWithoutScore": 61,
+          "mostRepeated": [
+            [
+              "Travel via city map to Studio 69",
+              27
+            ],
+            [
+              "Travel via city map to Quik-E-Mart",
+              27
+            ],
+            [
+              "Talk Didi · stage designer",
+              6
+            ]
+          ],
+          "actionMs": {
+            "p50": 83,
+            "p95": 119
+          },
+          "sampledFps": {
+            "min": 49,
+            "p50": 55
+          },
+          "choiceConfidence": {
+            "p50": 0.31
+          },
+          "averageClarity": 2.4147499999999997
+        },
+        "curious": {
+          "score": 44,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "street",
+            "bar",
+            "bathroom",
+            "backroom",
+            "casino",
+            "disco",
+            "garden",
+            "shop",
+            "alley"
+          ],
+          "uniqueActions": 44,
+          "maxConsecutiveActionsWithoutScore": 26,
+          "mostRepeated": [
+            [
+              "Talk Didi · stage designer",
+              11
+            ],
+            [
+              "Look around the current room",
+              6
+            ],
+            [
+              "Travel via city map to Studio 69",
+              4
+            ]
+          ],
+          "actionMs": {
+            "p50": 71,
+            "p95": 109
+          },
+          "sampledFps": {
+            "min": 50,
+            "p50": 55
+          },
+          "choiceConfidence": {
+            "p50": 0.36
+          },
+          "averageClarity": 2.4937499999999995
+        }
+      }
+    },
+    {
+      "session": "2026-09-22T02-19-26-417Z",
+      "memoryEnabled": true,
+      "requests": 240,
+      "inputTokens": 1154456,
+      "outputTokens": 113410,
+      "apiErrors": 0,
+      "models": [
+        "jev-1.13.0"
+      ],
+      "apiLatencyMs": {
+        "p50": 177,
+        "p95": 239
+      },
+      "estimatedInputCostUSD": 0.048487152,
+      "players": {
+        "curious": {
+          "score": 76,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "street",
+            "bar",
+            "bathroom",
+            "backroom",
+            "casino",
+            "disco",
+            "garden",
+            "shop",
+            "alley",
+            "balcony",
+            "hotel",
+            "penthouse",
+            "rooftop"
+          ],
+          "uniqueActions": 58,
+          "maxConsecutiveActionsWithoutScore": 11,
+          "mostRepeated": [
+            [
+              "Travel via city map to Studio 69",
+              5
+            ],
+            [
+              "Travel via city map to Lefty's Bar",
+              3
+            ],
+            [
+              "Travel via city map to Quik-E-Mart",
+              3
+            ]
+          ],
+          "actionMs": {
+            "p50": 71,
+            "p95": 104
+          },
+          "sampledFps": {
+            "min": 50,
+            "p50": 56
+          },
+          "choiceConfidence": {
+            "p50": 0.47
+          },
+          "averageClarity": 2.504375
+        },
+        "goal": {
+          "score": 64,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "bar",
+            "bathroom",
+            "backroom",
+            "casino",
+            "disco",
+            "street",
+            "shop",
+            "alley"
+          ],
+          "uniqueActions": 42,
+          "maxConsecutiveActionsWithoutScore": 46,
+          "mostRepeated": [
+            [
+              "Travel via city map to Studio 69",
+              8
+            ],
+            [
+              "Travel via city map to Lefty's Bar",
+              5
+            ],
+            [
+              "Travel via city map to The Restroom",
+              5
+            ]
+          ],
+          "actionMs": {
+            "p50": 76,
+            "p95": 125
+          },
+          "sampledFps": {
+            "min": 51,
+            "p50": 55
+          },
+          "choiceConfidence": {
+            "p50": 0.37
+          },
+          "averageClarity": 2.337999999999999
+        },
+        "unguided": {
+          "score": 16,
+          "completed": false,
+          "steps": 80,
+          "reason": "action_budget",
+          "errors": 0,
+          "rooms": [
+            "street",
+            "garden",
+            "shop",
+            "bar",
+            "alley"
+          ],
+          "uniqueActions": 34,
+          "maxConsecutiveActionsWithoutScore": 30,
+          "mostRepeated": [
+            [
+              "Travel via city map to Quik-E-Mart",
+              8
+            ],
+            [
+              "Travel via city map to Lefty's Bar",
+              8
+            ],
+            [
+              "Talk Backstage bouncer",
+              6
+            ]
+          ],
+          "actionMs": {
+            "p50": 79,
+            "p95": 126
+          },
+          "sampledFps": {
+            "min": 48,
+            "p50": 56
+          },
+          "choiceConfidence": {
+            "p50": 0.22
+          },
+          "averageClarity": 2.4767500000000005
+        }
+      }
+    }
+  ],
+  "calibration": {
+    "requests": 6,
+    "matched": 6
+  },
+  "totals": {
+    "liveRequests": 480,
+    "requestsIncludingCalibration": 486,
+    "inputTokens": 2064460,
+    "estimatedInputCostUSD": 0.08670732
+  },
+  "limits": "One run per policy/condition; no human subjects. Sampled FPS is not a frame-time benchmark. Max no-score streak can include useful non-scoring clues. Cost is estimated from published rate, not a billing receipt."
+}

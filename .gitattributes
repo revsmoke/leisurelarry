@@ -1,0 +1,27 @@
+* text=auto
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.tscn text eol=lf
+*.tres text eol=lf
+*.godot text eol=lf
+*.sh text eol=lf
+*.command text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.wav binary
+*.ogg binary
+*.mp3 binary
+*.ttf binary
+*.woff2 binary
+*.zip binary
+# Preserve upstream skill, font-license and vendored MCP whitespace verbatim.
+.agents/skills/** whitespace=-blank-at-eol,-blank-at-eof
+tools/godot-mcp/** whitespace=-blank-at-eol,-blank-at-eof
+assets/fonts/*OFL*.txt whitespace=-blank-at-eol,-blank-at-eof

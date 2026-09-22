@@ -1,0 +1,11 @@
+[mcp_servers.godot]
+command = "/Users/twoedge/.nvm/versions/node/v24.14.1/bin/node"
+args = ["/Users/twoedge/Dev/leisuresuitlarry/tools/godot-mcp/build/index.js"]
+cwd = "/Users/twoedge/Dev/leisuresuitlarry"
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.godot.env]
+GODOT_PATH = "/Applications/Godot.app/Contents/MacOS/Godot"
+DEBUG = "false"
+GODOT_DEBUG = "false"

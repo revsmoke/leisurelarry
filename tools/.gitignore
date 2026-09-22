@@ -1,0 +1,4 @@
+cache/
+godot-mcp/node_modules/
+godot-mcp/build/
+godot-mcp/.DS_Store

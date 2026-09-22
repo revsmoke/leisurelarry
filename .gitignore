@@ -1,0 +1,32 @@
+# Secrets and machine-local credentials. Commit templates with placeholder values only.
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*credentials.json
+
+# Godot imports/cache and generated release packages.
+.godot/
+/exports/
+
+# Installed dependencies, generated tooling, and downloaded development archives.
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+/tools/cache/
+/tools/downloads/
+/tools/godot-mcp/build/
+/tools/godot-mcp/dist/
+
+# Local editor/system state and disposable logs.
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log

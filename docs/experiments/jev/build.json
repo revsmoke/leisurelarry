@@ -1,0 +1,56 @@
+{
+  "createdAt": "2026-09-22T02:22:49.835Z",
+  "notes": "Both live conditions used the same QA game build. Final harness supports both policies; exact requests and results are retained. Input-validation/persistence hardening and memory support were added between batches.",
+  "files": [
+    {
+      "path": "project.godot",
+      "bytes": 883,
+      "sha256": "65a6a627fda9bf3410f2b611e177de3c9ab9894558acee68ef0f74ecfb40ae62"
+    },
+    {
+      "path": "export_presets.cfg",
+      "bytes": 3427,
+      "sha256": "6940284ff9fae5d97e890f574cec06b1eaf491b981f3d478c8c3b168b9bd462b"
+    },
+    {
+      "path": "scripts/main.gd",
+      "bytes": 31008,
+      "sha256": "5085507323dd8a8b94238503b669f9bccf5d37c3af735456d23a3f904b60e4c5"
+    },
+    {
+      "path": "scripts/game_state.gd",
+      "bytes": 68791,
+      "sha256": "de126bb415d9db5501eeed15d9316d68e2db92dc0b6b3cdd1f579d0fd8111f76"
+    },
+    {
+      "path": "scripts/qa_bridge.gd",
+      "bytes": 10372,
+      "sha256": "0ac949b95c4f84eaf893242a9ee400181363b561695e7d2c34d62db20f78af9e"
+    },
+    {
+      "path": "tools/jev-qa/client.mjs",
+      "bytes": 6270,
+      "sha256": "1279b7a8f5cbe7d9e60b239d0e5131191cd659ce98ac5e39c0ad0bd5030ea27d"
+    },
+    {
+      "path": "tools/jev-qa/dashboard.js",
+      "bytes": 7215,
+      "sha256": "ba8ebef2bde0a16f5be202a874f98cd36a97d13175da0cfea2b08b54c4963982"
+    },
+    {
+      "path": "tools/jev-qa/server.mjs",
+      "bytes": 7225,
+      "sha256": "cf83ba69b23ce54e595d68a651249b23bb6e8c4a3d00696002ed5356bae337cf"
+    },
+    {
+      "path": "exports/qa/index.pck",
+      "bytes": 30529452,
+      "sha256": "71c91af1c786cd4331093248fe2b89f6d56b60fe3b61fa668902f45fd2dac4b3"
+    },
+    {
+      "path": "exports/qa/index.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    }
+  ]
+}

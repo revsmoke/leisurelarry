@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+if [ -n "${GODOT_PATH:-}" ]; then
+    exec "$GODOT_PATH" "$@"
+elif [ -x /Applications/Godot.app/Contents/MacOS/Godot ]; then
+    exec /Applications/Godot.app/Contents/MacOS/Godot "$@"
+elif command -v godot >/dev/null 2>&1; then
+    exec godot "$@"
+fi
+printf '%s\n' 'Godot 4.7.2 or later is required. Set GODOT_PATH to its executable.' >&2
+exit 127
