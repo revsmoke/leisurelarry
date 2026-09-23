@@ -61,6 +61,8 @@ The interface has a dark navy frame, warm cream text, mint selected actions and 
 
 Image generation supplies the setting, but the game-state data remains authoritative for puzzle objects. Small actionable objects must have readable labels or independently drawn props; decorative writing in a background is not a reliable source of a puzzle password or telephone number. Venue signage and room titles should be kept consistent as art receives further polish.
 
+Character hotspot labels prefer a position above the drawn silhouette, with either side available near the upper edge or neighboring labels. Place names before object labels, keep every target inside the scene, and avoid all NPC silhouettes. Reflow when character transforms or label sizes change; compact `+` targets follow the same rules.
+
 ## Background usage by location
 
 Each of the thirteen locations has its own illustration in `assets/backgrounds/`. These backgrounds are newly generated production art; the historical screenshots remain separate research references.

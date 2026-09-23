@@ -1,5 +1,6 @@
 extends Control
 ## Original tiny pixel actors, animated in Godot rather than baked into the scenery.
+signal label_bounds_changed
 var suit := Color("f3e6ce")
 var hair := Color("403349")
 var skin := Color("dca483")
@@ -20,9 +21,19 @@ var dance_style := "confident"
 var reduced_motion := false
 var reaction: Dictionary = {}
 
+func label_obstacle() -> Rect2:
+	# Drawing uses three-unit pixel blocks around the feet, not Control.size.
+	# Include hair, hats and raised hands so labels never sit on the silhouette.
+	return Rect2(-60, -164, 120, 170)
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	set_notify_local_transform(true)
 	set_process(walking or dance_time_left > 0.0)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_LOCAL_TRANSFORM_CHANGED:
+		label_bounds_changed.emit()
 
 func _process(delta: float) -> void:
 	tick += delta

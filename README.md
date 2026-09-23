@@ -68,6 +68,8 @@ The adaptation keeps the bar/remote/password, disco gifts, phone/rope, hotel fav
 
 ## Playtest and verification
 
+Character hotspot labels now sit above or beside their characters and reflow around other labels and scene edges. See the [before/after screenshots and placement checks](docs/audits/hotspot-labels.md).
+
 The [four-act finale update](docs/audits/finale-cutscene.md) adds the extended ending and saved-evening replay, with pairing, accessibility, lifecycle, and live browser checks.
 
 The [Larry/Lisa camp update](docs/audits/camp-update.md) covers all six profile configurations, optional encounters, the revised winning goal, save migration, final code checks, live Jev runs, and an assistant-operated full Lisa browser playthrough. [Historical visual references](docs/camp-reference.md) explain the new parody staging.

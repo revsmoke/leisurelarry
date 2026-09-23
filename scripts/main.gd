@@ -7,6 +7,7 @@ const WorldEffects = preload("res://scripts/world_effects.gd")
 const QABridge = preload("res://scripts/qa_bridge.gd")
 const TravelCutscene = preload("res://scripts/travel_cutscene.gd")
 const EncounterCutscene = preload("res://scripts/encounter_cutscene.gd")
+const HotspotLayout = preload("res://scripts/hotspot_layout.gd")
 const CasinoPanel = preload("res://scripts/casino_panel.gd")
 const INK := Color("0c1020")
 const PANEL := Color("141b2e")
@@ -82,6 +83,7 @@ var encounter_result := ""
 var logo_label: Label
 var profile_label: Label
 var finale_replay_button: Button
+var hotspot_layout_queued := false
 var setup_open := false
 var setup_can_cancel := false
 var setup_return_to_resume := false
@@ -417,6 +419,7 @@ func _render() -> void:
 	_clear(actors)
 	for h in room.get("hotspots", []):
 		_build_hotspot(h)
+	_layout_hotspots()
 	_clear(exit_box)
 	_label(exit_box, "GO TO", Rect2(0, 0, 55, 30), 12, MUTED).custom_minimum_size = Vector2(55, 30)
 	for e in room.get("exits", []):
@@ -472,36 +475,55 @@ func _build_hotspot(h: Dictionary) -> void:
 		npc.hair = Color("b77147")
 		npc.position = point + Vector2(0, 76)
 		npc.scale = Vector2.ONE * 0.85
+		npc.set_meta("hotspot_id", str(h.id))
 		actors.add_child(npc)
 		npc.set_reduced_motion(reduced_motion)
 		npc.sync_reaction(game.flags)
+		npc.label_bounds_changed.connect(_queue_hotspot_layout)
 	var label_text := str(h.get("label", h.id))
 	var prefix := ">  " if h.get("kind") == "exit" else "·  "
-	var width := clampf(label_text.length() * 8.3 + 32, 80, 220)
+	var width := clampf(font.get_string_size(prefix + label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 28, 80, 260)
 	width = width if show_hotspots else 32.0
-	var pos := Vector2(clampf(point.x - width / 2, 8, 1132 - width), clampf(point.y - 15, 8, 465))
-	if h.get("kind", "object") == "person":
-		pos.y = clampf(point.y - 66, 8, 465)
-	# Labels stay readable even when several small props share a table.
-	for attempt in range(8):
-		var overlaps := false
-		for other in hotspots.get_children():
-			if other is Control and Rect2(pos, Vector2(width, 34)).grow(3).intersects(other.get_rect()):
-				overlaps = true
-				break
-		if not overlaps:
-			break
-		var offset_y := 41.0 * float((attempt / 2) + 1) * (1.0 if attempt % 2 == 0 else -1.0)
-		pos.y = clampf(point.y - 15 + offset_y, 8, 465)
-	var b := _button(hotspots, prefix + label_text if show_hotspots else "+", Rect2(pos, Vector2(width if show_hotspots else 32.0, 34)), _hotspot_click.bind(h))
+	var b := _button(hotspots, prefix + label_text if show_hotspots else "+", Rect2(Vector2.ZERO, Vector2(width, 34)), _hotspot_click.bind(h))
 	b.set_meta("hotspot_id", str(h.id))
+	b.set_meta("hotspot_kind", str(h.get("kind", "object")))
+	b.set_meta("hotspot_anchor", point)
 	b.tooltip_text = label_text
 	b.add_theme_font_size_override("font_size", 14)
+	b.clip_text = true
+	b.size = Vector2(width, 34)
 	b.add_theme_stylebox_override("normal", _style(Color(0.04, 0.07, 0.13, 0.87), Color(0.44, 0.88, 0.8, 0.55), 6))
 	b.add_theme_stylebox_override("hover", _style(Color("172e3c"), MINT, 6))
 	b.mouse_entered.connect(func(): hover_label.text = ("Use " + str(game.items[selected_item].name) + " with " if not selected_item.is_empty() else verb.capitalize() + " · ") + label_text)
 	b.mouse_exited.connect(func(): hover_label.text = "Click the scenery to walk. Right-click an object to look at it.")
 	b.gui_input.connect(_hotspot_input.bind(h))
+	b.resized.connect(_queue_hotspot_layout)
+
+func _queue_hotspot_layout() -> void:
+	if hotspot_layout_queued: return
+	hotspot_layout_queued = true
+	_layout_hotspots.call_deferred()
+
+func _layout_hotspots() -> void:
+	hotspot_layout_queued = false
+	if not is_instance_valid(hotspots) or not is_instance_valid(actors): return
+	var obstacles: Array[Rect2] = []
+	var subjects: Dictionary = {}
+	for actor in actors.get_children():
+		var bounds: Rect2 = actor.get_transform() * actor.label_obstacle()
+		obstacles.append(bounds)
+		subjects[str(actor.get_meta("hotspot_id", ""))] = bounds
+	var occupied: Array[Rect2] = []
+	var area := Rect2(Vector2(8, 8), scene_area.size - Vector2(16, 62))
+	# Reserve character names first, independent of hotspot declaration order.
+	for people_first in [true, false]:
+		for button in hotspots.get_children():
+			var is_person: bool = button.get_meta("hotspot_kind", "") == "person"
+			if is_person != people_first: continue
+			var subject: Rect2 = subjects.get(str(button.get_meta("hotspot_id", "")), Rect2())
+			var rect: Rect2 = HotspotLayout.place(button.get_meta("hotspot_anchor", Vector2.ZERO), button.size, area, subject, obstacles, occupied)
+			button.position = rect.position
+			occupied.append(rect)
 
 func _hotspot_input(event: InputEvent, h: Dictionary) -> void:
 	if is_cinematic(): return
