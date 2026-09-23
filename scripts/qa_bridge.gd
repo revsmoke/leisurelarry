@@ -114,10 +114,10 @@ func request(message: Dictionary) -> Dictionary:
 	_execute(chosen)
 	_last_callback_ms = Time.get_ticks_msec() - action_started
 	await _settle_frames()
-	# Travel is a real UI movie, not a second model action. Wait for its arrival
-	# before publishing new room controls; never bypass the movie or puzzle gates.
+	# Wait for actual travel/encounter movies, including the 12-second finale.
+	# The 16-second bound stays inside the browser driver's 20-second deadline.
 	var travel_started := Time.get_ticks_msec()
-	while app.is_cinematic() and Time.get_ticks_msec() - travel_started < 8000:
+	while app.is_cinematic() and Time.get_ticks_msec() - travel_started < 16000:
 		await get_tree().process_frame
 	if app.is_cinematic():
 		busy = false
@@ -190,6 +190,8 @@ func _refresh_observation() -> void:
 		for button in controls:
 			if button.text == "Tidy":
 				_add("Press Tidy: " + ("show all carried items" if app.tidy_pockets else "tuck used souvenirs away"), {"kind": "button", "button": button}, choices)
+			elif button.text == "Replay finale":
+				_add("Press Replay finale", {"kind": "button", "button": button}, choices)
 		for id in MAP_IDS:
 			if id != app.game.room and app.game.is_unlocked(id):
 				_add("Travel via city map to " + str(app.game.get_room(id).name), {"kind": "map", "destination": id}, choices)

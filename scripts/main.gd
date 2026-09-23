@@ -81,6 +81,7 @@ var encounter_cutscene: Control
 var encounter_result := ""
 var logo_label: Label
 var profile_label: Label
+var finale_replay_button: Button
 var setup_open := false
 var setup_can_cancel := false
 var setup_return_to_resume := false
@@ -151,6 +152,7 @@ func _fit() -> void:
 		elif node == settings_button: node.position = Vector2(626, 75)
 		elif node == room_title: node.position.y = 142; node.size.x = 800
 		elif node == room_subtitle: node.position.y = 177; node.size.x = 800
+		elif node == finale_replay_button: node.position = Vector2(861, 140)
 		elif node == status: node.visible = false
 		elif node == scene_area:
 			node.position = Vector2(270, 210); node.scale = Vector2.ONE * (822.0 / 1140.0)
@@ -163,7 +165,7 @@ func _fit() -> void:
 		elif node == exit_box: node.position = Vector2(270, 1100); node.size = Vector2(822, 70)
 		elif node == inventory_scroll: node.size.y = 466
 		elif rect.position == Vector2(20, 898): node.position.y = 1140
-	if not compact: status.visible = true
+	if not compact: status.visible = not finale_replay_button.visible
 	var ratio := minf(size.x / design.x, size.y / design.y)
 	canvas.scale = Vector2.ONE * ratio
 	canvas.position = (size - design * ratio) / 2.0
@@ -298,6 +300,8 @@ func _build_ui() -> void:
 	room_subtitle = _label(canvas, "DOWNTOWN  /  LOST WAGES", Rect2(272, 134, 690, 20), 12, MUTED)
 	status = _label(canvas, "NIGHT IS YOUNG", Rect2(1140, 118, 264, 27), 13, MINT)
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	finale_replay_button = _button(canvas, "Replay finale", Rect2(1175, 112, 230, 38), _replay_finale, true)
+	finale_replay_button.visible = false
 	scene_area = Control.new()
 	scene_area.position = Vector2(270, 166)
 	scene_area.size = Vector2(1140, 553)
@@ -389,6 +393,8 @@ func _render() -> void:
 	score_label.text = "%d / 100" % game.score
 	money_label.text = "$%d" % game.cash
 	status.text = "A NIGHT TO REMEMBER" if game.completed else "NO BAD DECISIONS. YET."
+	finale_replay_button.visible = game.completed and game.flags.get("encounter_eve", false)
+	status.visible = not finale_replay_button.visible and canvas.size.x >= 1440
 	var art_path: String = WorldEffects.background_path_for(game.room, game.flags)
 	if art_path != current_background_path and ResourceLoader.exists(art_path):
 		background.texture = load(art_path)
@@ -614,7 +620,8 @@ func is_cinematic() -> bool:
 func _visual_profile() -> Dictionary:
 	return {"character": game.profile.character, "orientation": game.profile.orientation, "name": game.player_name(), "gender": game.player_gender(), "finale_name": game.finale_name(), "finale_gender": game.finale_gender()}
 
-func _present_encounter(encounter: Dictionary) -> void:
+func _present_encounter(encounter: Dictionary, persist: bool = true) -> void:
+	if is_cinematic(): return
 	_close_modal()
 	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
 	larry.walking = false
@@ -634,11 +641,17 @@ func _present_encounter(encounter: Dictionary) -> void:
 	encounter_cutscene.position = (canvas.size - encounter_cutscene.size) / 2.0
 	modal.add_child(encounter_cutscene)
 	encounter_cutscene.finished.connect(_finish_encounter, CONNECT_ONE_SHOT)
+	encounter_cutscene.phase_changed.connect(_refresh_companion)
 	encounter_cutscene.play(_visual_profile(), encounter, reduced_motion)
 	_say("DO NOT DISTURB", str(encounter.get("title", "An extremely private joke.")))
 	_cue("punchline")
-	_autosave()
+	if persist: _autosave()
 	_refresh_companion()
+
+func _replay_finale() -> void:
+	if is_cinematic() or setup_open or resume_pending or not game.completed or not game.flags.get("encounter_eve", false): return
+	ending_shown = false
+	_present_encounter({"partner": "eve", "name": game.finale_name(), "gender": game.finale_gender(), "title": "THE GRAND FINALE · A NIGHT TO REMEMBER", "caption": game.ending_text(), "finale": true}, false)
 
 func _finish_encounter() -> void:
 	if not is_instance_valid(encounter_cutscene): return
@@ -1077,13 +1090,14 @@ func _ending() -> void:
 	var p := _modal_base(game.ending_title(), "Your evening is complete. Exploration points are optional.", 750)
 	var scroll := ScrollContainer.new()
 	scroll.position = Vector2(34, 142)
-	scroll.size = Vector2(732, 430)
+	scroll.size = Vector2(732, 386)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	p.add_child(scroll)
 	var body := _label(scroll, game.ending_text() + "\n\nLATER THAT MORNING…\n\n" + game.epilogue(), Rect2(0, 0, 697, 0), 23)
 	body.custom_minimum_size = Vector2(697, 0)
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_label(p, "%d / 100 EXPLORATION POINTS  ·  %d MOVES" % [game.score, game.turns], Rect2(34, 594, 730, 31), 16, MINT)
+	_label(p, "%d / 100 EXPLORATION POINTS  ·  %d MOVES" % [game.score, game.turns], Rect2(34, 541, 730, 31), 16, MINT)
+	_button(p, "Replay finale", Rect2(34, 588, 732, 45), _replay_finale, true)
 	_button(p, "Stay a little longer", Rect2(34, 654, 349, 52), _close_modal)
 	_button(p, "One more evening", Rect2(401, 654, 365, 52), _character_setup.bind(true), true)
 

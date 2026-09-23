@@ -1,0 +1,119 @@
+{
+  "at": "2026-09-23T04:10:19.958473+00:00",
+  "scope": "Eight targeted Godot suites plus the TypeSafe client Node suite. Headless model, UI callback, layout, isolation, and cinematic tests; not live browser or enjoyment evidence.",
+  "passed": true,
+  "godotAssertions": 1892,
+  "nodeTests": 34,
+  "sourceUnchangedDuringChecks": true,
+  "memoryArtifactRestored": true,
+  "checks": [
+    {
+      "test": "tests/test_encounter_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 374,
+      "summary": [
+        "Encounter visuals: 374 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_profile_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 196,
+      "summary": [
+        "Profile interface tests: 196 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_qa_bridge.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 217,
+      "summary": [
+        "QA bridge checks: 217 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 213,
+      "summary": [
+        "Interface tests: 213 assertions, 0 failures. Full UI route: 100/100 and ending verified."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_modal_layout.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 558,
+      "summary": [
+        "Modal layout: 558 assertions, 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_web_companion.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 31,
+      "summary": [
+        "Web companion: 31 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_window_responsive.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 136,
+      "summary": [
+        "Actual Window responsive layout: 136 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 167,
+      "summary": [
+        "Upgrade interface tests: 167 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_jev_client.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "\u2139 tests 34",
+        "\u2139 suites 0",
+        "\u2139 pass 34",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 116.742209"
+      ],
+      "errors": []
+    }
+  ],
+  "scriptSha256": {
+    "scripts/actor.gd": "7955bd738ba56497e5086b415400ece97a3115153d6db3f8869527cae5efe8bf",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/encounter_cutscene.gd": "192df37afa10885831f22ba9bd736ba366aa1e894ac5d089aebda0dcbb5af7db",
+    "scripts/game_state.gd": "2abbb417461f81dfbfbcbd93c3e67bd22e3aea30edbb7caf779a692be68460e0",
+    "scripts/main.gd": "29d900ff39048a0175e9f7e172b09b4310a73f3bebaaef0c63c18c2d87b70341",
+    "scripts/qa_bridge.gd": "f0251700f243a638e64d1857e3d23138af54aec820d5015b1758ba8f19a26f71",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "d0a6b7f52b07a9aa7e3f012cedc2d14e2007130dbadcb0bd79b7f70f5b1cf990",
+    "scripts/web_companion.gd": "0b7db1e12b77586e92e17f83958cc7cf92a60a2677a7b283935d9cf9e822cd4e",
+    "scripts/world_effects.gd": "f3d884fa5d53cad57ee9345ab8ea809268330b6634760498109c24e1488de6a2"
+  }
+}

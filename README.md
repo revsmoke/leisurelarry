@@ -19,7 +19,7 @@ The game runs locally and needs no account, API key, Jev, or network after loadi
 
 Start a new evening as **Leisure Suit Larry** or **Leisure Suit Lisa** (short for Melisa). Choose heterosexual, homosexual, or bisexual; **bisexual is selected by default**. Heterosexual characters pursue the opposite gender, homosexual characters the same gender, and bisexual characters meet partners of both genders. The final dream date is **Eve or Adam**, with the opposite-gender finale for bisexual players.
 
-Your goal is explicit: **get laid with your dream date before sunrise**. Three optional encounter puzzles offer willing detours around the city. Each has a clue, a recoverable wrong answer, a flirtation, and an invitation you can accept or decline. These encounters do not complete the main story or change the 100-point exploration score. Campy curtain cutscenes keep the intimate action offscreen and state the outcome clearly. All partners are adults.
+Your goal is explicit: **get laid with your dream date before sunrise**. Three optional encounter puzzles offer willing detours around the city. Each has a clue, a recoverable wrong answer, a flirtation, and an invitation you can accept or decline. These encounters do not complete the main story or change the 100-point exploration score. Campy curtain cutscenes keep the intimate action offscreen and state the outcome clearly. The winning invitation gets a dedicated 12-second rooftop-to-sunrise finale starring both characters, with a three-second still version for reduced motion. Completed evenings offer **Replay finale** in the room and ending screen without changing progress or saves. All partners are adults.
 
 Profile and encounter history travel with your save. Older saves retain their progress and points and default to bisexual Larry; an old completed evening reopens the new rooftop invitation so you can play its revised finale.
 
@@ -67,6 +67,8 @@ Manual Save and Load use one slot. Progress also autosaves after actions. When a
 The adaptation keeps the bar/remote/password, disco gifts, phone/rope, hotel favor and grown-apple chain. It changes motivations and condenses the route. It is **not a scene-for-scene reproduction** of either original: original commercial art/dialogue/music, several bedroom/chapel branches, death timer, taxi simulation, voice acting and full NPC animation are not included. Romance remains suggestive and non-explicit. [Design and scope](docs/design.md) explains the choices.
 
 ## Playtest and verification
+
+The [four-act finale update](docs/audits/finale-cutscene.md) adds the extended ending and saved-evening replay, with pairing, accessibility, lifecycle, and live browser checks.
 
 The [Larry/Lisa camp update](docs/audits/camp-update.md) covers all six profile configurations, optional encounters, the revised winning goal, save migration, final code checks, live Jev runs, and an assistant-operated full Lisa browser playthrough. [Historical visual references](docs/camp-reference.md) explain the new parody staging.
 

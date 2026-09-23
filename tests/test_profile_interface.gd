@@ -172,10 +172,74 @@ func _run() -> void:
 	_check(not bridge.busy and not bridge_result.is_empty() and not bridge_result.has("error"), "Movie skip releases QA only after visible aftermath")
 	_check(not app.is_cinematic() and not app.game.completed and app.game.room == "casino", "Optional encounter returns to same room without finishing story")
 	bridge.queue_free()
+	await process_frame
+	await _finale_replay_checks()
 	app.queue_free()
 	await process_frame
 	print("Profile interface tests: %d assertions, %d failures." % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
+
+func _finale_replay_checks() -> void:
+	app._close_modal()
+	app.game.new_game()
+	app._render()
+	app._replay_finale()
+	_check(not app.is_cinematic() and not app.finale_replay_button.visible, "Unfinished evenings cannot replay an unearned finale")
+	# Completed-save fixtures exercise presentation only, not unaided gameplay.
+	for character in ["larry", "lisa"]:
+		for orientation in ["heterosexual", "homosexual", "bisexual"]:
+			app.game.new_game()
+			app.game.configure_profile(character, orientation)
+			app.game.completed = true
+			app.game.flags["encounter_eve"] = true
+			app.game.flags["ending_flirt"] = true
+			app.game.room = "rooftop"
+			app.game.score = 48
+			app.game.turns = 84
+			app.ending_shown = true
+			app.reduced_motion = false
+			app._render()
+			var before_saves: int = app.saves
+			var before_flags: Dictionary = app.game.flags.duplicate(true)
+			_check(app.finale_replay_button.visible, "Loaded completed profile offers replay")
+			app.finale_replay_button.pressed.emit()
+			_check(app.is_cinematic() and app.encounter_cutscene.player_actor.role == character and app.encounter_cutscene.partner_actor.gender == app.game.finale_gender(), "Replay stars the saved player and compatible finale partner")
+			var current: Control = app.encounter_cutscene
+			app._replay_finale()
+			_check(app.encounter_cutscene == current, "Repeated replay request cannot replace the active scene")
+			_key(KEY_SPACE)
+			await process_frame
+			_check(not app.is_cinematic() and _button(app.modal, "Replay finale") != null, "Skipping returns to the ending with a replay control")
+			_check(app.game.flags == before_flags and app.game.score == 48 and app.game.turns == 84 and app.saves == before_saves, "Replay changes no progress, points, turns, or autosave")
+			app._close_modal()
+	# Let one actual 12-second finale finish through the QA callback. This catches
+	# the former 8-second bridge deadline without skipping/accelerating the movie.
+	var prior_size: Vector2 = app.size
+	app.size = Vector2(884, 886)
+	app._fit()
+	_check(app.finale_replay_button.get_rect().end.x <= app.canvas.size.x, "Replay control fits the compact layout")
+	app.size = Vector2(1440, 960)
+	app._fit()
+	_check(not app.status.visible and app.finale_replay_button.visible, "Wide resize does not overlap the replay control with status text")
+	app.size = prior_size
+	app._fit()
+	var finale_bridge := QABridge.new()
+	app.add_child(finale_bridge)
+	await finale_bridge.start(app, false)
+	var observation: Dictionary = finale_bridge.observation()
+	var action_id := ""
+	for action in observation.actions:
+		if action.label == "Press Replay finale": action_id = action.id
+	_check(not action_id.is_empty(), "QA sees the same replay button as the player")
+	var saves_before: int = app.saves
+	var started := Time.get_ticks_msec()
+	var result: Dictionary = await finale_bridge.request({"type": "larry-qa-action", "requestId": "finale-natural", "revision": observation.revision, "action": action_id})
+	_check(not result.has("error") and not finale_bridge.busy and not app.is_cinematic(), "QA waits through the longer finale to its actual ending")
+	_check(Time.get_ticks_msec() - started >= 11500, "Natural finale was watched through its full duration")
+	_check(app.saves == saves_before and app.game.completed and app.game.score == 48, "QA replay also preserves the completed save")
+	finale_bridge.queue_free()
+	app._close_modal()
+	await process_frame
 
 func _startup_cancel_checks() -> void:
 	var previous_app: Control = app

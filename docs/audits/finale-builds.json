@@ -1,0 +1,716 @@
+{
+  "artifacts": {
+    "generatedAt": "2026-09-23T04:10:10.736Z",
+    "target": "all",
+    "files": [
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/macos/Last Call in Lost Wages.app",
+        "bytes": 214007409,
+        "decimalMB": "214.01"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-macOS.zip",
+        "bytes": 103314874,
+        "decimalMB": "103.31",
+        "sha256": "dfdc85f49d15562479cae88c981d263475b256d873c3f484ded03f04040413f8"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/web",
+        "bytes": 82595103,
+        "decimalMB": "82.60"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-Web.zip",
+        "bytes": 52852812,
+        "decimalMB": "52.85",
+        "sha256": "9026cd3f436a9b8b86e094a00b9adb8dd832fa3dc4cdfab9cad1cd087660cfde"
+      }
+    ],
+    "archivesContainAppleDoubleMetadata": false
+  },
+  "verification": {
+    "verifiedAt": "2026-09-23T04:10:09.129Z",
+    "passed": true,
+    "target": "all",
+    "packs": [
+      {
+        "file": "exports/macos/Last Call in Lost Wages.app/Contents/Resources/Leisure Suit Larry \u2014 Last Call in Lost Wages.pck",
+        "bytes": 42746756,
+        "sha256": "9073629f56921789f4d61c02eca61bfdd9edf3561d19cb882dc32d70907c8fc5",
+        "formatVersion": 4,
+        "fileCount": 80,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 19,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true,
+        "resources": [
+          {
+            "path": ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+            "bytes": 870
+          },
+          {
+            "path": ".godot/global_script_class_cache.cfg",
+            "bytes": 8
+          },
+          {
+            "path": ".godot/imported/NotoSansSymbols2.ttf-e21ca4eeb369da14057f4f5767bca9bd.fontdata",
+            "bytes": 640845
+          },
+          {
+            "path": ".godot/imported/Outfit.ttf-2d559f8d25f836ad9468f75faa3363db.fontdata",
+            "bytes": 61932
+          },
+          {
+            "path": ".godot/imported/Screenshot 2026-09-21 at 11.54.27\u202fPM.png-968add365148ef7d9d92f202395b2520.ctex",
+            "bytes": 127128
+          },
+          {
+            "path": ".godot/imported/SpaceGrotesk.ttf-ef722feb52caa018961f3d70a3a89996.fontdata",
+            "bytes": 70720
+          },
+          {
+            "path": ".godot/imported/alley-clean.png-834c2f863df24c03a8377441112982fd.ctex",
+            "bytes": 2054162
+          },
+          {
+            "path": ".godot/imported/alley.png-17f09d97d0f9ddea9fc4ab817aa4ac08.ctex",
+            "bytes": 2283314
+          },
+          {
+            "path": ".godot/imported/backroom-clean.png-06d4f2780c833fc14b382480070e2923.ctex",
+            "bytes": 2015476
+          },
+          {
+            "path": ".godot/imported/backroom.png-9e32f8340f2318f6efdd036e975bc0cf.ctex",
+            "bytes": 2144398
+          },
+          {
+            "path": ".godot/imported/balcony-clean.png-88803149bb74d0351187ba8e8e7eaafa.ctex",
+            "bytes": 1826696
+          },
+          {
+            "path": ".godot/imported/balcony-open.png-3ed4fd299ddb5f7cc3965246245130eb.ctex",
+            "bytes": 1791398
+          },
+          {
+            "path": ".godot/imported/balcony.png-a6efba2314330c5a921a3464fb0b478e.ctex",
+            "bytes": 2063226
+          },
+          {
+            "path": ".godot/imported/bar.png-35672fd330d9069033b978816266cee5.ctex",
+            "bytes": 2131786
+          },
+          {
+            "path": ".godot/imported/bathroom.png-c0cdf5317c6ee9283736a09db1eebf3e.ctex",
+            "bytes": 1987490
+          },
+          {
+            "path": ".godot/imported/casino.png-d3d39a8c0b2a2610ed5dcae5fcdb8bcd.ctex",
+            "bytes": 2289056
+          },
+          {
+            "path": ".godot/imported/disco.png-a99d268e2caa6c0cdd1f243a5d2be4fe.ctex",
+            "bytes": 2167974
+          },
+          {
+            "path": ".godot/imported/garden-clean.png-b4c0b229f2b7213c7e793d5150ee8e7e.ctex",
+            "bytes": 2215598
+          },
+          {
+            "path": ".godot/imported/garden.png-61d98adb24010e7e9e7f329fe1c05bd1.ctex",
+            "bytes": 2370042
+          },
+          {
+            "path": ".godot/imported/hotel.png-35a5d13ec03c554bb4aca0c53ff0b6aa.ctex",
+            "bytes": 2013456
+          },
+          {
+            "path": ".godot/imported/icon.svg-56083ea2a1f1a4f1e49773bdc6d7826c.ctex",
+            "bytes": 4734
+          },
+          {
+            "path": ".godot/imported/last_call.wav-b4ac0c5fa189ba7ba60c2ed8b7598186.sample",
+            "bytes": 1140415
+          },
+          {
+            "path": ".godot/imported/penthouse-clean.png-91a71054366e2faf70b87802731d8f51.ctex",
+            "bytes": 2080594
+          },
+          {
+            "path": ".godot/imported/penthouse.png-d710bda1b0f2a6ce4ccffb2c7a6fe1c0.ctex",
+            "bytes": 2202126
+          },
+          {
+            "path": ".godot/imported/rooftop.png-aa8aa249c471ae066358397ac34bfc71.ctex",
+            "bytes": 2280266
+          },
+          {
+            "path": ".godot/imported/shop.png-5b0dc0c10e742b19177d4be513e5a63b.ctex",
+            "bytes": 2159290
+          },
+          {
+            "path": ".godot/imported/street.png-db19872478bc4b61e56f8780789aaaf7.ctex",
+            "bytes": 2389480
+          },
+          {
+            "path": ".godot/uid_cache.bin",
+            "bytes": 1629
+          },
+          {
+            "path": "assets/audio/last_call.wav.import",
+            "bytes": 156
+          },
+          {
+            "path": "assets/backgrounds/alley-clean.png.import",
+            "bytes": 200
+          },
+          {
+            "path": "assets/backgrounds/alley.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/backroom-clean.png.import",
+            "bytes": 203
+          },
+          {
+            "path": "assets/backgrounds/backroom.png.import",
+            "bytes": 197
+          },
+          {
+            "path": "assets/backgrounds/balcony-clean.png.import",
+            "bytes": 202
+          },
+          {
+            "path": "assets/backgrounds/balcony-open.png.import",
+            "bytes": 201
+          },
+          {
+            "path": "assets/backgrounds/balcony.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/bar.png.import",
+            "bytes": 191
+          },
+          {
+            "path": "assets/backgrounds/bathroom.png.import",
+            "bytes": 197
+          },
+          {
+            "path": "assets/backgrounds/casino.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/disco.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/garden-clean.png.import",
+            "bytes": 201
+          },
+          {
+            "path": "assets/backgrounds/garden.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/hotel.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/penthouse-clean.png.import",
+            "bytes": 204
+          },
+          {
+            "path": "assets/backgrounds/penthouse.png.import",
+            "bytes": 198
+          },
+          {
+            "path": "assets/backgrounds/rooftop.png.import",
+            "bytes": 196
+          },
+          {
+            "path": "assets/backgrounds/shop.png.import",
+            "bytes": 193
+          },
+          {
+            "path": "assets/backgrounds/street.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/fonts/NotoSansSymbols2-OFL.txt",
+            "bytes": 4383
+          },
+          {
+            "path": "assets/fonts/NotoSansSymbols2.ttf.import",
+            "bytes": 173
+          },
+          {
+            "path": "assets/fonts/OFL.txt",
+            "bytes": 4389
+          },
+          {
+            "path": "assets/fonts/Outfit.ttf.import",
+            "bytes": 163
+          },
+          {
+            "path": "assets/fonts/SpaceGrotesk-OFL.txt",
+            "bytes": 4495
+          },
+          {
+            "path": "assets/fonts/SpaceGrotesk.ttf.import",
+            "bytes": 169
+          },
+          {
+            "path": "assets/icon.svg",
+            "bytes": 447
+          },
+          {
+            "path": "assets/icon.svg.import",
+            "bytes": 193
+          },
+          {
+            "path": "project.binary",
+            "bytes": 1027
+          },
+          {
+            "path": "scenes/main.tscn.remap",
+            "bytes": 97
+          },
+          {
+            "path": "screenshots/Screenshot 2026-09-21 at 11.54.27\u202fPM.png.import",
+            "bytes": 226
+          },
+          {
+            "path": "scripts/actor.gd.remap",
+            "bytes": 40
+          },
+          {
+            "path": "scripts/actor.gdc",
+            "bytes": 8233
+          },
+          {
+            "path": "scripts/casino_panel.gd.remap",
+            "bytes": 47
+          },
+          {
+            "path": "scripts/casino_panel.gdc",
+            "bytes": 13231
+          },
+          {
+            "path": "scripts/encounter_cutscene.gd.remap",
+            "bytes": 53
+          },
+          {
+            "path": "scripts/encounter_cutscene.gdc",
+            "bytes": 18299
+          },
+          {
+            "path": "scripts/game_state.gd.remap",
+            "bytes": 45
+          },
+          {
+            "path": "scripts/game_state.gdc",
+            "bytes": 65066
+          },
+          {
+            "path": "scripts/main.gd.remap",
+            "bytes": 39
+          },
+          {
+            "path": "scripts/main.gdc",
+            "bytes": 44569
+          },
+          {
+            "path": "scripts/qa_bridge.gd.remap",
+            "bytes": 44
+          },
+          {
+            "path": "scripts/qa_bridge.gdc",
+            "bytes": 11053
+          },
+          {
+            "path": "scripts/sound_effects.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/sound_effects.gdc",
+            "bytes": 2293
+          },
+          {
+            "path": "scripts/travel_cutscene.gd.remap",
+            "bytes": 50
+          },
+          {
+            "path": "scripts/travel_cutscene.gdc",
+            "bytes": 21233
+          },
+          {
+            "path": "scripts/web_companion.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/web_companion.gdc",
+            "bytes": 7401
+          },
+          {
+            "path": "scripts/world_effects.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/world_effects.gdc",
+            "bytes": 13377
+          },
+          {
+            "path": "skills-lock.json",
+            "bytes": 272
+          }
+        ]
+      },
+      {
+        "file": "exports/web/index.pck",
+        "bytes": 42746756,
+        "sha256": "9073629f56921789f4d61c02eca61bfdd9edf3561d19cb882dc32d70907c8fc5",
+        "formatVersion": 4,
+        "fileCount": 80,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 19,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true,
+        "resources": [
+          {
+            "path": ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+            "bytes": 870
+          },
+          {
+            "path": ".godot/global_script_class_cache.cfg",
+            "bytes": 8
+          },
+          {
+            "path": ".godot/imported/NotoSansSymbols2.ttf-e21ca4eeb369da14057f4f5767bca9bd.fontdata",
+            "bytes": 640845
+          },
+          {
+            "path": ".godot/imported/Outfit.ttf-2d559f8d25f836ad9468f75faa3363db.fontdata",
+            "bytes": 61932
+          },
+          {
+            "path": ".godot/imported/Screenshot 2026-09-21 at 11.54.27\u202fPM.png-968add365148ef7d9d92f202395b2520.ctex",
+            "bytes": 127128
+          },
+          {
+            "path": ".godot/imported/SpaceGrotesk.ttf-ef722feb52caa018961f3d70a3a89996.fontdata",
+            "bytes": 70720
+          },
+          {
+            "path": ".godot/imported/alley-clean.png-834c2f863df24c03a8377441112982fd.ctex",
+            "bytes": 2054162
+          },
+          {
+            "path": ".godot/imported/alley.png-17f09d97d0f9ddea9fc4ab817aa4ac08.ctex",
+            "bytes": 2283314
+          },
+          {
+            "path": ".godot/imported/backroom-clean.png-06d4f2780c833fc14b382480070e2923.ctex",
+            "bytes": 2015476
+          },
+          {
+            "path": ".godot/imported/backroom.png-9e32f8340f2318f6efdd036e975bc0cf.ctex",
+            "bytes": 2144398
+          },
+          {
+            "path": ".godot/imported/balcony-clean.png-88803149bb74d0351187ba8e8e7eaafa.ctex",
+            "bytes": 1826696
+          },
+          {
+            "path": ".godot/imported/balcony-open.png-3ed4fd299ddb5f7cc3965246245130eb.ctex",
+            "bytes": 1791398
+          },
+          {
+            "path": ".godot/imported/balcony.png-a6efba2314330c5a921a3464fb0b478e.ctex",
+            "bytes": 2063226
+          },
+          {
+            "path": ".godot/imported/bar.png-35672fd330d9069033b978816266cee5.ctex",
+            "bytes": 2131786
+          },
+          {
+            "path": ".godot/imported/bathroom.png-c0cdf5317c6ee9283736a09db1eebf3e.ctex",
+            "bytes": 1987490
+          },
+          {
+            "path": ".godot/imported/casino.png-d3d39a8c0b2a2610ed5dcae5fcdb8bcd.ctex",
+            "bytes": 2289056
+          },
+          {
+            "path": ".godot/imported/disco.png-a99d268e2caa6c0cdd1f243a5d2be4fe.ctex",
+            "bytes": 2167974
+          },
+          {
+            "path": ".godot/imported/garden-clean.png-b4c0b229f2b7213c7e793d5150ee8e7e.ctex",
+            "bytes": 2215598
+          },
+          {
+            "path": ".godot/imported/garden.png-61d98adb24010e7e9e7f329fe1c05bd1.ctex",
+            "bytes": 2370042
+          },
+          {
+            "path": ".godot/imported/hotel.png-35a5d13ec03c554bb4aca0c53ff0b6aa.ctex",
+            "bytes": 2013456
+          },
+          {
+            "path": ".godot/imported/icon.svg-56083ea2a1f1a4f1e49773bdc6d7826c.ctex",
+            "bytes": 4734
+          },
+          {
+            "path": ".godot/imported/last_call.wav-b4ac0c5fa189ba7ba60c2ed8b7598186.sample",
+            "bytes": 1140415
+          },
+          {
+            "path": ".godot/imported/penthouse-clean.png-91a71054366e2faf70b87802731d8f51.ctex",
+            "bytes": 2080594
+          },
+          {
+            "path": ".godot/imported/penthouse.png-d710bda1b0f2a6ce4ccffb2c7a6fe1c0.ctex",
+            "bytes": 2202126
+          },
+          {
+            "path": ".godot/imported/rooftop.png-aa8aa249c471ae066358397ac34bfc71.ctex",
+            "bytes": 2280266
+          },
+          {
+            "path": ".godot/imported/shop.png-5b0dc0c10e742b19177d4be513e5a63b.ctex",
+            "bytes": 2159290
+          },
+          {
+            "path": ".godot/imported/street.png-db19872478bc4b61e56f8780789aaaf7.ctex",
+            "bytes": 2389480
+          },
+          {
+            "path": ".godot/uid_cache.bin",
+            "bytes": 1629
+          },
+          {
+            "path": "assets/audio/last_call.wav.import",
+            "bytes": 156
+          },
+          {
+            "path": "assets/backgrounds/alley-clean.png.import",
+            "bytes": 200
+          },
+          {
+            "path": "assets/backgrounds/alley.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/backroom-clean.png.import",
+            "bytes": 203
+          },
+          {
+            "path": "assets/backgrounds/backroom.png.import",
+            "bytes": 197
+          },
+          {
+            "path": "assets/backgrounds/balcony-clean.png.import",
+            "bytes": 202
+          },
+          {
+            "path": "assets/backgrounds/balcony-open.png.import",
+            "bytes": 201
+          },
+          {
+            "path": "assets/backgrounds/balcony.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/bar.png.import",
+            "bytes": 191
+          },
+          {
+            "path": "assets/backgrounds/bathroom.png.import",
+            "bytes": 197
+          },
+          {
+            "path": "assets/backgrounds/casino.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/disco.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/garden-clean.png.import",
+            "bytes": 201
+          },
+          {
+            "path": "assets/backgrounds/garden.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/backgrounds/hotel.png.import",
+            "bytes": 194
+          },
+          {
+            "path": "assets/backgrounds/penthouse-clean.png.import",
+            "bytes": 204
+          },
+          {
+            "path": "assets/backgrounds/penthouse.png.import",
+            "bytes": 198
+          },
+          {
+            "path": "assets/backgrounds/rooftop.png.import",
+            "bytes": 196
+          },
+          {
+            "path": "assets/backgrounds/shop.png.import",
+            "bytes": 193
+          },
+          {
+            "path": "assets/backgrounds/street.png.import",
+            "bytes": 195
+          },
+          {
+            "path": "assets/fonts/NotoSansSymbols2-OFL.txt",
+            "bytes": 4383
+          },
+          {
+            "path": "assets/fonts/NotoSansSymbols2.ttf.import",
+            "bytes": 173
+          },
+          {
+            "path": "assets/fonts/OFL.txt",
+            "bytes": 4389
+          },
+          {
+            "path": "assets/fonts/Outfit.ttf.import",
+            "bytes": 163
+          },
+          {
+            "path": "assets/fonts/SpaceGrotesk-OFL.txt",
+            "bytes": 4495
+          },
+          {
+            "path": "assets/fonts/SpaceGrotesk.ttf.import",
+            "bytes": 169
+          },
+          {
+            "path": "assets/icon.svg",
+            "bytes": 447
+          },
+          {
+            "path": "assets/icon.svg.import",
+            "bytes": 193
+          },
+          {
+            "path": "project.binary",
+            "bytes": 1027
+          },
+          {
+            "path": "scenes/main.tscn.remap",
+            "bytes": 97
+          },
+          {
+            "path": "screenshots/Screenshot 2026-09-21 at 11.54.27\u202fPM.png.import",
+            "bytes": 226
+          },
+          {
+            "path": "scripts/actor.gd.remap",
+            "bytes": 40
+          },
+          {
+            "path": "scripts/actor.gdc",
+            "bytes": 8233
+          },
+          {
+            "path": "scripts/casino_panel.gd.remap",
+            "bytes": 47
+          },
+          {
+            "path": "scripts/casino_panel.gdc",
+            "bytes": 13231
+          },
+          {
+            "path": "scripts/encounter_cutscene.gd.remap",
+            "bytes": 53
+          },
+          {
+            "path": "scripts/encounter_cutscene.gdc",
+            "bytes": 18299
+          },
+          {
+            "path": "scripts/game_state.gd.remap",
+            "bytes": 45
+          },
+          {
+            "path": "scripts/game_state.gdc",
+            "bytes": 65066
+          },
+          {
+            "path": "scripts/main.gd.remap",
+            "bytes": 39
+          },
+          {
+            "path": "scripts/main.gdc",
+            "bytes": 44569
+          },
+          {
+            "path": "scripts/qa_bridge.gd.remap",
+            "bytes": 44
+          },
+          {
+            "path": "scripts/qa_bridge.gdc",
+            "bytes": 11053
+          },
+          {
+            "path": "scripts/sound_effects.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/sound_effects.gdc",
+            "bytes": 2293
+          },
+          {
+            "path": "scripts/travel_cutscene.gd.remap",
+            "bytes": 50
+          },
+          {
+            "path": "scripts/travel_cutscene.gdc",
+            "bytes": 21233
+          },
+          {
+            "path": "scripts/web_companion.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/web_companion.gdc",
+            "bytes": 7401
+          },
+          {
+            "path": "scripts/world_effects.gd.remap",
+            "bytes": 48
+          },
+          {
+            "path": "scripts/world_effects.gdc",
+            "bytes": 13377
+          },
+          {
+            "path": "skills-lock.json",
+            "bytes": 272
+          }
+        ]
+      }
+    ]
+  },
+  "nativeSmoke": {
+    "passed": true,
+    "exportedApp": "exports/macos/Last Call in Lost Wages.app",
+    "signatureValid": true,
+    "frames": 30,
+    "exitCode": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+  },
+  "qaPackSha256": "82429f734d34204088e069bf146adfed85d764896cc5774cd134aaba71e564d3",
+  "modelCampaign": "No new Jev API campaign. Validation used real browser playback and deterministic UI callbacks, including a natural 12-second QA replay."
+}

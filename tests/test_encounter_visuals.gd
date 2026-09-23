@@ -29,14 +29,15 @@ func _run() -> void:
 				scene.play(profile, invitation, reduced)
 				check(scene.active and scene.player_actor.role == character, "Selected player appears")
 				check(scene.partner_actor.gender == invitation.gender, "Selected partner gender appears")
-				check(scene.duration == (1.8 if reduced else 5.4), "Bounded duration for selected motion preference")
+				var expected_duration := (3.0 if reduced else 12.0) if invitation.finale else (1.8 if reduced else 5.4)
+				check(scene.duration == expected_duration, "Bounded duration for selected movie and motion preference")
 				check(not scene.caption_label.text.is_empty(), "Invitation or outcome caption is present")
 				for progress in [0.0, 0.2, 0.4, 0.6, 0.83]:
 					scene.elapsed = progress * scene.duration
 					scene._update_scene()
 					check(scene.player_actor.position.is_finite() and scene.partner_actor.position.is_finite(), "Finite actor positions")
 					if reduced:
-						check(not scene.player_actor.visible and not scene.partner_actor.visible and not scene.player_actor.walking, "Reduced-motion aftermath remains still")
+						check(scene.player_actor.visible == invitation.finale and scene.partner_actor.visible == invitation.finale and not scene.player_actor.walking and not scene.partner_actor.walking, "Reduced-motion finale retains both actors; optional scenes retain their still card")
 				var before := int(signals.finished)
 				scene.skip_button.pressed.emit()
 				scene.finish()
@@ -50,6 +51,66 @@ func _run() -> void:
 		var before := int(signals.finished)
 		scene._process(scene.duration + 10.0)
 		check(not scene.active and signals.finished == before + 1, "Natural completion is bounded and emits once")
+	for character in ["larry", "lisa"]:
+		for orientation in ["heterosexual", "homosexual", "bisexual"]:
+			var partner_gender := ("female" if character == "lisa" else "male") if orientation == "homosexual" else ("male" if character == "lisa" else "female")
+			var partner_name := "Adam" if partner_gender == "male" else "Eve"
+			var player_profile := {"character": character, "orientation": orientation, "name": character.capitalize()}
+			var event := {"partner": "eve", "name": partner_name, "gender": partner_gender, "finale": true}
+			scene.play(player_profile, event)
+			check(scene.is_finale and scene.duration == 12.0, "Winning encounter uses the extended finale for %s/%s" % [character, orientation])
+			check(scene.player_actor.role == character and scene.partner_actor.role == partner_name.to_lower(), "Finale casts both chosen characters")
+			for act in [[0.1, "invitation"], [0.3, "together"], [0.54, "privacy"], [0.9, "sunrise"]]:
+				scene.elapsed = scene.duration * act[0]
+				scene._update_scene()
+				check(scene.phase == act[1], "Finale advances through authored act: " + str(act[1]))
+				check(scene.player_actor.visible == (act[1] != "privacy") and scene.partner_actor.visible == (act[1] != "privacy"), "Both actors are visible outside the private curtain interlude")
+			check(scene.player_actor.modulate.a == 1.0 and scene.partner_actor.modulate.a == 1.0 and not scene.player_actor.walking and not scene.partner_actor.walking, "Victory tableau shows both actors at full opacity, standing together")
+			check(scene._name_label.text.contains(character.capitalize()) and scene._name_label.text.contains(partner_name), "Victory names match both visible characters")
+			check(scene.caption_label.text.contains("got laid"), "Finale states the achieved goal")
+			check(player_profile == {"character": character, "orientation": orientation, "name": character.capitalize()} and event == {"partner": "eve", "name": partner_name, "gender": partner_gender, "finale": true}, "Finale presentation does not mutate caller state")
+			scene.finish()
+			scene.play(player_profile, event, true)
+			var player_position: Vector2 = scene.player_actor.position
+			var partner_position: Vector2 = scene.partner_actor.position
+			check(scene.phase == "sunrise" and scene.player_actor.visible and scene.partner_actor.visible, "Reduced motion starts on the complete pair tableau")
+			scene._process(1.0)
+			check(scene.player_actor.position == player_position and scene.partner_actor.position == partner_position and scene.active, "Reduced motion holds a still tableau for reading")
+			var before := int(signals.finished)
+			scene._process(2.0)
+			scene.finish()
+			check(not scene.active and signals.finished == before + 1, "Reduced finale ends once after its three-second hold")
+	for progress in [0.08, 0.32, 0.54, 0.9]:
+		scene.play({"character": "larry"}, {"partner": "eve", "name": "Adam", "gender": "male", "finale": true})
+		scene.elapsed = progress * scene.duration
+		scene._update_scene()
+		var act: String = scene.phase
+		var before := int(signals.finished)
+		scene.skip_button.pressed.emit()
+		scene._process(scene.duration)
+		scene.finish()
+		check(not scene.active and signals.finished == before + 1 and not scene.is_processing(), "Skip during %s completes once, even with a late frame" % act)
+		check(not scene.player_actor.is_processing() and not scene.partner_actor.is_processing(), "Skip during %s stops both actors" % act)
+	var announced: Array[Dictionary] = []
+	var listener := func(): announced.append({"phase": scene.phase, "label": scene._phase_label.text, "caption": scene.caption_label.text, "player_visible": scene.player_actor.visible, "partner_visible": scene.partner_actor.visible})
+	scene.phase_changed.connect(listener)
+	scene.play({"character": "lisa"}, {"partner": "eve", "name": "Eve", "gender": "female", "finale": true})
+	check(announced.size() == 1 and announced[0].phase == "invitation" and announced[0].label.begins_with("01") and announced[0].player_visible, "Initial phase notification follows complete labels and pose")
+	for progress in [0.1, 0.2, 0.3, 0.32, 0.35, 0.5, 0.54, 0.6, 0.8, 0.9, 0.95]:
+		scene.elapsed = progress * scene.duration
+		scene._update_scene()
+	check(announced.size() == 4, "Many rendered frames emit only four phase notifications")
+	check(announced.map(func(value): return value.phase) == ["invitation", "together", "privacy", "sunrise"], "Phase notifications follow story order")
+	check(announced[2].label.begins_with("03") and not announced[2].player_visible and not announced[2].partner_visible, "Privacy notification observes completed hidden-actor pose")
+	check(announced[3].label.begins_with("04") and announced[3].caption.contains("got laid") and announced[3].player_visible and announced[3].partner_visible, "Sunrise notification includes outcome and both visible characters")
+	scene.finish()
+	announced.clear()
+	scene.play({"character": "larry"}, {"partner": "eve", "name": "Adam", "gender": "male", "finale": true}, true)
+	scene._process(0.5)
+	scene._process(0.5)
+	check(announced.size() == 1 and announced[0].phase == "sunrise", "Reduced motion announces its still final tableau once")
+	scene.finish()
+	scene.phase_changed.disconnect(listener)
 	for character in ["larry", "lisa"]:
 		for orientation in ["heterosexual", "homosexual", "bisexual"]:
 			var expected_host := "Eve" if (character == "lisa") == (orientation == "homosexual") else "Adam"
@@ -84,14 +145,14 @@ func _capture(scene: Control) -> void:
 	root.content_scale_size = Vector2i(1000, 700)
 	DirAccess.make_dir_recursive_absolute("res://exports/camp-captures")
 	for character in ["larry", "lisa"]:
-		var partner := "Eve" if character == "larry" else "Adam"
-		scene.play({"character": character}, {"partner": "eve", "name": partner, "gender": "female" if partner == "Eve" else "male", "title": "Paradise: strictly a private performance", "finale": true})
-		scene.set_process(false)
-		for progress in [0.2, 0.85]:
-			scene.elapsed = progress * scene.duration
-			scene._update_scene()
-			for actor in [scene.player_actor, scene.partner_actor]: actor.set_process(false)
-			await process_frame
-			await RenderingServer.frame_post_draw
-			root.get_texture().get_image().save_png("res://exports/camp-captures/%s-%d.png" % [character, int(progress * 100)])
-		scene.finish()
+		for partner in ["Eve", "Adam"]:
+			scene.play({"character": character}, {"partner": "eve", "name": partner, "gender": "female" if partner == "Eve" else "male", "title": "Paradise: strictly a private performance", "finale": true})
+			scene.set_process(false)
+			for progress in [0.12, 0.32, 0.54, 0.90]:
+				scene.elapsed = progress * scene.duration
+				scene._update_scene()
+				for actor in [scene.player_actor, scene.partner_actor]: actor.set_process(false)
+				await process_frame
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png("res://exports/camp-captures/finale-%s-%s-%d.png" % [character, partner.to_lower(), int(progress * 100)])
+			scene.finish()
