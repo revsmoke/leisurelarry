@@ -1,0 +1,191 @@
+{
+  "at": "2026-09-23T16:32:44.335559+00:00",
+  "scope": "Fifteen relevant Godot suites plus the TypeSafe client Node suite. Headless model, UI callback, layout, isolation, and cinematic tests; not live browser or enjoyment evidence.",
+  "passed": true,
+  "godotAssertions": 4420,
+  "nodeTests": 34,
+  "sourceUnchangedDuringChecks": true,
+  "memoryArtifactRestored": true,
+  "checks": [
+    {
+      "test": "tests/test_npc_animations.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 340,
+      "summary": [
+        "NPC animation checks: 340 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_hotspot_labels.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 333,
+      "summary": [
+        "Hotspot label checks: 333 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_game.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 214,
+      "summary": [
+        "Adventure tests: 214 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 213,
+      "summary": [
+        "Interface tests: 213 assertions, 0 failures. Full UI route: 100/100 and ending verified."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_qa_bridge.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 217,
+      "summary": [
+        "QA bridge checks: 217 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_web_companion.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 32,
+      "summary": [
+        "Web companion: 32 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_window_responsive.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 136,
+      "summary": [
+        "Actual Window responsive layout: 136 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 79,
+      "summary": [
+        "Upgrade visuals: 79 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_encounter_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 374,
+      "summary": [
+        "Encounter visuals: 374 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_travel_cutscenes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 334,
+      "summary": [
+        "Travel cutscene tests: 334 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_profile_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 196,
+      "summary": [
+        "Profile interface tests: 196 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_modal_layout.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 558,
+      "summary": [
+        "Modal layout: 558 assertions, 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_memory_lifecycle.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 348,
+      "summary": [
+        "Native lifecycle: 348 checks, 0 failures; 10 cycles after 2 warmups; static baseline 37655090, final 38399386, ratio 1.01976614582517"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 167,
+      "summary": [
+        "Upgrade interface tests: 167 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_identity_romance.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 879,
+      "summary": [
+        "Identity and romance tests: 879 assertions, 0 failures; six identities, three optional encounters each."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_jev_client.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "\u2139 tests 34",
+        "\u2139 suites 0",
+        "\u2139 pass 34",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 109.528458"
+      ],
+      "errors": []
+    }
+  ],
+  "scriptSha256": {
+    "scripts/actor.gd": "bd003db38932821c4ef97eee15b4edfcdb0007ada69095d35f10884e149405f9",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/encounter_cutscene.gd": "192df37afa10885831f22ba9bd736ba366aa1e894ac5d089aebda0dcbb5af7db",
+    "scripts/game_state.gd": "d3b8e59b5b1503a8bbcee553858ae21464e1bd5764a6d84bc43b30904c21025a",
+    "scripts/hotspot_layout.gd": "66a356ba03c9f3b2e7ae433457f5de9916888982d17516921dfbad6998e1c733",
+    "scripts/main.gd": "4e9e4e5eff151e53bd56d86e24e1f249cbe8ed3af22744b58db65486ac2b395d",
+    "scripts/npc_animation.gd": "813c166e90fb1617c29aab8974399410702a214a2d99954eeefa0e884bf44b3f",
+    "scripts/qa_bridge.gd": "f0251700f243a638e64d1857e3d23138af54aec820d5015b1758ba8f19a26f71",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "d0a6b7f52b07a9aa7e3f012cedc2d14e2007130dbadcb0bd79b7f70f5b1cf990",
+    "scripts/web_companion.gd": "7df4add28edccd7d87b922e346d7f9a401d10e122ecd46f10f1c690e4ffec74a",
+    "scripts/world_effects.gd": "f3d884fa5d53cad57ee9345ab8ea809268330b6634760498109c24e1488de6a2"
+  }
+}

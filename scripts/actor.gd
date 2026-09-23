@@ -1,6 +1,11 @@
 extends Control
 ## Original tiny pixel actors, animated in Godot rather than baked into the scenery.
 signal label_bounds_changed
+const NPCAnimation = preload("res://scripts/npc_animation.gd")
+var npc_animation := NPCAnimation.new()
+var gesture_pose: Dictionary = {}
+var drawing_head := false
+var body_transform := Transform2D.IDENTITY
 var suit := Color("f3e6ce")
 var hair := Color("403349")
 var skin := Color("dca483")
@@ -8,7 +13,7 @@ var shirt := Color("ef6a9d")
 var walking := false:
 	set(value):
 		walking = value
-		set_process(walking or dance_time_left > 0.0)
+		_update_processing()
 		queue_redraw()
 var is_larry := true
 var role := "larry"
@@ -24,12 +29,12 @@ var reaction: Dictionary = {}
 func label_obstacle() -> Rect2:
 	# Drawing uses three-unit pixel blocks around the feet, not Control.size.
 	# Include hair, hats and raised hands so labels never sit on the silhouette.
-	return Rect2(-60, -164, 120, 170)
+	return Rect2(-84, -178, 168, 190)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_notify_local_transform(true)
-	set_process(walking or dance_time_left > 0.0)
+	_update_processing()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_LOCAL_TRANSFORM_CHANGED:
@@ -37,22 +42,36 @@ func _notification(what: int) -> void:
 
 func _process(delta: float) -> void:
 	tick += delta
+	npc_animation.advance(delta)
 	if dance_time_left > 0.0:
 		dance_time_left = maxf(0.0, dance_time_left - delta)
 		dance_elapsed += delta
-	set_process(walking or dance_time_left > 0.0)
+	_update_processing()
+	queue_redraw()
+
+func _update_processing() -> void:
+	set_process(walking or dance_time_left > 0.0 or npc_animation.active())
+
+func hover_react() -> void:
+	if npc_animation.hover(role):
+		_update_processing()
+		queue_redraw()
+
+func interact_react(action: String) -> void:
+	npc_animation.interact(action)
+	_update_processing()
 	queue_redraw()
 
 func dance(seconds: float = 2.6) -> void:
 	walking = false
 	dance_elapsed = 0.0
 	dance_time_left = maxf(seconds, 0.0)
-	set_process(dance_time_left > 0.0)
+	_update_processing()
 	queue_redraw()
 
 func stop_dance() -> void:
 	dance_time_left = 0.0
-	set_process(walking)
+	_update_processing()
 	queue_redraw()
 
 func set_reduced_motion(value: bool) -> void:
@@ -68,16 +87,22 @@ func sync_reaction(flags: Dictionary) -> void:
 	queue_redraw()
 
 func block(x: float, y: float, w: float, h: float, color: Color) -> void:
-	draw_rect(Rect2(x * 3, y * 3, w * 3, h * 3), color)
+	var offset: Vector2 = gesture_pose.get("head", Vector2.ZERO) if drawing_head else Vector2.ZERO
+	draw_rect(Rect2((Vector2(x, y) + offset) * 3, Vector2(w, h) * 3), color)
 
 func _draw() -> void:
+	gesture_pose = npc_animation.pose(reduced_motion)
+	drawing_head = false
 	var dancing := dance_time_left > 0.0
 	var beat := 0.65 if reduced_motion else dance_elapsed * (6.0 if dance_style == "careful" else 10.5 if dance_style == "copy" else 9.5)
 	var stride := sin(beat) * 3.0 if dancing else sin(tick * 12.0) * 2.0 if walking and not reduced_motion else 0.0
 	draw_set_transform(Vector2(0, -3), 0, Vector2(1.0, 0.25))
 	draw_circle(Vector2.ZERO, 26, Color(0.01, 0.01, 0.03, 0.45))
 	# Move the drawing, not the Control: walking tweens retain their stage position.
-	draw_set_transform(Vector2(sin(beat) * (3.0 if dance_style == "careful" else 8.0), -absf(sin(beat)) * 7.0) if dancing and not reduced_motion else Vector2.ZERO, sin(beat) * 0.065 if dancing and not reduced_motion else 0.0)
+	var body_offset := Vector2(sin(beat) * (3.0 if dance_style == "careful" else 8.0), -absf(sin(beat)) * 7.0) if dancing and not reduced_motion else Vector2.ZERO
+	body_offset += Vector2(gesture_pose.get("offset", Vector2.ZERO))
+	body_transform = Transform2D(sin(beat) * 0.065 if dancing and not reduced_motion else 0.0, body_offset)
+	draw_set_transform_matrix(body_transform)
 	if role == "lisa":
 		_draw_lisa(stride, dancing, beat)
 		_draw_reaction()
@@ -99,7 +124,9 @@ func _draw() -> void:
 	block(-5, -32, 3, 6, suit.lightened(0.15))
 	block(2, -32, 3, 6, suit.lightened(0.15))
 	block(-3, -21, 6, 2, Color("d7b45f"))
-	if dancing and dance_style == "careful":
+	if _draw_gesture_arms(suit):
+		pass
+	elif dancing and dance_style == "careful":
 		# Hands at waist, little steps: every move has passed a risk assessment.
 		block(-12, -27, 5, 6, suit)
 		block(-10, -22, 7, 4, skin)
@@ -125,6 +152,7 @@ func _draw() -> void:
 		block(6, -30 + stride * 0.3, 4, 16, suit)
 		block(-10, -15 - stride * 0.3, 4, 4, skin)
 		block(6, -15 + stride * 0.3, 4, 4, skin)
+	drawing_head = true
 	block(-3, -35, 6, 4, skin.darkened(0.08))
 	block(-6, -45, 12, 11, skin)
 	block(6, -41, 3, 4, skin)
@@ -137,15 +165,18 @@ func _draw() -> void:
 		block(-5, -43, 11, 8, hair)
 		block(5, -40, 3, 4, skin)
 	else:
-		block(3, -41, 2, 2, Color("26223b"))
-	block(2, -36, 4, 1, Color("9b5262"))
+		_draw_eye(3, -41)
+	block(2, -36, 4, float(gesture_pose.get("mouth", 1.0)), Color("9b5262"))
+	drawing_head = false
 	if is_larry and role == "larry":
 		block(-4, -27, 1, 5, Color("e7bb56"))
 		block(3, -26, 3, 1, Color("eaddc8"))
 		block(1, -43, 4, 1, hair)
 	if role == "busker":
+		drawing_head = true
 		block(-8, -48, 16, 2, Color("332c3e"))
 		block(-5, -52, 10, 5, Color("332c3e"))
+		drawing_head = false
 	if role == "bartender":
 		block(-6, -25, 12, 14, Color("e7d4b2"))
 	_draw_reaction()
@@ -168,7 +199,9 @@ func _draw_lisa(stride: float, dancing: bool, beat: float) -> void:
 	block(3, -32, 4, 8, suit.lightened(0.12))
 	block(-5, -21, 10, 2, Color("d7b45f"))
 	block(-1, -22, 3, 3, Color("f5d691"))
-	if dancing:
+	if _draw_gesture_arms(suit):
+		pass
+	elif dancing:
 		var small := dance_style == "careful"
 		var high_left := sin(beat * 0.5) >= 0.0
 		block(-11, -31 if small else -38 if high_left else -29, 5, 12, suit)
@@ -180,6 +213,7 @@ func _draw_lisa(stride: float, dancing: bool, beat: float) -> void:
 		block(6, -30 + stride * 0.3, 4, 16, suit)
 		block(-10, -15 - stride * 0.3, 4, 4, skin)
 		block(6, -15 + stride * 0.3, 4, 4, skin)
+	drawing_head = true
 	block(-3, -35, 6, 4, skin.darkened(0.08))
 	block(-5, -45, 11, 11, skin)
 	block(6, -40, 2, 3, skin)
@@ -191,10 +225,11 @@ func _draw_lisa(stride: float, dancing: bool, beat: float) -> void:
 	block(7, -40, 3, 6, locks)
 	block(6, -35, 5, 4, locks)
 	block(-5, -47, 7, 2, Color("ad6871"))
-	block(2, -41, 2, 2, Color("26223b"))
+	_draw_eye(2, -41)
 	block(1, -43, 4, 1, locks)
-	block(2, -36, 4, 1, Color("ac365d"))
+	block(2, -36, 4, float(gesture_pose.get("mouth", 1.0)), Color("ac365d"))
 	block(-5, -35, 2, 3, Color("f4ce80"))
+	drawing_head = false
 
 func _draw_adam(stride: float) -> void:
 	var trousers := Color("45394f")
@@ -207,21 +242,24 @@ func _draw_adam(stride: float) -> void:
 	block(-3, -33, 6, 12, Color("eee1c6"))
 	block(-6, -33, 3, 7, jacket.lightened(0.2))
 	block(3, -33, 3, 7, jacket.lightened(0.2))
-	block(-11, -31 - stride * 0.3, 4, 17, jacket.darkened(0.1))
-	block(7, -31 + stride * 0.3, 4, 17, jacket)
-	block(-11, -15 - stride * 0.3, 4, 4, skin)
-	block(7, -15 + stride * 0.3, 4, 4, skin)
+	if not _draw_gesture_arms(jacket):
+		block(-11, -31 - stride * 0.3, 4, 17, jacket.darkened(0.1))
+		block(7, -31 + stride * 0.3, 4, 17, jacket)
+		block(-11, -15 - stride * 0.3, 4, 4, skin)
+		block(7, -15 + stride * 0.3, 4, 4, skin)
 	block(-6, -19, 12, 2, Color("d7b45f"))
+	drawing_head = true
 	block(-3, -36, 6, 4, skin)
 	block(-6, -46, 12, 11, skin)
 	block(6, -42, 3, 4, skin)
 	block(-7, -49, 14, 5, Color("5c3a3b"))
 	block(-8, -46, 3, 8, Color("5c3a3b"))
 	block(-5, -47, 9, 2, Color("9c6b55"))
-	block(3, -42, 2, 2, Color("26223b"))
+	_draw_eye(3, -42)
 	block(1, -44, 4, 1, Color("5c3a3b"))
 	block(-1, -37, 7, 2, Color("6c4143"))
-	block(2, -36, 3, 1, skin)
+	block(2, -36, 3, float(gesture_pose.get("mouth", 1.0)), skin if gesture_pose.is_empty() else Color("9b5262"))
+	drawing_head = false
 
 func _draw_guest(stride: float = 0.0) -> void:
 	var dress := Color("dc789e") if role == "eve" else suit if role == "romance_guest" else Color("57bbb8")
@@ -233,20 +271,40 @@ func _draw_guest(stride: float = 0.0) -> void:
 	block(-7, -32, 14, 14, dress)
 	block(-9, -21, 18, 8, dress.darkened(0.1))
 	block(-3, -34, 6, 4, skin)
-	block(-8, -29, 3, 16, skin)
-	block(6, -29, 3, 16, skin)
-	block(-9, -32, 5, 6, dress)
-	block(5, -32, 5, 6, dress)
+	if not _draw_gesture_arms(dress, true):
+		block(-8, -29, 3, 16, skin)
+		block(6, -29, 3, 16, skin)
+		block(-9, -32, 5, 6, dress)
+		block(5, -32, 5, 6, dress)
+	drawing_head = true
 	block(-5, -44, 11, 11, skin)
 	block(-7, -47, 13, 5, locks)
 	block(-8, -44, 4, 13, locks)
 	block(5, -43, 3, 9, locks)
-	block(1, -41, 2, 2, Color("282039"))
-	block(4, -36, 2, 1, Color("ae405b"))
+	_draw_eye(1, -41)
+	block(4, -36, 2, float(gesture_pose.get("mouth", 1.0)), Color("ae405b"))
 	block(-5, -33, 2, 2, Color("f5cb75"))
+	drawing_head = false
 	block(-5, -21, 10, 2, Color("efc269"))
 	if role == "receptionist":
 		block(-4, -30, 8, 4, Color("eee1c6"))
+
+func _draw_eye(x: float, y: float) -> void:
+	block(x, y, 2, 1 if gesture_pose.get("blink", false) else 2, Color("26223b"))
+	if gesture_pose.get("brow", false): block(x - 1, y - 3, 4, 1, hair)
+
+func _draw_gesture_arms(sleeve: Color, bare: bool = false) -> bool:
+	if gesture_pose.is_empty(): return false
+	for side in [-1, 1]:
+		var angle := deg_to_rad(float(gesture_pose.left if side < 0 else gesture_pose.right))
+		draw_set_transform_matrix(body_transform * Transform2D(angle, Vector2(side * 24, -90)))
+		draw_rect(Rect2(-6, 0, 12, 42), skin if bare else sleeve)
+		if bare: draw_rect(Rect2(-7, 0, 14, 12), sleeve)
+		draw_rect(Rect2(-6, 39, 12, 12), skin)
+	draw_set_transform_matrix(body_transform)
+	if gesture_pose.get("cloth", false):
+		block(-3, -22, 6, 5, Color("eee1c6"))
+	return true
 
 
 func _draw_reaction() -> void:

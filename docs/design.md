@@ -63,6 +63,8 @@ Image generation supplies the setting, but the game-state data remains authorita
 
 Character hotspot labels prefer a position above the drawn silhouette, with either side available near the upper edge or neighboring labels. Place names before object labels, keep every target inside the scene, and avoid all NPC silhouettes. Reflow when character transforms or label sizes change; compact `+` targets follow the same rules.
 
+NPC pixel actors perform short gestures when their body or hotspot receives hover or an action. Hover cycles through three role-appropriate cues; an active action has priority over further hover. Look raises an eyebrow, Talk animates the mouth and hands, Take produces a hands-off recoil, and Use reaches toward the player. These are reactions to an attempted action, not evidence of success; narration and deterministic rules resolve the result. Conversation panels include the matching animated character. Same-room refreshes preserve actor instances, room changes free them, and finished gestures stop redraw processing. Reduced motion holds one still pose until the cue ends. Names remain visible without a duplicate tooltip obscuring the performing face.
+
 ## Background usage by location
 
 Each of the thirteen locations has its own illustration in `assets/backgrounds/`. These backgrounds are newly generated production art; the historical screenshots remain separate research references.

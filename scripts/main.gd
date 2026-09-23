@@ -106,6 +106,7 @@ func _ready() -> void:
 	heading_font.variation_opentype = {2003265652: 650.0}
 	display_font = heading_font
 	game.new_game()
+	game.interaction_started.connect(_animate_npc)
 	_load_preferences()
 	_build_ui()
 	resized.connect(_fit)
@@ -402,6 +403,7 @@ func _render() -> void:
 		background.texture = load(art_path)
 		current_background_path = art_path
 	if current_render_room != game.room:
+		_clear(actors)
 		if walk_tween and walk_tween.is_valid():
 			walk_tween.kill()
 		larry.walking = false
@@ -416,7 +418,12 @@ func _render() -> void:
 	larry.set_reduced_motion(reduced_motion)
 	world_effects.sync_state(game.room, game.flags, _visual_profile())
 	_clear(hotspots)
-	_clear(actors)
+	# Keep NPCs through same-room UI refreshes so gestures finish naturally.
+	var present_ids: Array = room.get("hotspots", []).map(func(h): return str(h.id))
+	for actor in actors.get_children():
+		if not present_ids.has(str(actor.get_meta("hotspot_id", ""))):
+			actors.remove_child(actor)
+			actor.queue_free()
 	for h in room.get("hotspots", []):
 		_build_hotspot(h)
 	_layout_hotspots()
@@ -464,10 +471,13 @@ func _render() -> void:
 func _build_hotspot(h: Dictionary) -> void:
 	var point := Vector2(float(h.get("x", 0.5)) * 1140, float(h.get("y", 0.5)) * 506)
 	if h.get("kind", "object") == "person":
-		var npc := Control.new()
-		npc.set_script(Actor)
+		var npc := _npc_actor(str(h.id))
+		var fresh := not is_instance_valid(npc)
+		if fresh: npc = Actor.new()
 		npc.is_larry = false
 		var casting: Dictionary = game.actor_profile(str(h.id))
+		if npc.role != str(casting.get("role", h.id)) or npc.gender != str(casting.get("gender", "male")):
+			npc.npc_animation = Actor.NPCAnimation.new()
 		npc.role = str(casting.get("role", h.id))
 		npc.gender = str(casting.get("gender", "male"))
 		npc.suit = PINK if str(h.id).length() % 2 == 0 else Color("52b7b1")
@@ -476,10 +486,23 @@ func _build_hotspot(h: Dictionary) -> void:
 		npc.position = point + Vector2(0, 76)
 		npc.scale = Vector2.ONE * 0.85
 		npc.set_meta("hotspot_id", str(h.id))
-		actors.add_child(npc)
+		if fresh:
+			actors.add_child(npc)
+			# The art is drawn above a zero-size feet anchor. Give its visible body
+			# a real input surface, without adding duplicate keyboard/QA buttons.
+			var body := Control.new()
+			body.name = "BodyHitTarget"
+			body.position = Vector2(-38, -158)
+			body.size = Vector2(76, 164)
+			body.mouse_filter = Control.MOUSE_FILTER_STOP
+			body.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			npc.add_child(body)
+			body.mouse_entered.connect(_hotspot_enter.bind(str(h.id)))
+			body.mouse_exited.connect(_hotspot_exit)
+			body.gui_input.connect(_npc_body_input.bind(str(h.id)))
+			npc.label_bounds_changed.connect(_queue_hotspot_layout)
 		npc.set_reduced_motion(reduced_motion)
 		npc.sync_reaction(game.flags)
-		npc.label_bounds_changed.connect(_queue_hotspot_layout)
 	var label_text := str(h.get("label", h.id))
 	var prefix := ">  " if h.get("kind") == "exit" else "·  "
 	var width := clampf(font.get_string_size(prefix + label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 28, 80, 260)
@@ -488,16 +511,47 @@ func _build_hotspot(h: Dictionary) -> void:
 	b.set_meta("hotspot_id", str(h.id))
 	b.set_meta("hotspot_kind", str(h.get("kind", "object")))
 	b.set_meta("hotspot_anchor", point)
-	b.tooltip_text = label_text
+	b.set_meta("accessible_label", label_text)
+	# Names already appear on the button and hover line. A duplicate tooltip
+	# below an NPC label would cover the face precisely while it is performing.
+	b.tooltip_text = "" if h.get("kind", "object") == "person" else label_text
 	b.add_theme_font_size_override("font_size", 14)
 	b.clip_text = true
 	b.size = Vector2(width, 34)
 	b.add_theme_stylebox_override("normal", _style(Color(0.04, 0.07, 0.13, 0.87), Color(0.44, 0.88, 0.8, 0.55), 6))
 	b.add_theme_stylebox_override("hover", _style(Color("172e3c"), MINT, 6))
-	b.mouse_entered.connect(func(): hover_label.text = ("Use " + str(game.items[selected_item].name) + " with " if not selected_item.is_empty() else verb.capitalize() + " · ") + label_text)
-	b.mouse_exited.connect(func(): hover_label.text = "Click the scenery to walk. Right-click an object to look at it.")
+	b.mouse_entered.connect(_hotspot_enter.bind(str(h.id)))
+	b.focus_entered.connect(_hotspot_enter.bind(str(h.id)))
+	b.mouse_exited.connect(_hotspot_exit)
 	b.gui_input.connect(_hotspot_input.bind(h))
 	b.resized.connect(_queue_hotspot_layout)
+
+func _npc_actor(id: String) -> Control:
+	if not is_instance_valid(actors): return null
+	for actor in actors.get_children():
+		if str(actor.get_meta("hotspot_id", "")) == id: return actor
+	return null
+
+func _hotspot_enter(id: String) -> void:
+	if is_cinematic() or is_instance_valid(modal) or setup_open or resume_pending: return
+	var h: Dictionary = game.get_hotspot(id)
+	hover_label.text = ("Use " + str(game.items[selected_item].name) + " with " if not selected_item.is_empty() else verb.capitalize() + " · ") + str(h.get("label", id))
+	var npc := _npc_actor(id)
+	if is_instance_valid(npc): npc.hover_react()
+
+func _hotspot_exit() -> void:
+	hover_label.text = "Click the scenery to walk. Right-click an object to look at it."
+
+func _npc_body_input(event: InputEvent, id: String) -> void:
+	if is_cinematic() or is_instance_valid(modal) or setup_open or resume_pending: return
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT: _hotspot_click(game.get_hotspot(id))
+		elif event.button_index == MOUSE_BUTTON_RIGHT: _hotspot_input(event, game.get_hotspot(id))
+
+func _animate_npc(id: String, action: String) -> void:
+	if is_cinematic(): return
+	var npc := _npc_actor(id)
+	if is_instance_valid(npc): npc.interact_react(action)
 
 func _queue_hotspot_layout() -> void:
 	if hotspot_layout_queued: return
@@ -1260,6 +1314,7 @@ func _conversation(target: String) -> void:
 	if is_cinematic(): return
 	var options: Array = game.dialogue_options(target)
 	if options.is_empty(): return
+	_animate_npc(target, "talk")
 	var title: String = str(game.get_hotspot(target).get("label", target.capitalize()))
 	var p := _modal_base("A word with " + title, "Choose a topic, or close this conversation to explore.", 790)
 	var scroll := ScrollContainer.new()
@@ -1273,8 +1328,38 @@ func _conversation(target: String) -> void:
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation", 14)
 	scroll.add_child(column)
-	var reply := _label(column, last_message, Rect2(0, 0, 697, 0), 21)
-	reply.custom_minimum_size = Vector2(697, 0)
+	var reply_parent: Control = column
+	var reply_width := 697.0
+	var npc := _npc_actor(target)
+	if is_instance_valid(npc):
+		# The dialog covers the room; let the same character perform its reply
+		# here immediately, without delaying any conversation controls.
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 16)
+		column.add_child(row)
+		var stage := Control.new()
+		stage.custom_minimum_size = Vector2(100, 158)
+		stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(stage)
+		var portrait := Actor.new()
+		portrait.name = "ConversationActor"
+		portrait.is_larry = false
+		portrait.role = npc.role
+		portrait.gender = npc.gender
+		portrait.skin = npc.skin
+		portrait.suit = npc.suit
+		portrait.shirt = npc.shirt
+		portrait.hair = npc.hair
+		portrait.position = Vector2(50, 152)
+		portrait.scale = Vector2.ONE * 0.85
+		stage.add_child(portrait)
+		portrait.set_reduced_motion(reduced_motion)
+		portrait.sync_reaction(game.flags)
+		portrait.interact_react("talk")
+		reply_parent = row
+		reply_width = 581.0
+	var reply := _label(reply_parent, last_message, Rect2(0, 0, reply_width, 0), 21)
+	reply.custom_minimum_size = Vector2(reply_width, 0)
 	reply.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for option in options:
 		var id := str(option.id)

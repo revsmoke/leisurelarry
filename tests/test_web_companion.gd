@@ -69,6 +69,12 @@ func _run() -> void:
 	check(companion._snapshot.dialogue == "Narrator: A visible response.", "Companion uses visible narration")
 	check(not JSON.stringify(companion._snapshot).contains("Hidden spoiler"), "Hidden label never leaks")
 	var id: String = companion._snapshot.buttons[0].id
+	button.text = "+"
+	button.set_meta("accessible_label", "Adam · rooftop host")
+	companion.refresh()
+	check(companion._snapshot.buttons[0].text == "Adam · rooftop host" and button.tooltip_text.is_empty(), "Compact NPC keeps its readable name without a face-covering tooltip")
+	button.text = "Take clue"
+	companion.refresh()
 	check(not companion._activate({"id": id, "revision": companion.revision - 1}) and clicked == 0, "Stale revision cannot activate a control")
 	check(not companion._activate({"id": "invented", "revision": companion.revision}) and clicked == 0, "Only published action IDs execute")
 	check(companion._activate({"id": id, "revision": companion.revision}) and clicked == 1, "Valid action emits the real button signal")

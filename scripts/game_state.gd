@@ -1,4 +1,6 @@
 extends RefCounted
+## Presentation notification only; listeners must not resolve or repeat actions.
+signal interaction_started(target: String, action: String)
 ## The entire adventure lives here, independent of scenes or rendering.
 ## Every irreversible trade has a renewable source or a permanent reward.
 
@@ -431,6 +433,7 @@ func _interact_text(target: String, verb: String = "look", item: String = "") ->
 		return "You are not carrying that. Wishful thinking is not an inventory system."
 	if not _valid_target(key):
 		return "You cannot see that here. Look around or check your inventory."
+	interaction_started.emit(key, "use" if verb.strip_edges().to_lower() in ["buy", "order"] else action)
 	if action == "look":
 		return _look(key)
 	for destination in rooms[room].exits:

@@ -66,6 +66,7 @@ for (const file of packs) {
   assert.ok(names.includes('scripts/travel_cutscene.gdc'), 'Missing compiled travel cutscenes');
   assert.ok(names.includes('scripts/encounter_cutscene.gdc'), 'Missing compiled encounter cutscenes');
   assert.ok(names.includes('scripts/hotspot_layout.gdc'), 'Missing compiled hotspot layout');
+  assert.ok(names.includes('scripts/npc_animation.gdc'), 'Missing compiled NPC animation');
   assert.ok(names.includes('scripts/casino_panel.gd.remap'), 'Missing casino script remap');
   for (const background of backgrounds) {
     assert.ok(names.includes(`assets/backgrounds/${background}.png.import`), `Missing ${background} import`);

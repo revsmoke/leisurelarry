@@ -27,6 +27,8 @@ Profile and encounter history travel with your save. Older saves retain their pr
 
 Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inventory item, then click a target to use it. Selecting or right-clicking a pocket item also examines it; double-clicking uses it on itself. Click the scenery to move your character. **Take** collects loose objects; **Use** operates machines and activities. Talking to people opens labeled conversation topics. To buy whiskey, talk to Lefty and choose the explicit **Buy a whiskey miniature · $10** offer, or type `buy whiskey`. **Use** on Lefty opens the same offer. The action line shows your selected item; **×** or Escape cancels it. New items receive a pocket-arrival cue; **Tidy** tucks away used souvenirs without deleting them.
 
+Hover over a character or their name to see rotating personality gestures. Click either the character or its label to perform the selected action: Talk gestures, Take gets a comic hands-off response, and Use gets a reaching gesture. Conversations show the same animated character beside the reply. Reduced motion holds a still pose. See [NPC animation checks and browser captures](docs/audits/npc-animations.md).
+
 | Input | Action |
 |---|---|
 | 1 / 2 / 3 / 4 | Look / Talk / Take / Use |

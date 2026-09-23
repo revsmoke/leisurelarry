@@ -136,7 +136,7 @@ func _collect_controls(node: Node, buttons: Array, ranges: Array, keys: Dictiona
 			if text == "×": text = "Cancel selected item" if child.tooltip_text.begins_with("Cancel selected item") else "Close dialog"
 			elif text == "?": text = "Help"
 			elif text == "H": text = "Toggle scene labels"
-			if text.is_empty() or (text == "+" and not child.tooltip_text.is_empty()): text = child.tooltip_text
+			if text.is_empty() or text == "+": text = str(child.get_meta("accessible_label", child.tooltip_text))
 			var occurrence := int(keys.get(text, 0))
 			keys[text] = occurrence + 1
 			var id := "button_%d" % child.get_instance_id()
