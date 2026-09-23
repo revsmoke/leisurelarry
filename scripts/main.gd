@@ -6,6 +6,7 @@ const Actor = preload("res://scripts/actor.gd")
 const WorldEffects = preload("res://scripts/world_effects.gd")
 const QABridge = preload("res://scripts/qa_bridge.gd")
 const TravelCutscene = preload("res://scripts/travel_cutscene.gd")
+const EncounterCutscene = preload("res://scripts/encounter_cutscene.gd")
 const CasinoPanel = preload("res://scripts/casino_panel.gd")
 const INK := Color("0c1020")
 const PANEL := Color("141b2e")
@@ -76,6 +77,16 @@ var animate_travel_in_tests := false
 var travel_result := ""
 var travel_speaker := "THE NARRATOR"
 var travel_variants: Dictionary = {}
+var encounter_cutscene: Control
+var encounter_result := ""
+var logo_label: Label
+var profile_label: Label
+var setup_open := false
+var setup_can_cancel := false
+var setup_return_to_resume := false
+var resume_pending := false
+var draft_character := "larry"
+var draft_orientation := "bisexual"
 
 func _qa_enabled() -> bool:
 	return QABridge.runtime_allowed()
@@ -97,7 +108,7 @@ func _ready() -> void:
 	resized.connect(_fit)
 	_fit()
 	_render()
-	_say("THE NARRATOR", "Lost Wages, 1987. Eighty bucks. One polyester suit. Absolutely no reason to be this confident. Welcome to your big night, Larry.")
+	_say("THE NARRATOR", "Lost Wages, 1987. Eighty bucks. One polyester suit. One mission: get laid. Your fly has higher ambitions than your bank balance.")
 	_start_music()
 	sound_effects = SoundEffects.new()
 	add_child(sound_effects)
@@ -113,8 +124,11 @@ func _ready() -> void:
 		qa_bridge.start.call_deferred(self)
 	else:
 		_automation.call_deferred()
-	if not qa_mode and DisplayServer.get_name() != "headless" and FileAccess.file_exists("user://autosave.json") and not ("--capture-all" in OS.get_cmdline_user_args() or "--smoke-ui" in OS.get_cmdline_user_args()):
-		_resume_prompt.call_deferred()
+	if DisplayServer.get_name() != "headless" and not ("--capture-all" in OS.get_cmdline_user_args() or "--smoke-ui" in OS.get_cmdline_user_args()):
+		if not qa_mode and FileAccess.file_exists("user://autosave.json"):
+			_resume_prompt.call_deferred()
+		else:
+			_character_setup.call_deferred(false)
 
 func _fit() -> void:
 	var compact := size.x < 1100 and size.y / maxf(size.x, 1) > 0.85
@@ -211,6 +225,7 @@ func _button(parent: Node, text: String, rect: Rect2, callback: Callable, accent
 	b.add_theme_font_size_override("font_size", 17)
 	b.add_theme_color_override("font_color", INK if accent else CREAM)
 	b.add_theme_color_override("font_hover_color", INK if accent else MINT)
+	b.add_theme_color_override("font_focus_color", INK if accent else CREAM)
 	b.add_theme_color_override("font_pressed_color", INK)
 	b.add_theme_color_override("font_disabled_color", MUTED.darkened(0.3))
 	b.add_theme_stylebox_override("normal", _style(MINT if accent else PANEL, EDGE))
@@ -219,7 +234,9 @@ func _button(parent: Node, text: String, rect: Rect2, callback: Callable, accent
 	b.add_theme_stylebox_override("focus", _style(Color.TRANSPARENT, PINK))
 	b.add_theme_stylebox_override("disabled", _style(INK, EDGE))
 	b.pressed.connect(func():
-		if not is_travelling(): callback.call()
+		if is_cinematic(): return
+		if (setup_open or resume_pending) and (not is_instance_valid(modal) or not modal.is_ancestor_of(b)): return
+		callback.call()
 	)
 	parent.add_child(b)
 	return b
@@ -231,10 +248,10 @@ func _build_ui() -> void:
 	_panel(canvas, Rect2(0, 0, 1440, 960), INK, Color.TRANSPARENT, 0)
 	_panel(canvas, Rect2(0, 0, 1440, 88), Color("111729"), EDGE, 0)
 	_label(canvas, "LEISURE SUIT", Rect2(28, 13, 210, 23), 16, PINK)
-	var logo := _label(canvas, "LARRY", Rect2(26, 29, 210, 48), 38)
-	logo.add_theme_font_override("font", display_font)
+	logo_label = _label(canvas, "LARRY", Rect2(26, 29, 210, 48), 38)
+	logo_label.add_theme_font_override("font", display_font)
 	_label(canvas, "LAST CALL IN LOST WAGES", Rect2(274, 20, 500, 29), 21)
-	_label(canvas, "A very questionable night out.", Rect2(274, 49, 480, 22), 15, MUTED)
+	profile_label = _label(canvas, "Bisexual · dressed to get lucky.", Rect2(274, 49, 480, 22), 15, MUTED)
 	money_label = _label(canvas, "$80", Rect2(840, 29, 94, 34), 23, MINT)
 	score_label = _label(canvas, "0 / 100", Rect2(941, 29, 118, 34), 20, CREAM)
 	_button(canvas, "Save", Rect2(1080, 23, 74, 42), _save).disabled = qa_mode
@@ -354,7 +371,16 @@ func _clear(node: Node) -> void:
 		child.queue_free()
 
 func _render() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
+	var encounter: Dictionary = game.consume_encounter()
+	if not encounter.is_empty() and (DisplayServer.get_name() != "headless" or animate_travel_in_tests) and not "--smoke-ui" in OS.get_cmdline_user_args():
+		_present_encounter(encounter)
+		return
+	logo_label.text = game.player_name().to_upper()
+	profile_label.text = str(game.profile.orientation).capitalize() + " · dressed to get lucky."
+	larry.role = str(game.profile.character)
+	larry.gender = game.player_gender()
+	larry.queue_redraw()
 	var room: Dictionary = game.get_room()
 	room_title.text = room.get("name", game.room)
 	room_subtitle.text = str(room.get("subtitle", "LOST WAGES / AFTER HOURS")).to_upper()
@@ -380,7 +406,7 @@ func _render() -> void:
 		larry.position = Vector2(490, 493)
 	world_effects.set_reduced_motion(reduced_motion)
 	larry.set_reduced_motion(reduced_motion)
-	world_effects.sync_state(game.room, game.flags)
+	world_effects.sync_state(game.room, game.flags, _visual_profile())
 	_clear(hotspots)
 	_clear(actors)
 	for h in room.get("hotspots", []):
@@ -432,7 +458,9 @@ func _build_hotspot(h: Dictionary) -> void:
 		var npc := Control.new()
 		npc.set_script(Actor)
 		npc.is_larry = false
-		npc.role = str(h.id)
+		var casting: Dictionary = game.actor_profile(str(h.id))
+		npc.role = str(casting.get("role", h.id))
+		npc.gender = str(casting.get("gender", "male"))
 		npc.suit = PINK if str(h.id).length() % 2 == 0 else Color("52b7b1")
 		npc.shirt = Color("2a294d")
 		npc.hair = Color("b77147")
@@ -470,14 +498,14 @@ func _build_hotspot(h: Dictionary) -> void:
 	b.gui_input.connect(_hotspot_input.bind(h))
 
 func _hotspot_input(event: InputEvent, h: Dictionary) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_say("THE NARRATOR", game.interact(str(h.id), "look"))
 		_render()
 		_autosave()
 
 func _inventory_input(event: InputEvent, id: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_say("IN YOUR POCKET", game.interact(id, "look"))
 		_render()
@@ -488,7 +516,7 @@ func _inventory_input(event: InputEvent, id: String) -> void:
 		_autosave()
 
 func _hotspot_click(h: Dictionary) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	arrival_label.text = ""
 	if h.id == "taxi" and verb == "use" and selected_item.is_empty():
 		_say("THE DRIVER", game.interact("taxi", "use"))
@@ -524,12 +552,13 @@ func _hotspot_click(h: Dictionary) -> void:
 		_play_dance()
 	_say(str(h.get("label", "THE NARRATOR")).to_upper() if verb == "talk" else "THE NARRATOR", result)
 	_render()
+	if is_cinematic(): return
 	_autosave()
 	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and h.id == "phone")):
 		_conversation(str(h.id))
 
 func _background_input(event: InputEvent) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_move_larry(Vector2(clampf(event.position.x, 50, 1090), clampf(event.position.y, 420, 505)))
 
@@ -554,7 +583,7 @@ func _play_dance() -> void:
 	larry.dance()
 
 func _set_verb(value: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	verb = value
 	if value != "use":
 		selected_item = ""
@@ -565,7 +594,7 @@ func _set_verb(value: String) -> void:
 		_render()
 
 func _select_item(id: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if not game.inventory.has(id):
 		return
 	selected_item = "" if selected_item == id else id
@@ -579,8 +608,52 @@ func _select_item(id: String) -> void:
 func is_travelling() -> bool:
 	return is_instance_valid(travel_cutscene)
 
+func is_cinematic() -> bool:
+	return is_travelling() or is_instance_valid(encounter_cutscene)
+
+func _visual_profile() -> Dictionary:
+	return {"character": game.profile.character, "orientation": game.profile.orientation, "name": game.player_name(), "gender": game.player_gender(), "finale_name": game.finale_name(), "finale_gender": game.finale_gender()}
+
+func _present_encounter(encounter: Dictionary) -> void:
+	_close_modal()
+	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
+	larry.walking = false
+	larry.stop_dance()
+	parser.release_focus()
+	selected_item = ""
+	encounter_result = str(encounter.get("caption", "A little later, your collar is the only thing still standing at attention."))
+	modal = Control.new()
+	modal.size = canvas.size
+	canvas.add_child(modal)
+	var dim := ColorRect.new()
+	dim.color = Color(0.02, 0.025, 0.055, 0.96)
+	dim.size = modal.size
+	modal.add_child(dim)
+	encounter_cutscene = EncounterCutscene.new()
+	encounter_cutscene.size = Vector2(1000, 700)
+	encounter_cutscene.position = (canvas.size - encounter_cutscene.size) / 2.0
+	modal.add_child(encounter_cutscene)
+	encounter_cutscene.finished.connect(_finish_encounter, CONNECT_ONE_SHOT)
+	encounter_cutscene.play(_visual_profile(), encounter, reduced_motion)
+	_say("DO NOT DISTURB", str(encounter.get("title", "An extremely private joke.")))
+	_cue("punchline")
+	_autosave()
+	_refresh_companion()
+
+func _finish_encounter() -> void:
+	if not is_instance_valid(encounter_cutscene): return
+	encounter_cutscene = null
+	_close_modal()
+	_say("A LITTLE LATER…", encounter_result)
+	encounter_result = ""
+	_render()
+
+func _skip_cinematic() -> void:
+	if is_travelling(): _skip_travel()
+	elif is_instance_valid(encounter_cutscene): encounter_cutscene.finish()
+
 func _travel(id: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var origin: String = game.room
 	_close_modal()
 	_present_travel(origin, game.travel(id))
@@ -619,8 +692,8 @@ func _present_travel(origin: String, result: String, who: String = "THE NARRATOR
 	travel_cutscene.finished.connect(_finish_travel, CONNECT_ONE_SHOT)
 	var from_art: Texture2D = load(WorldEffects.background_path_for(origin, game.flags))
 	var to_art: Texture2D = load(WorldEffects.background_path_for(destination, game.flags))
-	travel_cutscene.play(origin, destination, game.get_room(origin), game.get_room(destination), from_art, to_art, reduced_motion, variant)
-	_say("ON THE MOVE", TravelCutscene.caption_for(origin, destination, variant))
+	travel_cutscene.play(origin, destination, game.get_room(origin), game.get_room(destination), from_art, to_art, reduced_motion, variant, _visual_profile())
+	_say("ON THE MOVE", TravelCutscene.caption_for(origin, destination, variant, _visual_profile()))
 	_cue("travel_" + TravelCutscene.mode_for(origin, destination))
 	# Accepted travel is already complete in the model. Persist before the movie
 	# so closing a tab mid-scene cannot lose the destination or duplicate moves.
@@ -639,7 +712,7 @@ func _finish_travel() -> void:
 	_render()
 
 func _command(text: String) -> void:
-	if is_travelling(): return
+	if is_cinematic() or setup_open or resume_pending: return
 	if text.strip_edges().is_empty():
 		return
 	var normalized := text.strip_edges().to_lower()
@@ -687,11 +760,14 @@ func _command(text: String) -> void:
 	parser.clear()
 	parser.release_focus()
 	_render()
+	if is_cinematic(): return
 	_autosave()
 	if normalized.begins_with("talk ") or normalized.begins_with("call ") or normalized.begins_with("dial ") or normalized.begins_with("choose ") or normalized in ["use phone", "use telephone", "555-0987", "5550987"]:
 		_conversation(game.get_dialogue_target())
 
 func _say(who: String, text: String) -> void:
+	who = game.present(who)
+	text = game.present(text)
 	speaker.text = who
 	dialogue.text = text
 	dialogue.scroll_to_line(0)
@@ -701,16 +777,17 @@ func _say(who: String, text: String) -> void:
 	_refresh_companion()
 
 func _save() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if qa_mode:
 		return
 	_say("SAVED FOR POSTERITY", game.save_game())
 
 func _load() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if qa_mode:
 		return
-	_say("PREVIOUSLY, ON LARRY…", game.load_game())
+	var restored: String = game.load_game()
+	_say("PREVIOUSLY, ON " + game.player_name().to_upper() + "…", restored)
 	current_render_room = ""
 	ending_shown = game.completed
 	_render()
@@ -723,7 +800,7 @@ func _autosave() -> void:
 	game.save_game("user://autosave.json")
 
 func _hint() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if hint_objective != game.objective():
 		hint_stage = 0
 		hint_objective = game.objective()
@@ -782,9 +859,14 @@ func _modal_base(title: String, subtitle: String, height: float = 660) -> Contro
 	return p
 
 func _close_modal() -> void:
-	if is_travelling():
-		_skip_travel()
+	if is_cinematic():
+		_skip_cinematic()
 		return
+	if resume_pending: return
+	if setup_open and not setup_can_cancel: return
+	var return_to_resume := setup_open and setup_return_to_resume
+	setup_open = false
+	setup_return_to_resume = false
 	if is_instance_valid(casino_panel):
 		casino_panel.close_game()
 		casino_panel = null
@@ -794,9 +876,13 @@ func _close_modal() -> void:
 	modal = null
 	dialogue_choice_buttons.clear()
 	_refresh_companion()
+	if return_to_resume:
+		# Startup has not loaded the stored evening yet. Cancelling its draft
+		# must return to Continue, never expose the placeholder fresh game.
+		_resume_prompt()
 
 func _open_casino(mode: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("The Lucky Chip · " + mode.capitalize(), "A little luck. A little arithmetic. An absolutely enormous collar.", 646)
 	casino_panel = CasinoPanel.new()
 	casino_panel.position = Vector2(34, 136)
@@ -814,7 +900,7 @@ func remove_child_if_needed(node: Node) -> void:
 		node.get_parent().remove_child(node)
 
 func _map() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("A small town. Big mistakes.", "Choose a destination. Locked rooms open as you solve their puzzles.", 742)
 	var ids := ["street", "bar", "bathroom", "backroom", "alley", "shop", "casino", "disco", "hotel", "balcony", "garden", "penthouse", "rooftop"]
 	for i in range(ids.size()):
@@ -829,7 +915,7 @@ func _map() -> void:
 	_label(p, "The taxi fare is on the house. Your dignity travels separately.", Rect2(34, 642, 728, 42), 16, MUTED)
 
 func _map_travel(destination: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	# Follow actual unlocked exits, preserving every puzzle gate and move count.
 	var frontier: Array = [[game.room]]
 	var visited: Dictionary = {game.room: true}
@@ -851,8 +937,8 @@ func _map_travel(destination: String) -> void:
 	_say("THE NARRATOR", "That route is still closed. A few good conversations may open it.")
 
 func _journal() -> void:
-	if is_travelling(): return
-	var p := _modal_base("Notes to a future, wiser Larry", "Clues are recorded here as you discover them.")
+	if is_cinematic(): return
+	var p := _modal_base("Notes to a future, wiser " + game.player_name(), "Clues are recorded here as you discover them.")
 	var scroll := ScrollContainer.new()
 	scroll.position = Vector2(34, 139)
 	scroll.size = Vector2(732, 475)
@@ -871,7 +957,7 @@ func _journal() -> void:
 	scroll.add_child(body)
 
 func _help() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("How to make an impression", "A point-and-click adventure with a soft spot for the text parser.", 706)
 	# Wrapped Labels grow beyond a requested rectangle; the scrolling viewport
 	# keeps the complete instructions readable above the fixed footer.
@@ -888,9 +974,10 @@ func _help() -> void:
 	_button(p, "Restore autosave", Rect2(514, 609, 252, 48), _restore_autosave)
 
 func _restore_autosave() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if qa_mode:
 		return
+	resume_pending = false
 	_close_modal()
 	_say("PICKING UP THE PIECES", game.load_game("user://autosave.json"))
 	current_render_room = ""
@@ -898,20 +985,81 @@ func _restore_autosave() -> void:
 	_render()
 
 func _resume_prompt() -> void:
+	resume_pending = false
 	var p := _modal_base("Your evening is still here.", "An autosaved game is ready. Continue it or start a fresh night.", 320)
+	resume_pending = true
+	for child in p.get_children():
+		if child is Button and child.text == "×": child.visible = false
 	_button(p, "Continue evening", Rect2(34, 170, 349, 62), _restore_autosave, true)
-	_button(p, "Start a new evening", Rect2(401, 170, 365, 62), _new_game)
+	_button(p, "Start a new evening", Rect2(401, 170, 365, 62), _character_setup.bind(true, false, true))
 
 func _new_game_prompt() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("Another night, another suit?", "Start over? Your manual save stays available through Load.", 300)
 	_button(p, "Keep this evening", Rect2(34, 162, 344, 62), _close_modal)
-	_button(p, "Start a new evening", Rect2(402, 162, 364, 62), _new_game, true)
+	_button(p, "Start a new evening", Rect2(402, 162, 364, 62), _character_setup.bind(true), true)
+
+func _character_setup(can_cancel: bool = true, keep_draft: bool = false, return_to_resume: bool = false) -> void:
+	if is_cinematic(): return
+	var resume_on_cancel := setup_return_to_resume if keep_draft else return_to_resume
+	resume_pending = false
+	if not keep_draft:
+		draft_character = "larry"
+		draft_orientation = "bisexual"
+	setup_open = false
+	var p := _modal_base("Dress for trouble.", "ADULTS ONLY · ONE NIGHT · ONE GLORIOUSLY BAD IDEA", 820)
+	setup_open = true
+	setup_can_cancel = can_cancel
+	setup_return_to_resume = resume_on_cancel
+	for child in p.get_children():
+		if child is Button and child.text == "×": child.visible = can_cancel
+	var intro := _label(p, "The mission: get laid. The obstacle: you.", Rect2(34, 134, 732, 72), 23)
+	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_label(p, "Choose your suit and orientation, then start your evening.", Rect2(34, 182, 732, 32), 18, MUTED)
+	for i in range(2):
+		var character: String = ["larry", "lisa"][i]
+		var x := 34.0 + i * 374.0
+		_panel(p, Rect2(x, 224, 358, 214), PANEL, MINT if draft_character == character else EDGE)
+		var preview := Actor.new()
+		preview.role = character
+		preview.gender = "male" if character == "larry" else "female"
+		preview.position = Vector2(x + 62, 354)
+		preview.scale = Vector2.ONE * 0.9
+		p.add_child(preview)
+		var bio := "Larry\nHe / him\nCollar first. Brain later." if character == "larry" else "Lisa · Melisa\nShe / her\nSame suit. Bigger plans."
+		var description := _label(p, bio, Rect2(x + 115, 244, 225, 116), 19)
+		description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_button(p, ("✓ " if draft_character == character else "") + "Play as " + character.capitalize(), Rect2(x + 16, 375, 326, 47), _select_character.bind(character), draft_character == character)
+	_label(p, "WHO TURNS YOUR HEAD?", Rect2(34, 458, 732, 28), 15, PINK)
+	var orientations := ["heterosexual", "homosexual", "bisexual"]
+	for i in range(3):
+		var orientation: String = orientations[i]
+		_button(p, ("✓ " if draft_orientation == orientation else "") + orientation.capitalize(), Rect2(34 + i * 249, 499, 234, 52), _select_orientation.bind(orientation), draft_orientation == orientation)
+		_label(p, ["Opposite gender", "Same gender", "Both genders"][i], Rect2(34 + i * 249, 561, 234, 28), 17, MUTED)
+	var gender := "male" if draft_character == "larry" else "female"
+	var target_gender := gender if draft_orientation == "homosexual" else ("female" if gender == "male" else "male")
+	var target := "Eve" if target_gender == "female" else "Adam"
+	var summary := _label(p, "Tonight's dream date: %s.\nFlings follow your orientation. Every character is an adult." % target, Rect2(34, 611, 732, 94), 19)
+	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	var start := _button(p, "Get lucky as " + draft_character.capitalize(), Rect2(34, 728, 732 if not can_cancel else 470, 54), _new_game, true)
+	if can_cancel: _button(p, "Keep this evening", Rect2(524, 728, 242, 54), _close_modal)
+	start.grab_focus()
+	_refresh_companion()
+
+func _select_character(character: String) -> void:
+	draft_character = character
+	_character_setup(setup_can_cancel, true)
+
+func _select_orientation(orientation: String) -> void:
+	draft_orientation = orientation
+	_character_setup(setup_can_cancel, true)
 
 func _new_game() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
+	setup_open = false
 	_close_modal()
 	game.new_game()
+	game.configure_profile(draft_character, draft_orientation)
 	transcript.clear()
 	travel_variants.clear()
 	inventory_snapshot.clear()
@@ -922,7 +1070,8 @@ func _new_game() -> void:
 	current_render_room = ""
 	_set_verb("look")
 	_render()
-	_say("THE NARRATOR", "A fresh evening. A familiar suit. Lefty's looks like the sort of establishment that might lower its standards for you.")
+	_say("THE NARRATOR", "Welcome, %s. Tonight's mission: get laid with %s. A few willing detours are available along the way. Lefty's is open, your collar is enormous, and your standards are wearing platform shoes." % [game.player_name(), game.finale_name()])
+	_autosave()
 
 func _ending() -> void:
 	var p := _modal_base(game.ending_title(), "Your evening is complete. Exploration points are optional.", 750)
@@ -936,13 +1085,13 @@ func _ending() -> void:
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(p, "%d / 100 EXPLORATION POINTS  ·  %d MOVES" % [game.score, game.turns], Rect2(34, 594, 730, 31), 16, MINT)
 	_button(p, "Stay a little longer", Rect2(34, 654, 349, 52), _close_modal)
-	_button(p, "One more evening", Rect2(401, 654, 365, 52), _new_game, true)
+	_button(p, "One more evening", Rect2(401, 654, 365, 52), _character_setup.bind(true), true)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
-	if is_travelling():
-		if event.keycode in [KEY_ESCAPE, KEY_SPACE, KEY_ENTER]: _skip_travel()
+	if is_cinematic():
+		if event.keycode in [KEY_ESCAPE, KEY_SPACE, KEY_ENTER]: _skip_cinematic()
 		get_viewport().set_input_as_handled()
 		return
 	if event.keycode == KEY_ESCAPE:
@@ -1072,9 +1221,9 @@ func _scroll_to_item(id: String) -> void:
 			return
 
 func _conversation(target: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var options: Array = game.dialogue_options(target)
-	if options.is_empty() or game.completed: return
+	if options.is_empty(): return
 	var title: String = str(game.get_hotspot(target).get("label", target.capitalize()))
 	var p := _modal_base("A word with " + title, "Choose a topic, or close this conversation to explore.", 790)
 	var scroll := ScrollContainer.new()
@@ -1101,18 +1250,19 @@ func _conversation(target: String) -> void:
 	_refresh_companion()
 
 func _choose_dialogue(id: String) -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	_close_modal()
 	var response: String = game.choose_dialogue(id)
 	_say("THE CONVERSATION", response)
 	if id.begins_with("dance_"): _play_dance()
 	if id in ["show_next", "show_start", "rehearsal_correct"]: _cue("punchline")
 	_render()
+	if is_cinematic(): return
 	_autosave()
 	_conversation(game.get_dialogue_target())
 
 func _transcript() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("The evening, in your own words.", "The most recent 120 exchanges from this session. Scroll to read.", 750)
 	var scroll := ScrollContainer.new()
 	scroll.position = Vector2(34, 139)
@@ -1125,7 +1275,7 @@ func _transcript() -> void:
 	_refresh_companion()
 
 func _settings() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	var p := _modal_base("Make yourself comfortable.", "Every sound has visible feedback. Settings stay on this device.", 650)
 	_button(p, "Reduced motion: " + ("ON" if reduced_motion else "OFF"), Rect2(34, 142, 732, 50), _toggle_motion)
 	_button(p, "Music: " + ("ON" if music_on else "OFF"), Rect2(34, 212, 250, 50), func(): _toggle_music(); _settings())
@@ -1150,7 +1300,7 @@ func _settings_slider(parent: Node, title: String, pos: Vector2, value: float, c
 	parent.add_child(slider)
 
 func _toggle_motion() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	reduced_motion = not reduced_motion
 	if walk_tween and walk_tween.is_valid(): walk_tween.kill()
 	larry.walking = false
@@ -1196,10 +1346,11 @@ func _save_preferences() -> void:
 	config.save("user://preferences.cfg")
 
 func _use_selected_self() -> void:
-	if is_travelling(): return
+	if is_cinematic(): return
 	if selected_item.is_empty() or not game.inventory.has(selected_item): return
 	_say("IN YOUR POCKET", game.interact(selected_item, "use", selected_item))
 	_render()
+	if is_cinematic(): return
 	_autosave()
 
 func _apply_music_preferences() -> void:

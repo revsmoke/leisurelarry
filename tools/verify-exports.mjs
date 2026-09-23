@@ -64,6 +64,7 @@ for (const file of packs) {
   assert.ok(names.some(name => /scripts\/main\.gd\.remap/.test(name)), 'Missing main script remap');
   assert.ok(names.includes('scripts/casino_panel.gdc'), 'Missing compiled casino panel');
   assert.ok(names.includes('scripts/travel_cutscene.gdc'), 'Missing compiled travel cutscenes');
+  assert.ok(names.includes('scripts/encounter_cutscene.gdc'), 'Missing compiled encounter cutscenes');
   assert.ok(names.includes('scripts/casino_panel.gd.remap'), 'Missing casino script remap');
   for (const background of backgrounds) {
     assert.ok(names.includes(`assets/backgrounds/${background}.png.import`), `Missing ${background} import`);

@@ -1,0 +1,112 @@
+{
+  "session": "2026-09-23T03-51-36-547Z",
+  "buildId": "e959025d54596d423a534b545e8f89c543d3b292c92804d4efbf0708784d0841",
+  "runnerId": "371cdc4cb20e8fe7fcbde3a3d5d9ed39f1974b440c4e2f3f799a71206d4020f7",
+  "generatedAt": "2026-09-23T03:51:48.377Z",
+  "batchId": "4abb8608-32e6-441b-99f1-bc26d7830127",
+  "config": {
+    "workers": 2,
+    "runCount": 2,
+    "maxSteps": 160,
+    "maxRequests": 400,
+    "maxInputTokens": 3000000,
+    "maxCostUSD": 0.15,
+    "memoryEnabled": true,
+    "seed": 70
+  },
+  "modelRequested": "jev-latest",
+  "budget": {
+    "maxRequests": 400,
+    "maxInputTokens": 3000000,
+    "maxCostUSD": 0.15,
+    "maxConcurrent": 2,
+    "requests": 4,
+    "inputTokens": 8642,
+    "outputTokens": 724,
+    "active": 0,
+    "errors": 0,
+    "cancelled": false,
+    "estimatedInputCostUSD": 0.00036296400000000007
+  },
+  "apiLatencyMs": {
+    "p50": 294,
+    "p95": 331
+  },
+  "serverMemory": {
+    "peakRssBytes": 199557120,
+    "currentRssBytes": 199639040
+  },
+  "budgetNotes": {
+    "requests": "Hard attempts cap, reserved before dispatch. No automatic retry.",
+    "usage": "Input and estimated cost are observed thresholds. Concurrent or timed-out requests may exceed them; unknown usage is not free. Not a provider-enforced dollar cap.",
+    "latency": "API includes network. UI acknowledgement includes rendered frames. Server RSS excludes browser/Godot workers."
+  },
+  "priceSource": "https://docs.typesafe.ai/models",
+  "estimatedInputCostUSD": 0.00036296400000000007,
+  "runs": {
+    "4abb8608-32e6-441b-99f1-bc26d7830127-001-goal": {
+      "id": "4abb8608-32e6-441b-99f1-bc26d7830127-001-goal",
+      "persona": "goal",
+      "index": 0,
+      "status": "finished",
+      "decisions": 2,
+      "steps": 1,
+      "score": 0,
+      "model": "jev-1.13.0",
+      "money": 80,
+      "room": {
+        "id": "street",
+        "subtitle": "LOST WAGES · 11:47 PM",
+        "title": "The Neon Strip"
+      },
+      "completed": false,
+      "cycle": {
+        "progress": false,
+        "noProgress": 1,
+        "cyclePeriod": 0,
+        "stop": false,
+        "reason": null
+      },
+      "visibility": "visible",
+      "reason": "model_abstained",
+      "elapsedMs": 1247,
+      "errors": 0,
+      "coldLoadMs": 678,
+      "actionTimesMs": [
+        58
+      ]
+    },
+    "4abb8608-32e6-441b-99f1-bc26d7830127-002-curious": {
+      "id": "4abb8608-32e6-441b-99f1-bc26d7830127-002-curious",
+      "persona": "curious",
+      "index": 1,
+      "status": "finished",
+      "decisions": 2,
+      "steps": 1,
+      "score": 0,
+      "model": "jev-1.13.0",
+      "money": 80,
+      "room": {
+        "id": "street",
+        "subtitle": "LOST WAGES · 11:47 PM",
+        "title": "The Neon Strip"
+      },
+      "completed": false,
+      "cycle": {
+        "progress": false,
+        "noProgress": 1,
+        "cyclePeriod": 0,
+        "stop": false,
+        "reason": null
+      },
+      "visibility": "visible",
+      "reason": "model_abstained",
+      "elapsedMs": 1246,
+      "errors": 0,
+      "coldLoadMs": 678,
+      "actionTimesMs": [
+        58
+      ]
+    }
+  }
+}

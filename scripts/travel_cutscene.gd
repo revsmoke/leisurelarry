@@ -45,6 +45,7 @@ var _taxi_x := 370.0
 var _finished_emitted := false
 var _body_font: FontVariation
 var _title_font: FontVariation
+var _player_profile: Dictionary = {}
 
 func _init() -> void:
 	set_process(false)
@@ -81,7 +82,7 @@ static func mode_for(from_id: String, to_id: String) -> String:
 		return "walk"
 	return "taxi"
 
-static func caption_for(from_id: String, to_id: String, variant: int = 0) -> String:
+static func caption_for(from_id: String, to_id: String, variant: int = 0, player_profile: Dictionary = {}) -> String:
 	var lines: Array = []
 	if to_id == "bar":
 		lines = ["Larry makes an entrance. His cologne has already reserved a table.", "He loosens his collar. The dress code breathes a sigh of relief.", "Lefty's: where the drinks are stiff and the competition is mostly furniture."]
@@ -94,9 +95,9 @@ static func caption_for(from_id: String, to_id: String, variant: int = 0) -> Str
 	elif mode_for(from_id, to_id) == "rope":
 		lines = ["At last: a line that supports him. Larry tests it before committing.", "One hand on the rope. One eye on the trousers. Romance requires preparation.", "Larry takes it slowly. For once, everybody appreciates that."]
 	elif mode_for(from_id, to_id) == "elevator":
-		lines = ["Going up? Finally, a question Larry can answer without exaggerating.", "He presses the right button. There's a first time for everything.", "The elevator has smooth moves. Larry takes notes."] if to_id == "penthouse" else ["Larry comes down to earth. The elevator does most of the work.", "Going down. Larry wisely lets the elevator finish the sentence.", "He leaves the penthouse with his dignity. Small luggage travels well."]
+		lines = ["Going up? Finally, a question Larry can answer without exaggerating.", "He presses the right button. There's a first time for everything.", "The elevator has smooth moves. Larry takes notes."] if to_id in ["penthouse", "rooftop"] else ["Larry comes down to earth. The elevator does most of the work.", "Going down. Larry wisely lets the elevator finish the sentence.", "He leaves the upper floors with his dignity. Small luggage travels well."]
 	elif to_id == "rooftop":
-		lines = ["The air gets cooler. Larry's opening line has not received the memo.", "A moonlit terrace. He checks his collar and lowers his expectations to charming.", "Larry steps into the night. For once, the view gets the first compliment."]
+		lines = ["The air gets cooler. Larry's opening line has not received the memo.", "A moonlit terrace. He checks his collar and lowers his expectations to charming.", "Eve has the best view in town. Larry hopes to become part of the scenery."]
 	elif to_id == "garden":
 		lines = ["Moonlight. Fertile soil. Larry promises to keep the conversation organic.", "The garden is blooming. Larry hopes it's contagious.", "Something here knows how to grow without bragging about it."]
 	elif mode_for(from_id, to_id) == "taxi":
@@ -107,9 +108,28 @@ static func caption_for(from_id: String, to_id: String, variant: int = 0) -> Str
 		lines = ["Open all night. Larry admires a business with compatible ambitions.", "A little retail therapy. The wine has a better pickup line than he does.", "He enters with champagne tastes and convenience-store timing."]
 	else:
 		lines = ["Larry puts his best foot forward. The other one denies any involvement.", "A man, a plan, and trousers with absolutely no room for doubt.", "The night is young. Larry's cologne remembers the original release."]
-	return lines[posmod(variant, lines.size())]
+	return personalize(lines[posmod(variant, lines.size())], player_profile)
 
-func play(from_id: String, to_id: String, from_room: Dictionary, to_room: Dictionary, from_texture: Texture2D, to_texture: Texture2D, reduced: bool = false, variant: int = 0) -> void:
+static func personalize(text: String, profile: Dictionary) -> String:
+	var is_lisa: bool = str(profile.get("character", "larry")) == "lisa"
+	var player_name: String = str(profile.get("name", "Lisa" if is_lisa else "Larry"))
+	var orientation: String = str(profile.get("orientation", "bisexual"))
+	var same_gender: bool = orientation in ["homosexual", "homo", "gay"]
+	var host: String = "Eve" if is_lisa == same_gender else "Adam"
+	if profile.has("finale_name"):
+		host = str(profile.finale_name)
+	elif profile.has("finale_partner"):
+		host = str(profile.finale_partner)
+	var result := text.replace("Larry", player_name).replace("Eve", host)
+	if is_lisa:
+		var words := {"He": "She", "he": "she", "His": "Her", "his": "her", "him": "her", "himself": "herself", "men": "women", "man": "woman"}
+		for word in words:
+			var pattern := RegEx.new()
+			pattern.compile("\\b" + word + "\\b")
+			result = pattern.sub(result, words[word], true)
+	return result
+
+func play(from_id: String, to_id: String, from_room: Dictionary, to_room: Dictionary, from_texture: Texture2D, to_texture: Texture2D, reduced: bool = false, variant: int = 0, player_profile: Dictionary = {}) -> void:
 	# Replaying the same instance is supported without leaving animation children.
 	for child in get_children():
 		remove_child(child)
@@ -118,6 +138,7 @@ func play(from_id: String, to_id: String, from_room: Dictionary, to_room: Dictio
 	_to_id = to_id
 	_from_name = str(from_room.get("name", from_id.capitalize()))
 	_to_name = str(to_room.get("name", to_id.capitalize()))
+	_player_profile = player_profile.duplicate(true)
 	mode = mode_for(from_id, to_id)
 	reduced_motion = reduced
 	duration = 1.0 if reduced else float(DURATIONS[mode])
@@ -126,7 +147,7 @@ func play(from_id: String, to_id: String, from_room: Dictionary, to_room: Dictio
 	active = true
 	size = Vector2(1000, 700)
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	_build(from_texture, to_texture, caption_for(from_id, to_id, variant))
+	_build(from_texture, to_texture, caption_for(from_id, to_id, variant, _player_profile))
 	_update_scene()
 	set_process(true)
 	queue_redraw()
@@ -221,7 +242,10 @@ func _build(from_texture: Texture2D, to_texture: Texture2D, caption: String) -> 
 	_backdrop.paint = _draw_backdrop
 	stage.add_child(_backdrop)
 	actor = Actor.new()
-	actor.name = "TravelLarry"
+	actor.role = "lisa" if _player_profile.get("character", "larry") == "lisa" else "larry"
+	actor.gender = "female" if actor.role == "lisa" else "male"
+	actor.is_larry = actor.role == "larry"
+	actor.name = "TravelLisa" if actor.role == "lisa" else "TravelLarry"
 	actor.set_reduced_motion(reduced_motion)
 	stage.add_child(actor)
 	_foreground = PaintLayer.new()

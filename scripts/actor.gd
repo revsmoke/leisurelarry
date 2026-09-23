@@ -11,6 +11,8 @@ var walking := false:
 		queue_redraw()
 var is_larry := true
 var role := "larry"
+## Optional adult partners use romance_guest plus this presentation-only gender.
+var gender := "male"
 var tick := 0.0
 var dance_time_left := 0.0
 var dance_elapsed := 0.0
@@ -65,8 +67,16 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, 26, Color(0.01, 0.01, 0.03, 0.45))
 	# Move the drawing, not the Control: walking tweens retain their stage position.
 	draw_set_transform(Vector2(sin(beat) * (3.0 if dance_style == "careful" else 8.0), -absf(sin(beat)) * 7.0) if dancing and not reduced_motion else Vector2.ZERO, sin(beat) * 0.065 if dancing and not reduced_motion else 0.0)
-	if role in ["dancer", "eve", "receptionist"]:
-		_draw_guest()
+	if role == "lisa":
+		_draw_lisa(stride, dancing, beat)
+		_draw_reaction()
+		return
+	if role == "adam":
+		_draw_adam(stride)
+		_draw_reaction()
+		return
+	if role in ["dancer", "eve", "receptionist"] or (role == "romance_guest" and gender == "female"):
+		_draw_guest(stride)
 		_draw_reaction()
 		return
 	block(-6, -17, 5, 15 + stride, suit.darkened(0.12))
@@ -110,7 +120,7 @@ func _draw() -> void:
 	block(-7, -47, 13, 4, hair)
 	block(-7, -44, 3, 7, hair)
 	block(-5, -48, 8, 2, hair)
-	if is_larry:
+	if is_larry and role == "larry":
 		block(-1, -45, 6, 2, skin)
 	if role == "bouncer" and reaction.get("tv_distracted", false):
 		block(-5, -43, 11, 8, hair)
@@ -118,7 +128,7 @@ func _draw() -> void:
 	else:
 		block(3, -41, 2, 2, Color("26223b"))
 	block(2, -36, 4, 1, Color("9b5262"))
-	if is_larry:
+	if is_larry and role == "larry":
 		block(-4, -27, 1, 5, Color("e7bb56"))
 		block(3, -26, 3, 1, Color("eaddc8"))
 		block(1, -43, 4, 1, hair)
@@ -129,13 +139,86 @@ func _draw() -> void:
 		block(-6, -25, 12, 14, Color("e7d4b2"))
 	_draw_reaction()
 
-func _draw_guest() -> void:
-	var dress := Color("dc789e") if role == "eve" else Color("57bbb8")
-	var locks := Color("5d3048") if role == "eve" else Color("d4a667")
-	block(-5, -15, 4, 12, skin)
-	block(2, -15, 4, 12, skin)
-	block(-7, -3, 6, 3, Color("34273e"))
-	block(1, -3, 7, 3, Color("34273e"))
+func _draw_lisa(stride: float, dancing: bool, beat: float) -> void:
+	# A grown-up disco heroine: feathered hair, white flares and an enormous
+	# collar. Her silhouette is clothing and attitude, never exposed anatomy.
+	var locks := Color("713e4e")
+	block(-9, -43, 17, 18, locks.darkened(0.17))
+	block(-5, -19, 5, 13 + stride, suit.darkened(0.08))
+	block(1, -19, 5, 13 - stride, suit)
+	block(-8, -9 + stride, 8, 8, suit.darkened(0.08))
+	block(1, -9 - stride, 8, 8, suit)
+	block(-8, -2 + stride, 8, 2, Color("51405e"))
+	block(1, -2 - stride, 9, 2, Color("51405e"))
+	block(-7, -32, 14, 10, suit)
+	block(-5, -23, 10, 8, suit)
+	block(-4, -31, 8, 11, Color("bd5288"))
+	block(-7, -32, 4, 8, suit.lightened(0.12))
+	block(3, -32, 4, 8, suit.lightened(0.12))
+	block(-5, -21, 10, 2, Color("d7b45f"))
+	block(-1, -22, 3, 3, Color("f5d691"))
+	if dancing:
+		var small := dance_style == "careful"
+		var high_left := sin(beat * 0.5) >= 0.0
+		block(-11, -31 if small else -38 if high_left else -29, 5, 12, suit)
+		block(7, -31 if small else -29 if high_left else -38, 5, 12, suit)
+		block(-12, -24 if small else -41 if high_left else -19, 5, 5, skin)
+		block(8, -24 if small else -19 if high_left else -41, 5, 5, skin)
+	else:
+		block(-10, -30 - stride * 0.3, 4, 16, suit.darkened(0.06))
+		block(6, -30 + stride * 0.3, 4, 16, suit)
+		block(-10, -15 - stride * 0.3, 4, 4, skin)
+		block(6, -15 + stride * 0.3, 4, 4, skin)
+	block(-3, -35, 6, 4, skin.darkened(0.08))
+	block(-5, -45, 11, 11, skin)
+	block(6, -40, 2, 3, skin)
+	block(-7, -48, 13, 5, locks)
+	block(-9, -45, 5, 9, locks)
+	block(-11, -39, 5, 5, locks)
+	block(-10, -35, 4, 4, locks)
+	block(4, -45, 5, 4, locks)
+	block(7, -40, 3, 6, locks)
+	block(6, -35, 5, 4, locks)
+	block(-5, -47, 7, 2, Color("ad6871"))
+	block(2, -41, 2, 2, Color("26223b"))
+	block(1, -43, 4, 1, locks)
+	block(2, -36, 4, 1, Color("ac365d"))
+	block(-5, -35, 2, 3, Color("f4ce80"))
+
+func _draw_adam(stride: float) -> void:
+	var trousers := Color("45394f")
+	var jacket := Color("4e9b92")
+	block(-6, -18, 5, 16 + stride, trousers)
+	block(1, -18, 5, 16 - stride, trousers.lightened(0.08))
+	block(-7, -3 + stride, 7, 3, Color("30263b"))
+	block(1, -3 - stride, 7, 3, Color("30263b"))
+	block(-8, -33, 16, 17, jacket)
+	block(-3, -33, 6, 12, Color("eee1c6"))
+	block(-6, -33, 3, 7, jacket.lightened(0.2))
+	block(3, -33, 3, 7, jacket.lightened(0.2))
+	block(-11, -31 - stride * 0.3, 4, 17, jacket.darkened(0.1))
+	block(7, -31 + stride * 0.3, 4, 17, jacket)
+	block(-11, -15 - stride * 0.3, 4, 4, skin)
+	block(7, -15 + stride * 0.3, 4, 4, skin)
+	block(-6, -19, 12, 2, Color("d7b45f"))
+	block(-3, -36, 6, 4, skin)
+	block(-6, -46, 12, 11, skin)
+	block(6, -42, 3, 4, skin)
+	block(-7, -49, 14, 5, Color("5c3a3b"))
+	block(-8, -46, 3, 8, Color("5c3a3b"))
+	block(-5, -47, 9, 2, Color("9c6b55"))
+	block(3, -42, 2, 2, Color("26223b"))
+	block(1, -44, 4, 1, Color("5c3a3b"))
+	block(-1, -37, 7, 2, Color("6c4143"))
+	block(2, -36, 3, 1, skin)
+
+func _draw_guest(stride: float = 0.0) -> void:
+	var dress := Color("dc789e") if role == "eve" else suit if role == "romance_guest" else Color("57bbb8")
+	var locks := Color("5d3048") if role == "eve" else hair if role == "romance_guest" else Color("d4a667")
+	block(-5, -15, 4, 12 + stride, skin)
+	block(2, -15, 4, 12 - stride, skin)
+	block(-7, -3 + stride, 6, 3, Color("34273e"))
+	block(1, -3 - stride, 7, 3, Color("34273e"))
 	block(-7, -32, 14, 14, dress)
 	block(-9, -21, 18, 8, dress.darkened(0.1))
 	block(-3, -34, 6, 4, skin)
@@ -161,7 +244,7 @@ func _draw_reaction() -> void:
 		block(11, -30, 5, 10, Color("bb8249"))
 		block(12, -34, 3, 5, Color("dcca97"))
 		block(11, -27, 5, 3, Color("c35678"))
-	if role == "eve" and reaction.get("apple_given", false):
+	if role in ["eve", "adam"] and reaction.get("apple_given", false):
 		block(-12, -26, 7, 4, skin)
 		block(-14, -31, 6, 6, Color("e95968"))
 		block(-12, -33, 2, 3, Color("d0b877"))

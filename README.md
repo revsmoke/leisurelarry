@@ -1,6 +1,6 @@
 # Leisure Suit Larry: Last Call in Lost Wages
 
-A complete, compact **Godot 4.7.2** point-and-click comedy adventure: thirteen illustrated rooms, alternate puzzle routes, a staged cabaret, and three player-chosen endings. An unofficial modern reimagining of *Softporn Adventure* and *Leisure Suit Larry 1*, with newly created art, dialogue, pixel characters and lounge music.
+A complete, compact **Godot 4.7.2** point-and-click comedy adventure: thirteen illustrated rooms, alternate puzzle routes, a staged cabaret, optional flings, and an Eve-or-Adam finale. An unofficial modern reimagining of *Softporn Adventure* and *Leisure Suit Larry 1*, with newly created art, dialogue, pixel characters and lounge music.
 
 ![The Neon Strip in the original release](docs/audits/browser-evidence/03-1.jpg)
 
@@ -15,9 +15,17 @@ A complete, compact **Godot 4.7.2** point-and-click comedy adventure: thirteen i
 
 The game runs locally and needs no account, API key, Jev, or network after loading. TypeSafe is used only by the separate development playtest lab. All game currency is imaginary.
 
+## Choose your evening
+
+Start a new evening as **Leisure Suit Larry** or **Leisure Suit Lisa** (short for Melisa). Choose heterosexual, homosexual, or bisexual; **bisexual is selected by default**. Heterosexual characters pursue the opposite gender, homosexual characters the same gender, and bisexual characters meet partners of both genders. The final dream date is **Eve or Adam**, with the opposite-gender finale for bisexual players.
+
+Your goal is explicit: **get laid with your dream date before sunrise**. Three optional encounter puzzles offer willing detours around the city. Each has a clue, a recoverable wrong answer, a flirtation, and an invitation you can accept or decline. These encounters do not complete the main story or change the 100-point exploration score. Campy curtain cutscenes keep the intimate action offscreen and state the outcome clearly. All partners are adults.
+
+Profile and encounter history travel with your save. Older saves retain their progress and points and default to bisexual Larry; an old completed evening reopens the new rooftop invitation so you can play its revised finale.
+
 ## Controls
 
-Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inventory item, then click a target to use it. Selecting or right-clicking a pocket item also examines it; double-clicking uses it on itself. Click the scenery to move Larry. **Take** collects loose objects; **Use** operates machines and activities. Talking to people opens labeled conversation topics. To buy whiskey, talk to Lefty and choose the explicit **Buy a whiskey miniature · $10** offer, or type `buy whiskey`. **Use** on Lefty opens the same offer. The action line shows your selected item; **×** or Escape cancels it. New items receive a pocket-arrival cue; **Tidy** tucks away used souvenirs without deleting them.
+Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inventory item, then click a target to use it. Selecting or right-clicking a pocket item also examines it; double-clicking uses it on itself. Click the scenery to move your character. **Take** collects loose objects; **Use** operates machines and activities. Talking to people opens labeled conversation topics. To buy whiskey, talk to Lefty and choose the explicit **Buy a whiskey miniature · $10** offer, or type `buy whiskey`. **Use** on Lefty opens the same offer. The action line shows your selected item; **×** or Escape cancels it. New items receive a pocket-arrival cue; **Tidy** tucks away used souvenirs without deleting them.
 
 | Input | Action |
 |---|---|
@@ -29,8 +37,8 @@ Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inve
 | F5 / F9 | Manual save / load |
 | F11 | Toggle full screen |
 | Enter or command field | Type a parser command |
-| Escape | Skip travel, close overlay or clear selection |
-| Space / Enter during travel | Skip straight to arrival |
+| Escape | Skip a cinematic, close overlay or clear selection |
+| Space / Enter during a cinematic | Skip to arrival or encounter aftermath |
 
 Moving through exits, scenery doors, the map, or parser commands plays a short animated travel vignette: doorway entrances, walks, taxi rides, hotel elevators, rope crossings, or terrace arrivals. Use **Skip travel**, Space, Enter, or Escape to arrive immediately. Reduced motion shows a one-second departure/arrival card. The accepted destination autosaves before the scene; skipping costs no extra moves or money.
 
@@ -45,7 +53,8 @@ Manual Save and Load use one slot. Progress also autosaves after actions. When a
 - 13 illustrated rooms, with six clean background variants for state-driven props and the visibly opened service window. Collected stool, pitcher, core, candy, and voucher disappear; the growing tree keeps its trunk after the apple is picked.
 - Three binary route choices: backstage by password/TV or Lefty's bowling promotion; Didi's elaborate prop routine or a volunteer rehearsal; hotel access by espresso favor or a stage-manager introduction. These form eight principal route combinations.
 - A player-paced Didi performance with callbacks to your actual choices, a curtain-call skip, and three comic dance styles: confident, careful, or copying Didi.
-- Authored Eve conversation topics and three explicit closing tones: a flirtatious sunrise, friendship on the roof, or Didi's after-show gathering. A short epilogue remembers the evening's choices.
+- Authored Eve/Adam conversations and a clear winning encounter. Friendship and postponing for an after-party keep the night open. A short epilogue remembers the evening's choices.
+- Three optional flings: a backstage costumier, casino magician, and garden photographer, with names and presentation matched to your profile. Lisa and Adam have distinct pixel artwork; new signs and private-scene curtains add camp to the existing illustrations.
 - 18 inventory items, optional discoveries, a 100-point exploration score, and a complete evening that does not require every optional point.
 - Point-and-click and parser input, labeled dialogue choices, contextual objectives, three hint levels, discovered notebook leads, a conversation transcript, and manual/autosaves.
 - Responsive desktop and narrower-window layouts, visible keyboard focus, a readable production-Web HTML companion, reduced motion, and separate music/effects controls.
@@ -59,9 +68,11 @@ The adaptation keeps the bar/remote/password, disco gifts, phone/rope, hotel fav
 
 ## Playtest and verification
 
-The subsequent [animated-travel update](docs/audits/travel-cutscenes.md) passed 4,245 Godot assertions and 34 Node tests. Live Browser checks covered entrances, walking, taxis, elevators, rope travel, skipping, reduced motion and interrupted-travel restoration. Two additional Jev runs completed with 48 real animated transitions; the report distinguishes their build from the final visual correction.
+The [Larry/Lisa camp update](docs/audits/camp-update.md) covers all six profile configurations, optional encounters, the revised winning goal, save migration, final code checks, live Jev runs, and an assistant-operated full Lisa browser playthrough. [Historical visual references](docs/camp-reference.md) explain the new parody staging.
 
-The upgrade includes deterministic route, ending, save, interface, visual-state, companion, and QA-isolation checks. The [current upgrade validation report](docs/audits/gameplay-upgrade-validation.md) records the final tested build, live Jev batches, actual browser playthroughs, defects, and remaining limits. The final source passed 3,893 Godot assertions and 34 Node tests. Jev completed 86/100 evenings in the main campaign and 8/12 on the final corrected build; failures remain documented. Human enjoyment and the full performance gates remain open.
+The earlier [animated-travel update](docs/audits/travel-cutscenes.md) passed 4,245 Godot assertions and 34 Node tests. Live Browser checks covered entrances, walking, taxis, elevators, rope travel, skipping, reduced motion and interrupted-travel restoration. Two additional Jev runs completed with 48 real animated transitions; the report distinguishes their build from the final visual correction.
+
+The upgrade includes deterministic route, ending, save, interface, visual-state, companion, and QA-isolation checks. The [previous upgrade validation report](docs/audits/gameplay-upgrade-validation.md) records the final tested build, live Jev batches, actual browser playthroughs, defects, and remaining limits. That version passed 3,893 Godot assertions and 34 Node tests. Jev completed 86/100 evenings in the main campaign and 8/12 on the final corrected build; failures remain documented. Human enjoyment and the full performance gates remain open.
 
 The earlier build was played from beginning to end twice through the actual browser UI without hints, finishing at 100/100 in 97 and 85 moves. Those are **historical baseline results**, not results for this upgraded build. The tester knew the implementation; they were informed playtests, not blind newcomer sessions. See the [original browser audit](docs/audits/browser-playthrough.md) and [verification history](docs/verification.md).
 
@@ -102,6 +113,9 @@ Generated exports and installed dependencies are excluded from Git; the source, 
 ./tools/godot --headless --path . --script tests/test_web_companion.gd
 ./tools/godot --headless --path . --script tests/test_window_responsive.gd
 ./tools/godot --headless --path . --script tests/test_travel_cutscenes.gd
+./tools/godot --headless --path . --script tests/test_identity_romance.gd
+./tools/godot --headless --path . --script tests/test_profile_interface.gd
+./tools/godot --headless --path . --script tests/test_encounter_visuals.gd
 ./tools/godot --headless --path . --script tests/test_qa_bridge.gd
 ./tools/godot --headless --path . --script tests/test_memory_lifecycle.gd
 node --test tests/test_jev_client.mjs
@@ -110,6 +124,6 @@ node tools/mcp-smoke.mjs
 ./tools/package.sh all
 ```
 
-`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `travel_cutscene.gd` presents route-aware travel vignettes; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables. `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
+`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `travel_cutscene.gd` presents route-aware travel vignettes; `encounter_cutscene.gd` stages private invitations and comic aftermath; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables. `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
 
 The supplied walkthrough is retained untouched at the project root. This is an unofficial fan project; the original game names and characters belong to their respective owners.

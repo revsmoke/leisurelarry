@@ -12,6 +12,7 @@ const TEAL := Color("418e8b")
 const PINK := Color("e96f99")
 var room_id := ""
 var state: Dictionary = {}
+var player_profile: Dictionary = {}
 var reduced_motion := false
 var _font: Font = preload("res://assets/fonts/SpaceGrotesk.ttf")
 var seeds_planted := false
@@ -28,11 +29,12 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_process(false)
 
-func sync_state(next_room: String, flags: Dictionary) -> void:
+func sync_state(next_room: String, flags: Dictionary, profile: Dictionary = {}) -> void:
 	var was_garden := room_id == "garden"
 	var was_grown := apple_grown
 	room_id = next_room
 	state = flags.duplicate(true)
+	player_profile = profile.duplicate(true)
 	seeds_planted = bool(flags.get("seeds_planted", false))
 	apple_grown = bool(flags.get("apple_grown", false))
 	apple_taken = bool(flags.get("taken_apple", false))
@@ -99,7 +101,38 @@ func _draw() -> void:
 		"garden": _draw_loan_rack(props)
 		"penthouse": _draw_cabinet(props)
 		"rooftop": _draw_rooftop(props)
+	_draw_camp_dressing()
 	_draw_garden()
+
+func _draw_camp_dressing() -> void:
+	# Small set-dressing jokes belong to the room's furniture, never a screen
+	# overlay. No flashing and no new hotspots or puzzle-relevant fake objects.
+	match room_id:
+		"bar":
+			_camp_sign(Rect2(75, 239, 150, 43), "STIFF DRINKS", "LOOSE EXCUSES", PINK)
+		"bathroom":
+			_camp_sign(Rect2(840, 272, 174, 44), "FOR A GOOD TIME", "TRY BASIC HYGIENE", TEAL)
+		"disco":
+			_camp_sign(Rect2(905, 281, 174, 48), "THE PELVIC AUDIT", "ALL ACCOUNTS WELCOME", PINK)
+		"hotel":
+			_camp_sign(Rect2(677, 321, 160, 50), "HOURLY RATES", "ETERNAL ALIBIS", BRASS)
+		"penthouse":
+			_camp_sign(Rect2(786, 367, 159, 43), "AFTER HOURS", "BEFORE REGRETS", PINK)
+		"rooftop":
+			_camp_sign(Rect2(62, 305, 164, 46), "PARADISE SUITE", "FIG LEAVES OPTIONAL", PINK)
+
+func _camp_sign(rect: Rect2, headline: String, punchline: String, tint: Color) -> void:
+	if room_id in ["hotel", "rooftop"]:
+		# Freestanding brass lobby/terrace notices have an actual foot on the floor.
+		var center_x := rect.get_center().x
+		draw_rect(Rect2(center_x - 2, rect.end.y, 4, 51), BRASS.darkened(0.2))
+		draw_rect(Rect2(center_x - 24, rect.end.y + 49, 48, 5), BRASS.darkened(0.45))
+		draw_line(Vector2(center_x - 22, rect.end.y + 49), Vector2(center_x + 22, rect.end.y + 49), BRASS, 2)
+	draw_rect(rect.grow(2), BRASS.darkened(0.3))
+	draw_rect(rect, INK)
+	draw_line(rect.position + Vector2(7, 4), rect.position + Vector2(rect.size.x - 7, 4), tint, 2)
+	draw_string(_font, rect.position + Vector2(6, 20), headline, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x - 12, 12, tint)
+	draw_string(_font, rect.position + Vector2(6, 35), punchline, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x - 12, 9, CREAM)
 
 func _draw_garden() -> void:
 	if room_id != "garden" or not seeds_planted:
@@ -263,7 +296,7 @@ func _draw_disco(props: Dictionary) -> void:
 		for x in range(327, 761, 42):
 			draw_rect(Rect2(x, 439, 13, 8), color)
 		var show_text := "DIDI PRESENTS • THE ACCOUNTANTS OF DESIRE"
-		if state.get("show_completed", false): show_text = "ENCORE! • THANK YOU, LARRY"
+		if state.get("show_completed", false): show_text = "ENCORE! • THANK YOU, " + str(player_profile.get("name", "Lisa" if player_profile.get("character", "larry") == "lisa" else "Larry")).to_upper()
 		_plate(Rect2(376, 209, 359, 28), show_text, color)
 		if state.get("gift_ring", false):
 			draw_arc(Vector2(640, 376), 13, 0.0, TAU, 16, BRASS, 5)

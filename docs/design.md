@@ -21,7 +21,7 @@ The setting is an intentionally imagined late-1980s Lost Wages, rather than Soft
 | Original bedroom/chapel/honeymoon dependencies | Cabaret and stage-manager introduction | Retain the gift/phone/knife/rope chain in a shorter coherent subplot |
 | Pills given at the hotel gate | Espresso voucher, machine and receptionist invitation | Preserve the multi-step favor without copying the original drug gate |
 | Break-in and dangerous escape | A sticking service window and a secured access route | Preserve rope/tool callbacks and slapstick in the revised story |
-| Winning framed as conquest | An introduction, a thoughtful apple, and a conversation | End on connection and a comic change in Larry's behavior |
+| One-night seduction ambition | Get laid with Eve or Adam after the shared rooftop story, apple puzzle and accepted invitation | Preserve the adult farce while giving both characters a voice |
 | Deaths, inventory friction and expiration pressure | Persistent progress with no death timer or inventory limit | Let the player explore jokes and solve puzzles without replaying large sections |
 
 The game remains suggestive adult comedy: nightlife, romantic misreadings, inflated confidence, double meanings, and a narrator who recognizes every bad idea before Larry does. Intimacy stays offscreen. Character interactions should convey willing participation through their own dialogue; repeating explanatory content notes in every scene weakens the joke.
@@ -38,10 +38,20 @@ The current content model contains **13 logical locations**, **18 inventory obje
 - A manual save slot and an autosave file containing location, inventory, progress flags, money, score, action count and journal. A launch with an existing autosave offers **Continue evening**; Help also provides **Restore autosave**. Invalid save data is rejected before replacing live progress.
 - Optional animated slots with an inspectable four-spin cycle, and blackjack with a shuffled deck, Hit/Stand, flexible aces and $5/$10/$20 stakes. The dealer stands on 17; a natural blackjack pays 3:2 profit, rounded down to whole dollars. A cashier recovery grant is available below $10.
 - An optional Didi follow-up acknowledges the stage manager's message and the completed cabaret props without adding another required exchange or score award.
-- A final rooftop conversation over three TALK actions after the apple gift: Larry tells a story, Eve talks about her own work on the gardens, and she invites him to stay for sunrise. Only the conclusion grants the existing ending score. The completion screen allows continued exploration or restart.
+- A rooftop story with Eve or Adam, selected from the player profile. The apple, a story and listening unlock a private invitation. Accepting it completes the evening with a suggestive curtain scene and an explicit non-graphic “got laid” outcome. Friendly or deferred-party choices keep the night open; the completion screen allows further exploration or restart.
 - Thirteen new illustrated backgrounds, independent animated geometric pixel actors with a dance animation, visible planted seeds and a growing apple tree, a looping original music bed and a mute control. Harvesting removes the fruit while leaving the tree.
 
 The narrative tracks an action count but does not simulate an expiring night. The displayed clock is atmosphere, not a countdown. Walking supplies visual feedback; it is not a free-roaming physical simulation with navigation obstacles. Accepted travel now plays a 3.5–4.4 second vignette showing departure, transit and arrival. Doors, walks, taxis, elevators, secured rope crossings and terraces receive distinct staging with authored, rotating innuendo. Each scene is skippable; reduced-motion mode uses a one-second still card. The deterministic model validates the route and commits movement once, before animation; saving/reloading never requires replaying the movie, and a blocked or same-room request has no movie. Map travel follows the existing connected route while showing one montage for the chosen destination. Taxi visuals add no fees.
+
+## Identity, attraction and optional encounters
+
+Players choose Larry (male) or Lisa/Melisa (female), and heterosexual, homosexual or bisexual orientation, default bisexual. Attraction follows opposite/same/both genders. The finale is Eve (female) or Adam (male), with an opposite-gender finale for bisexual characters. Identity affects names, pronouns, NPC presentation, travel, narration and saved data; it does not change difficulty, rewards or competence.
+
+Three optional NPCs occupy existing rooms: a backstage costumier, casino magician and garden photographer. Each has a visible clue and two proposed solutions, followed by a separate flirtation and invitation. Wrong answers and declining are recoverable. Helping does not silently start an encounter. Bisexual characters meet both genders; other configurations have a compatible cast. A completed encounter adds a journal memory, never repeatable points or money. These authored surprise meetings are stable within an evening, not randomly rerolled on each visit.
+
+The main objective is **get laid with Eve or Adam before sunrise**. Optional flings remain detours. A short skippable private-scene animation shows fully clothed characters approaching a doorway, closing curtains, a Do Not Disturb gag and non-graphic aftermath. Reduced motion uses still staging. The deterministic model resolves acceptance and saves it before the scene, so interruption or skipping cannot duplicate state. Rendering does not award encounters. All participants are adults.
+
+Save version 2 includes validated identity/orientation. Version 1 saves default to Larry/bisexual and preserve progress and points; an old completed save reopens the revised finale without awarding the existing ending milestone twice. New-game choices remain a draft until the player starts; cancel preserves the current evening.
 
 ## Visual direction
 
@@ -88,7 +98,7 @@ This build does not claim parity with every mechanism, joke, location or branch 
 - Exact original dialogue, sprites, music, score system or age-trivia gate.
 - The original paid-encounter, wedding, honeymoon, inflatable-doll or mushroom-teleport scenes.
 - Blackjack split, double-down or insurance options; simulated taxi service, a dynamic clock or a death system.
-- Fully animated character portraits, lip sync, voice acting or long-form cinematic story sequences. Short animated travel vignettes are included.
+- Fully animated character portraits, lip sync, voice acting or long-form cinematic story sequences. Short travel and private-encounter vignettes are included.
 - A physically navigable city, obstacle-aware pathfinding, gamepad support, localization or touch-specific interface layout.
 - A fully open natural-language parser or combinatorial responses for every possible object pair.
 

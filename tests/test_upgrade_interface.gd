@@ -161,6 +161,8 @@ func _run() -> void:
 	_close()
 	_press(app.canvas, "New evening")
 	_press(app.modal, "Start a new evening")
+	_check(app.setup_open and app.game.room == "disco", "New-evening confirmation opens a profile draft without resetting the current game")
+	_press(app.modal, "Get lucky as Larry")
 	_check(app.game.room == "street" and app.game.cash == 80 and app.game.score == 0, "Actual New evening control resets the independent parser scenario")
 	_hotspot("newsbox", "take")
 	await process_frame

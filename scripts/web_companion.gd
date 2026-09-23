@@ -72,7 +72,7 @@ func start(owner_app: Control) -> void:
 	  function send(action) { if(pending) return; pending=true; callback(JSON.stringify({...action,revision:currentRevision})); }
 	  window.__larryCompanionRender = function(serialized) {
 	    const state=JSON.parse(serialized); currentRevision=state.revision; pending=false;
-	    travelSkip=state.buttons.find(item=>item.text.startsWith('Skip travel')&&!item.disabled)?.id||null;
+	    travelSkip=state.buttons.find(item=>(item.text.startsWith('Skip travel')||item.text.startsWith('Skip scene'))&&!item.disabled)?.id||null;
 	    const active=document.activeElement, key=active?.dataset?.focusKey, inside=controls.contains(active)||ranges.contains(active), scroll=body.scrollTop;
 	    heading.textContent=state.room; status.textContent=state.status; goal.textContent='Current plan: '+state.objective; selected.textContent=state.selection;
 	    if(live.textContent!==state.dialogue) live.textContent=state.dialogue;

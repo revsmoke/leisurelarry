@@ -1,0 +1,209 @@
+{
+  "at": "2026-09-23T04:00:30.043028+00:00",
+  "scope": "All 17 Godot suites plus the TypeSafe client Node suite. Headless model, UI callback, layout, isolation, and cinematic tests; not live browser or enjoyment evidence.",
+  "passed": true,
+  "godotAssertions": 5631,
+  "nodeTests": 34,
+  "sourceUnchangedDuringChecks": true,
+  "memoryArtifactRestored": true,
+  "checks": [
+    {
+      "test": "tests/test_action_intent.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 40,
+      "summary": [
+        "Action intent regression checks: 40 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_casino.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 40,
+      "summary": [
+        "Casino tests: 40 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_encounter_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 258,
+      "summary": [
+        "Encounter visuals: 258 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_game.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 214,
+      "summary": [
+        "Adventure tests: 214 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_identity_romance.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 879,
+      "summary": [
+        "Identity and romance tests: 879 assertions, 0 failures; six identities, three optional encounters each."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 213,
+      "summary": [
+        "Interface tests: 213 assertions, 0 failures. Full UI route: 100/100 and ending verified."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_memory_lifecycle.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 348,
+      "summary": [
+        "Native lifecycle: 348 checks, 0 failures; 10 cycles after 2 warmups; static baseline 37520554, final 38264850, ratio 1.01983702053013"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_modal_layout.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 546,
+      "summary": [
+        "Modal layout: 546 assertions, 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_narrative.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 57,
+      "summary": [
+        "Narrative tests: 57 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_profile_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 159,
+      "summary": [
+        "Profile interface tests: 159 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_qa_bridge.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 217,
+      "summary": [
+        "QA bridge checks: 217 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_travel_cutscenes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 334,
+      "summary": [
+        "Travel cutscene tests: 334 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 167,
+      "summary": [
+        "Upgrade interface tests: 167 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_routes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 1913,
+      "summary": [
+        "Upgrade route tests: 1913 assertions, 0 failures; 8 route combinations \u00d7 3 ending tones."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 79,
+      "summary": [
+        "Upgrade visuals: 79 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_web_companion.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 31,
+      "summary": [
+        "Web companion: 31 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_window_responsive.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 136,
+      "summary": [
+        "Actual Window responsive layout: 136 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_jev_client.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "\u2139 tests 34",
+        "\u2139 suites 0",
+        "\u2139 pass 34",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 113.790458"
+      ],
+      "errors": []
+    }
+  ],
+  "scriptSha256": {
+    "scripts/actor.gd": "7955bd738ba56497e5086b415400ece97a3115153d6db3f8869527cae5efe8bf",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/encounter_cutscene.gd": "a86ba9ed70dc42b2ff46e1c0e52af48f7f5d7ae07a3c630a4442ebf7381b8eff",
+    "scripts/game_state.gd": "2abbb417461f81dfbfbcbd93c3e67bd22e3aea30edbb7caf779a692be68460e0",
+    "scripts/main.gd": "75a6b65533a8e6d446420f746f65d4cd6011a106f1e9ce5401ad2ceca3041f9e",
+    "scripts/qa_bridge.gd": "4d5151c50aa73c8b16e5859716ca2f9d73e02c6e672528b64b320454338ed83a",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "d0a6b7f52b07a9aa7e3f012cedc2d14e2007130dbadcb0bd79b7f70f5b1cf990",
+    "scripts/web_companion.gd": "0b7db1e12b77586e92e17f83958cc7cf92a60a2677a7b283935d9cf9e822cd4e",
+    "scripts/world_effects.gd": "f3d884fa5d53cad57ee9345ab8ea809268330b6634760498109c24e1488de6a2"
+  }
+}

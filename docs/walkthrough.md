@@ -4,7 +4,13 @@ This is an original, non-explicit adaptation of the puzzle-adventure structure o
 
 Choose **Look**, **Talk**, **Take**, or **Use**, then click a scene target. Select a carried item and click another target to combine them. Right-click an inventory item to examine it; double-click the apple core to extract its seeds. Use **Take** for loose objects; use **Talk** for people and **Use** for machines or activities. To purchase whiskey, **Use Lefty** or type **BUY WHISKEY**. The parser also accepts these actions.
 
-Named exits connect rooms; the Neon Strip is the hub, and **City Map** follows unlocked routes. **Show next step** gives an explicit solution hint, with spoilers. **Notebook** preserves discovered clues and completed favors. **Save** and **Load** use a manual slot; when an autosave exists, **Continue evening** appears on the next launch. **? → Restore autosave** also restores that separate slot. Scroll within Help to read all its instructions.
+Named exits connect rooms; the Neon Strip is the hub, and **City Map** follows unlocked routes. **Need a nudge?** offers increasingly specific hints; the third level gives an explicit solution with spoilers. **Notebook** preserves discovered clues and completed favors. **Save** and **Load** use a manual slot; when an autosave exists, **Continue evening** appears on the next launch. **? → Restore autosave** also restores that separate slot. Scroll within Help to read all its instructions.
+
+## Before the night begins
+
+Choose Larry or Lisa and your orientation (default bisexual). The rooftop host is Eve or Adam; use the displayed name in dialogue and commands. Heterosexual and bisexual Larry end with Eve; homosexual Larry ends with Adam. Heterosexual and bisexual Lisa end with Adam; homosexual Lisa ends with Eve. Below, **Eve** means your selected rooftop host.
+
+The goal is to get laid with that host. Three optional flings are available, but none substitutes for the rooftop finale. Friendship and postponing the final invitation keep the night open.
 
 ## 1. A suit, a paper, and a bar
 
@@ -45,9 +51,21 @@ Named exits connect rooms; the Neon Strip is the hub, and **City Map** follows u
 26. **Go hotel**, **go penthouse**, **go rooftop**. **Give apple to Eve**.
 27. **Talk Eve** to tell her about your dance with Didi.
 28. **Talk Eve** again to listen to her story about the hotel's gardens and experimental planter.
-29. **Talk Eve** a third time after giving the apple to accept her invitation to stay for sunrise and finish the game.
+29. **Talk Eve** a third time after giving the apple or choose **Ask Eve/Adam to get laid: a private sunrise for two** to accept the final invitation. Watch or skip the private-scene cutscene; the outcome completes the game.
 
 The route above earns **100 / 100 points** across 25 unique milestones. The three final conversations advance one exchange; only its conclusion awards the ending points. Repeating completed actions cannot duplicate rewards. Earlier gardening is also valid—the rooftop introduction is guidance, not a new gate. Taking every scenic route is optional; the ending waits for you.
+
+## Optional encounters
+
+For any selected profile, each optional NPC's displayed name and gender are compatible with the chosen orientation. Bisexual characters meet both genders across these detours.
+
+| Location | Clue to examine | Solution offered in conversation |
+| --- | --- | --- |
+| Backstage Lounge | Dressing-screen tag | Turn the rhinestone latch |
+| Lucky Chip Casino | Lucky napkin | Suggest the hearts card |
+| Moonlight Garden | Lantern instruction card | Set the portrait lantern to amber |
+
+TALK to the person, LOOK at the clue, and choose the solution in conversation. A wrong answer preserves your progress. Choose the flirtation to receive an invitation, then **Yes — let’s get laid**, or take a rain check. Declining has no penalty and a later flirtation reopens the choice. Accepted encounters have a skippable scene and durable memory; they grant no score and do not finish the evening. Afterward, you can share an in-joke rather than replaying the encounter.
 
 ## Optional casino games
 

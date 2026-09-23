@@ -117,9 +117,9 @@ func request(message: Dictionary) -> Dictionary:
 	# Travel is a real UI movie, not a second model action. Wait for its arrival
 	# before publishing new room controls; never bypass the movie or puzzle gates.
 	var travel_started := Time.get_ticks_msec()
-	while app.is_travelling() and Time.get_ticks_msec() - travel_started < 8000:
+	while app.is_cinematic() and Time.get_ticks_msec() - travel_started < 8000:
 		await get_tree().process_frame
-	if app.is_travelling():
+	if app.is_cinematic():
 		busy = false
 		response.error = "travel_timeout"
 		return response
