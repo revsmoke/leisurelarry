@@ -1,0 +1,146 @@
+BO: Bo: 'I cook after midnight. Tonight I'm inventing a zero-proof drink that doesn't taste like punishment. The magazine rack at Quik-E-Mart has tonight's recipe. Read it, then mix three ingredients here in order. Ingredients are on me. So is the terrible name.' Nothing is timed; you can leave and return.
+
+---
+
+JAZZ: Jazz: 'Session musician. My audition partner sent a three-beat cue to the Service Alley busker. LOOK at the busker's rhythm card, then tap it out here. Show me you can listen before you tell me what else you're good at.' Nothing is timed; you can leave and return.
+
+---
+
+RED: Red: 'I run the midnight rally. Our route card got used as a beer mat. Read the free newspaper's rally notice on the Neon Strip. Find the open road and identify our creature badge. No riding after drinking; we take the courtesy cab tonight.' Nothing is timed; you can leave and return.
+
+---
+
+THE NARRATOR: Guest comment: 'Good pillows. Unsettlingly fast apples.' Five stars, with reservations.
+
+Roxanne's clue: PUBLIC GUESTBOOK: The private Salon uses the alias M. Satin. Its discreet signal is a folded BLUE napkin. No room numbers or guests' real names are listed. Return to Lefty's and TALK to Roxanne.
+
+---
+
+THE NARRATOR: Collar Weekly predicts next season's collars will need their own ZIP codes. The centerfold is a particularly daring lapel.
+
+Bo's clue: ZERO-PROOF RECIPE: The Ginger Tease — pour GINGER, add CHERRY, finish with SODA. In that order. No booze, no purchase. All the bite, none of the morning excuses. Return to Lefty's and TALK to Bo.
+
+---
+
+THE NARRATOR: A blues musician packs for a midnight picnic. He'll trade his spare pocket knife for wine. At least one of you has plans that involve a blanket.
+
+Jazz's clue: BUSKER'S RHYTHM CARD: tonight's audition cue is HOLD, REST, TAP. Three beats. Hold one long note; let the silence do its own flirting. Return to Lefty's and TALK to Jazz.
+
+---
+
+THE NARRATOR: Free papers. Today's headline: INSTANT APPLES COME TO HOTEL GARDEN. Take a copy, then read it.
+
+Red's clue: RALLY NOTICE: Coast road flooded; desert road buried in sand. Mountain pass open. Rally badge: the creature with a forked tongue, NOT wings or a sting. Return to Lefty's and TALK to Red.
+
+---
+
+THE CONVERSATION: Roxanne: 'That's it.' Which folded napkin signals the Salon?
+
+---
+
+Reload resumed at napkin step:
+- generic: Your browser does not support the canvas tag.
+- generic "Text & keyboard controls"
+- heading "Lefty's Bar" [level=2]
+- paragraph: The same game, with readable text and standard keyboard buttons. Tab to a control; Enter or Space activates it. Close this drawer to return to the scene.
+- paragraph: $80 · 52 / 100 · A NIGHT TO REMEMBER
+- paragraph: "Current plan: Evening complete: you got laid. Keep exploring for optional discoveries, or try different choices next time."
+- paragraph: Talk · choose a target
+- status: "ROXANNE: Roxanne: 'I'm an independent escort. I choose my clients; tonight I fancy your company. A private appointment is $20, if we both say yes. First, help me recover the Salon's public alias and discreet napkin signal from the Hotel Lobby guestbook. My privacy matters more than your pickup line.' Your notes have the clue. Which folded napkin signals the Salon?"
+- region "Open game dialog":
+  - paragraph: A word with Roxanne
+  - paragraph: Choose a topic, or close this conversation to explore.
+  - paragraph: "Roxanne: 'I'm an independent escort. I choose my clients; tonight I fancy your company. A private appointment is $20, if we both say yes. First, help me recover the Salon's public alias and discreet napkin signal from the Hotel Lobby guestbook. My privacy matters more than your pickup line.' Your notes have the clue. Which folded napkin signals the Salon?"
+- heading "Available controls" [active] [level=3]
+- button "Close dialog"
+- button "Review the clue in my notes"
+- button "Blue"
+- button "Gold"
+- button "Red"
+- button "Back to the room"
+- heading "Recent conversation" [level=3]
+- list:
+  - listitem: "THE NARRATOR: Lost Wages, 1987. Eighty bucks. One polyester suit. One mission: get laid. Your fly has higher ambitions than your bank balance."
+  - listitem: "PICKING UP THE PIECES: Game restored. Your suit is exactly as you left it, for better or worse."
+  - listitem: "ROXANNE: Roxanne: 'I'm an independent escort. I choose my clients; tonight I fancy your company. A private appointment is $20, if we both say yes. First, help me recover the Salon's public alias and discreet napkin signal from the Hotel Lobby guestbook. My privacy matters more than your pickup line.' Your notes have the clue. Which folded napkin signals the Salon?"
+
+---
+
+THE CONVERSATION: Roxanne: 'Yes, I'm interested. A private appointment is $20, as agreed; either of us can say no. No charge unless you accept. Still fancy getting laid?'
+
+---
+
+A LITTLE LATER…: You and Roxanne got laid. Later, two happy adults part with a smile. Discretion survives. Your hair does not. Your rooftop ending with Adam is already complete. Consider this the after-party.
+
+---
+
+THE CONVERSATION: Bo: A sip, a raised eyebrow, then a grin. 'Delicious. And I can remember every terrible line you try next.' The new drink joins the menu. Choose whether to flirt; helping alone promises nothing.
+
+---
+
+A LITTLE LATER…: You and Bo got laid. Later, you both agree the zero-proof drink deserves a very dirty name. Your rooftop ending with Adam is already complete. Consider this the after-party.
+
+---
+
+THE CONVERSATION: Jazz: The rhythm clicks. A little improvised duet makes the glasses rattle. 'Good ears. I was worried your hair would get in the way.' Choose whether to flirt; helping alone promises nothing.
+
+---
+
+A LITTLE LATER…: You and Jazz got laid. Later, the encore earns a standing ovation from one badly creased leisure suit. Your rooftop ending with Adam is already complete. Consider this the after-party.
+
+---
+
+THE CONVERSATION: Red: 'Open road, right badge. Rally saved. You're more than a decorative fire hazard.' A finger taps the club badge on that blue vest. The courtesy cab awaits; the motorbike stays parked. Choose whether to flirt; helping alone promises nothing.
+
+---
+
+A LITTLE LATER…: You and Red got laid. Later, the cab driver adjusts the mirror. Apparently your collar is a blind spot. Your rooftop ending with Adam is already complete. Consider this the after-party.
+
+- generic: Your browser does not support the canvas tag.
+- generic "Text & keyboard controls"
+- heading "Lefty's Bar" [level=2]
+- paragraph: The same game, with readable text and standard keyboard buttons. Tab to a control; Enter or Space activates it. Close this drawer to return to the scene.
+- paragraph: $60 · 52 / 100 · A NIGHT TO REMEMBER
+- paragraph: "Current plan: Evening complete: you got laid. Keep exploring for optional discoveries, or try different choices next time."
+- paragraph: Talk · choose a target
+- status: "A LITTLE LATER…: You and Red got laid. Later, the cab driver adjusts the mirror. Apparently your collar is a blind spot. Your rooftop ending with Adam is already complete. Consider this the after-party."
+- region "Open game dialog":
+  - paragraph: Notes to a future, wiser Lisa
+  - paragraph: Clues are recorded here as you discover them.
+  - paragraph: "CURRENT PLAN Evening complete: you got laid. Keep exploring for optional discoveries, or try different choices next time. • Get laid with Adam before sunrise. Meet people, solve their predicaments, and try not to let your collar arrive first. Optional flings are detours, not the final goal. • At the Lucky Chip Casino: a complimentary Studio 69 pass in a clean ashtray. • The casino's complimentary pass opens Studio 69. • Ruby's puzzle clue: The magician's napkin says: MY MISSING FINALE IS THE SUIT THAT BEATS WITHOUT A PULSE: HEARTS. Underneath: Never palm a collar. It bites back. • Ruby has an optional puzzle in The Lucky Chip. Examine the lucky napkin, then TALK again. • Helped Ruby: the missing hearts card completes the trick. The repair worked; that smile might be a separate invitation. • Ruby returned your flirtation and offered a private fling. Accept or decline; either choice is welcome. • Kept things friendly with Ruby. No penalty, no debt, and the conversation remains open. • Shared a private fling with Ruby. A happy detour; the rooftop goal remains. • On the Neon Strip: free newspapers and a flower cart selling $10 bouquets. • Lefty needs the bowling promotion's advertised prize matched to its winning customer. The bar's promotion board and the regular's collar ticket are visible clues. • Lefty's bowling-night board advertises a golden bowling-pin keyring for winning ticket 37. • The regular at Lefty's wears ticket 37 in his collar. He says losing it would be his first bad split tonight. • The regular at Lefty's will trade his TV remote for a $10 whiskey from the bartender. • Matched winning ticket 37 to the regular. Lefty vouched for Lisa at the backstage door. • Didi needs help rehearsing her cabaret at Studio 69. A complimentary Studio 69 pass waits in the Lucky Chip casino's clean ashtray. Take a pass, then talk to Didi. • In the Backstage Lounge: promotional chocolates and a damaged fire escape with a sturdy railing. • Vince's puzzle clue: The dressing-screen care tag reads: PRIVACY LATCH — TURN THE RHINESTONE. THE FEATHER IS DECORATIVE. Repair manual, or the world's most disappointing striptease? • Vince has an optional puzzle in Backstage Lounge. Examine the dressing-screen tag, then TALK again. • Helped Vince: the dressing-screen latch now stays shut. The repair worked; that smile might be a separate invitation. • Vince returned your flirtation and offered a private fling. Accept or decline; either choice is welcome. • Shared a private fling with Vince. A happy detour; the rooftop goal remains. • At Studio 69: Didi, a wall telephone, rehearsal marks on the floor, and a spare rope beside the booth. • Met Didi, a stage designer. Her cabaret can use costume jewelry, flowers, chocolates and a dance, OR a willing assistant who follows her rehearsal cue. • Didi's simple rehearsal: Lisa stands on the taped X; when Didi calls AUDIT, you answer WRITE IT OFF. Props are an alternate elaborate version, not mandatory gifts. • Played Didi's assistant: answered AUDIT with WRITE IT OFF. Her cabaret can run with Lisa instead of the three props. • Didi shared her stage manager's number: 555-0987. Call from the disco phone about the spare rope or a hotel introduction. • Didi invited Lisa to watch her show now or later, and to bring a friend to the after-show gathering. • Danced with Didi. Neither of you will win a trophy; both had fun. • Attended Didi's Accountants of Desire. Lisa's earlier help became part of the act. • Didi's curtain call paid off Lisa's backstage approach and the rehearsal help. She invited you to the after-show gathering. • Called 555-0987. Didi's stage manager cleared the spare rope for you. • The stage manager knows the hotel receptionist. After discussing Didi's completed setup, Lisa can ask him for an introduction. • Didi's stage manager put in a word with the Hotel Lobby receptionist. Introduce yourself there as the cabaret helper; no coffee delivery is required. • The receptionist welcomed Didi's cabaret helper upstairs after the stage manager's introduction. • In Moonlight Garden: an experimental planter and a folding stool on the loan rack. • Florian's puzzle clue: The lantern card reads: MOONLIGHT PORTRAITS — AMBER FILTER. WHITE FLOODLIGHTS ARE FOR INTERROGATIONS AND FAILED FIRST DATES. • Florian has an optional puzzle in Moonlight Garden. Examine the lantern instruction card, then TALK again. • Helped Florian: amber light makes the portrait work. The repair worked; that smile might be a separate invitation. • Florian returned your flirtation and offered a private fling. Accept or decline; either choice is welcome. • Shared a private fling with Florian. A happy detour; the rooftop goal remains. • In the Penthouse: a water pitcher in a high cabinet and a working kitchenette sink. • Adam missed dinner and asked for something fresh. The hotel's instant-fruit planter could provide an apple. • Told Adam about the evening without turning Didi into a conquest. Adam liked that you could laugh at yourself. • Adam designs hotel gardens. The instant-fruit experiment fed the guests; its creator missed dinner. • Apple cores contain usable seeds. The Service Alley bin lid is the staff's collection spot: take a core and use it to separate the seeds. • A pitcher, a sink, and an instant-fruit planter. Botany is about to get weird. • In the Service Alley: an apple core on a bin lid and a loaner rubber mallet on the maintenance rack. • Separated viable apple seeds from the discarded core. • The Bugle explains the garden's instant-fruit planter: plant seeds, then add water. • Planted the apple seeds using the newspaper's instructions. Just add water. • Watered the experimental planter. A miniature tree produced one perfect apple. • Chose friendly company with Adam for now. The night stays open; a private invitation can wait. • Got laid with Adam. Private company and a collar mercifully left outside. • Kit: 'The jukebox ate my dedication, and I refuse to be outperformed by furniture. Read my slip, choose the style, then the tempo. Impress me with something other than those lapels.' Nothing is timed; you can leave and return. • Kit's clue: JUKEBOX SLIP: 'Play the blues. Let it crawl, not sprint.' The pencilled dedication says: FOR SOMEONE WHO CAN KEEP IT UP — A CONVERSATION, THAT IS. • Kit: step 1 — blues. • Helped Kit finish an optional bar story. The favor is complete; flirting is a separate choice. • Kit returned your flirtation. An optional invitation awaits your answer. • Shared a consensual private fling with Kit. An after-party following the completed rooftop ending. • Roxanne: 'I'm an independent escort. I choose my clients; tonight I fancy your company. A private appointment is $20, if we both say yes. First, help me recover the Salon's public alias and discreet napkin signal from the Hotel Lobby guestbook. My privacy matters more than your pickup line.' Nothing is timed; you can leave and return. • Bo: 'I cook after midnight. Tonight I'm inventing a zero-proof drink that doesn't taste like punishment. The magazine rack at Quik-E-Mart has tonight's recipe. Read it, then mix three ingredients here in order. Ingredients are on me. So is the terrible name.' Nothing is timed; you can leave and return. • Jazz: 'Session musician. My audition partner sent a three-beat cue to the Service Alley busker. LOOK at the busker's rhythm card, then tap it out here. Show me you can listen before you tell me what else you're good at.' Nothing is timed; you can leave and return. • Red: 'I run the midnight rally. Our route card got used as a beer mat. Read the free newspaper's rally notice on the Neon Strip. Find the open road and identify our creature badge. No riding after drinking; we take the courtesy cab tonight.' Nothing is timed; you can leave and return. • Roxanne's clue: PUBLIC GUESTBOOK: The private Salon uses the alias M. Satin. Its discreet signal is a folded BLUE napkin. No room numbers or guests' real names are listed. Return to Lefty's and TALK to Roxanne. • Bo's clue: ZERO-PROOF RECIPE: The Ginger Tease — pour GINGER, add CHERRY, finish with SODA. In that order. No booze, no purchase. All the bite, none of the morning excuses. Return to Lefty's and TALK to Bo. • The alley busker will trade his spare pocket knife for a $12 bottle of wine from Quik-E-Mart. • Jazz's clue: BUSKER'S RHYTHM CARD: tonight's audition cue is HOLD, REST, TAP. Three beats. Hold one long note; let the silence do its own flirting. Return to Lefty's and TALK to Jazz. • Red's clue: RALLY NOTICE: Coast road flooded; desert road buried in sand. Mountain pass open. Rally badge: the creature with a forked tongue, NOT wings or a sting. Return to Lefty's and TALK to Red. • Roxanne: step 1 — satin. • Helped Roxanne finish an optional bar story. The favor is complete; flirting is a separate choice. • Roxanne returned your flirtation. An optional invitation awaits your answer. • Shared a consensual private fling with Roxanne. The agreed $20 was paid once. An after-party following the completed rooftop ending. • Bo: step 1 — ginger. • Bo: step 2 — cherry. • Helped Bo finish an optional bar story. The favor is complete; flirting is a separate choice. • Bo returned your flirtation. An optional invitation awaits your answer. • Shared a consensual private fling with Bo. An after-party following the completed rooftop ending. • Jazz: step 1 — hold. • Jazz: step 2 — rest. • Helped Jazz finish an optional bar story. The favor is complete; flirting is a separate choice. • Jazz returned your flirtation. An optional invitation awaits your answer. • Shared a consensual private fling with Jazz. An after-party following the completed rooftop ending. • Red: step 1 — mountain. • Helped Red finish an optional bar story. The favor is complete; flirting is a separate choice. • Red returned your flirtation. An optional invitation awaits your answer. • Shared a consensual private fling with Red. An after-party following the completed rooftop ending."
+- heading "Available controls" [active] [level=3]
+- button "Close dialog"
+- heading "Recent conversation" [level=3]
+- list:
+  - listitem: "THE NARRATOR: Lost Wages, 1987. Eighty bucks. One polyester suit. One mission: get laid. Your fly has higher ambitions than your bank balance."
+  - listitem: "PICKING UP THE PIECES: Game restored. Your suit is exactly as you left it, for better or worse."
+  - listitem: "ROXANNE: Roxanne: 'I'm an independent escort. I choose my clients; tonight I fancy your company. A private appointment is $20, if we both say yes. First, help me recover the Salon's public alias and discreet napkin signal from the Hotel Lobby guestbook. My privacy matters more than your pickup line.' Your notes have the clue. Which folded napkin signals the Salon?"
+  - listitem: "THE CONVERSATION: Roxanne: 'Right alias, right signal. Discreet and attentive. That is much sexier than guessing my room number.' The appointment details are sorted; nothing is booked or charged. Choose whether to flirt; helping alone promises nothing."
+  - listitem: "THE CONVERSATION: Roxanne: 'Yes, I'm interested. A private appointment is $20, as agreed; either of us can say no. No charge unless you accept. Still fancy getting laid?'"
+  - listitem: "THE CONVERSATION: You and Roxanne got laid. Later, two happy adults part with a smile. Discretion survives. Your hair does not. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "DO NOT DISTURB: THE SATIN APPOINTMENT"
+  - listitem: "A LITTLE LATER…: You and Roxanne got laid. Later, two happy adults part with a smile. Discretion survives. Your hair does not. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "ROXANNE: Roxanne: 'Still smiling. Still blaming the wallpaper.' You share a private joke; no repeat fee, no tally to grind."
+  - listitem: "BO: Bo: 'I cook after midnight. Tonight I'm inventing a zero-proof drink that doesn't taste like punishment. The magazine rack at Quik-E-Mart has tonight's recipe. Read it, then mix three ingredients here in order. Ingredients are on me. So is the terrible name.' Your notes have the clue. Pour ingredient 1 of 3."
+  - listitem: "THE CONVERSATION: Bo: 'That's it.' Add ingredient 2 of 3."
+  - listitem: "THE CONVERSATION: Bo: 'That's it.' Finish with ingredient 3 of 3."
+  - listitem: "THE CONVERSATION: Bo: A sip, a raised eyebrow, then a grin. 'Delicious. And I can remember every terrible line you try next.' The new drink joins the menu. Choose whether to flirt; helping alone promises nothing."
+  - listitem: "THE CONVERSATION: Bo: 'The attraction is mutual. I'd like to get laid with you. Private room, mutual enthusiasm, wallpaper beyond redemption. Shall we?' Choose yes or a rain check."
+  - listitem: "THE CONVERSATION: You and Bo got laid. Later, you both agree the zero-proof drink deserves a very dirty name. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "DO NOT DISTURB: THE MIDNIGHT SPECIAL"
+  - listitem: "A LITTLE LATER…: You and Bo got laid. Later, you both agree the zero-proof drink deserves a very dirty name. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "JAZZ: Jazz: 'Session musician. My audition partner sent a three-beat cue to the Service Alley busker. LOOK at the busker's rhythm card, then tap it out here. Show me you can listen before you tell me what else you're good at.' Your notes have the clue. Play beat 1 of 3."
+  - listitem: "THE CONVERSATION: Jazz: 'That's it.' Play beat 2 of 3."
+  - listitem: "THE CONVERSATION: Jazz: 'That's it.' Play beat 3 of 3."
+  - listitem: "THE CONVERSATION: Jazz: The rhythm clicks. A little improvised duet makes the glasses rattle. 'Good ears. I was worried your hair would get in the way.' Choose whether to flirt; helping alone promises nothing."
+  - listitem: "THE CONVERSATION: Jazz: 'The attraction is mutual. I'd like to get laid with you. Private room, mutual enthusiasm, wallpaper beyond redemption. Shall we?' Choose yes or a rain check."
+  - listitem: "THE CONVERSATION: You and Jazz got laid. Later, the encore earns a standing ovation from one badly creased leisure suit. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "DO NOT DISTURB: A VERY PRIVATE ENCORE"
+  - listitem: "A LITTLE LATER…: You and Jazz got laid. Later, the encore earns a standing ovation from one badly creased leisure suit. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "RED: Red: 'I run the midnight rally. Our route card got used as a beer mat. Read the free newspaper's rally notice on the Neon Strip. Find the open road and identify our creature badge. No riding after drinking; we take the courtesy cab tonight.' Your notes have the clue. Which rally road is open?"
+  - listitem: "THE CONVERSATION: Red: 'That's it.' Which creature belongs on the rally patch?"
+  - listitem: "THE CONVERSATION: Red: 'Open road, right badge. Rally saved. You're more than a decorative fire hazard.' A finger taps the club badge on that blue vest. The courtesy cab awaits; the motorbike stays parked. Choose whether to flirt; helping alone promises nothing."
+  - listitem: "THE CONVERSATION: Red: 'The attraction is mutual. I'd like to get laid with you. Private room, mutual enthusiasm, wallpaper beyond redemption. Shall we?' Choose yes or a rain check."
+  - listitem: "THE CONVERSATION: You and Red got laid. Later, the cab driver adjusts the mirror. Apparently your collar is a blind spot. Your rooftop ending with Adam is already complete. Consider this the after-party."
+  - listitem: "DO NOT DISTURB: THE RIDE HOME"
+  - listitem: "A LITTLE LATER…: You and Red got laid. Later, the cab driver adjusts the mirror. Apparently your collar is a blind spot. Your rooftop ending with Adam is already complete. Consider this the after-party."

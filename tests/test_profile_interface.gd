@@ -82,7 +82,7 @@ func _run() -> void:
 			var partner := "Adam" if (character == "larry" and orientation == "homosexual") or (character == "lisa" and orientation != "homosexual") else "Eve"
 			_check(_texts(app.modal).contains("Tonight's dream date: " + partner), "Setup clearly previews matching finale")
 			_check(app.game.profile == old_profile and app.game.cash == old_cash and app.saves == saves_before, "Draft choices do not mutate or save current evening")
-			_press("Get lucky as " + character.capitalize())
+			_press("Start evening as " + character.capitalize())
 			_check(not app.setup_open and not is_instance_valid(app.modal), "Start closes setup")
 			_check(app.game.profile.character == character and app.game.profile.orientation == orientation, "Start commits selected identity and orientation")
 			_check(app.game.finale_name() == partner, "Correct finale for all six configurations")
@@ -119,7 +119,7 @@ func _run() -> void:
 	app._character_setup(false)
 	_press("Play as Lisa")
 	_press("Homosexual")
-	_press("Get lucky as Lisa")
+	_press("Start evening as Lisa")
 	var state_before := {"room": app.game.room, "cash": app.game.cash, "turns": app.game.turns, "score": app.game.score}
 	before = app.saves
 	app._present_encounter({"partner": "eve", "name": "Eve", "gender": "female", "title": "Some privacy", "caption": "The curtain gets the last word.", "finale": false})
@@ -285,7 +285,7 @@ func _startup_cancel_checks() -> void:
 	_press("Start a new evening")
 	_press("Play as Lisa")
 	_press("Heterosexual")
-	_press("Get lucky as Lisa")
+	_press("Start evening as Lisa")
 	_check(not is_instance_valid(app.modal) and not app.setup_return_to_resume and app.game.profile == {"character": "lisa", "orientation": "heterosexual"}, "Starting from resume commits the chosen profile without reopening Continue")
 	_check(app.saves == 1 and FileAccess.get_file_as_bytes(path) != saved_bytes, "Explicit Start replaces only the isolated autosave once")
 	DirAccess.remove_absolute(path)

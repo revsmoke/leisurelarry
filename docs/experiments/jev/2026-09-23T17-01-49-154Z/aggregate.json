@@ -1,0 +1,195 @@
+{
+  "generatedAt": "2026-09-23T17:02:35.984Z",
+  "batches": [
+    {
+      "browserFrames": {
+        "visibleSamples": 0,
+        "framesWithin20ms": 0,
+        "fractionWithin20ms": null,
+        "notes": "Visible requestAnimationFrame intervals after 2s warmup, not GPU render duration. Per-worker quantiles use 1ms upper-bound histogram bins."
+      },
+      "directory": "docs/experiments/jev/2026-09-23T17-01-49-154Z/e8c198e4-adc8-4856-9ce8-440b2775534c",
+      "session": "2026-09-23T17-01-49-154Z",
+      "batchId": "e8c198e4-adc8-4856-9ce8-440b2775534c",
+      "buildId": "1f3d298537a764a04b8e9130583af3804993187b13989638dba74c39d01bd836",
+      "runnerId": "371cdc4cb20e8fe7fcbde3a3d5d9ed39f1974b440c4e2f3f799a71206d4020f7",
+      "config": {
+        "workers": 2,
+        "runCount": 2,
+        "maxSteps": 100,
+        "maxRequests": 200,
+        "maxInputTokens": 5000000,
+        "maxCostUSD": 0.25,
+        "memoryEnabled": true,
+        "seed": 20260923
+      },
+      "memoryEnabled": true,
+      "requests": 6,
+      "inputTokens": 13630,
+      "apiErrors": 0,
+      "models": [
+        "jev-1.13.0"
+      ],
+      "apiLatencyMs": {
+        "p50": 218,
+        "p95": 303
+      },
+      "estimatedInputCostUSD": 0.0005724600000000001,
+      "serverMemory": {
+        "peakRssBytes": 195166208,
+        "currentRssBytes": 195166208
+      },
+      "outcomes": {
+        "model_abstained": 2
+      },
+      "executed": 2,
+      "completed": 0,
+      "completionRate": 0,
+      "loopStops": 0,
+      "loopStopRate": 0,
+      "players": {
+        "e8c198e4-adc8-4856-9ce8-440b2775534c-001-goal": {
+          "persona": "goal",
+          "score": 0,
+          "completed": false,
+          "steps": 2,
+          "reason": "model_abstained",
+          "errors": 0,
+          "rooms": [
+            "street"
+          ],
+          "uniqueActions": 2,
+          "mostRepeated": [
+            [
+              "Press ✓ Play as Larry",
+              1
+            ],
+            [
+              "Press Heterosexual",
+              1
+            ]
+          ],
+          "actionMs": {
+            "p50": 70,
+            "p95": 70
+          },
+          "sampledFps": {
+            "min": 1,
+            "p50": 1
+          },
+          "coldLoadMs": 693,
+          "browser": {
+            "fractionWithin20ms": null,
+            "framesWithin20ms": 0,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 157135884,
+            "maxRafMs": 0,
+            "rafP50UpperMs": null,
+            "rafP95UpperMs": null,
+            "visibility": "visible",
+            "visibleFrameSamples": 0,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 2,
+            "p95": 2
+          },
+          "settledMs": {
+            "p50": 51,
+            "p95": 51
+          },
+          "decisionRoundTripMs": {
+            "p50": 245,
+            "p95": 245
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.35
+          },
+          "averageClarity": 2.716666666666667,
+          "visibility": [
+            "visible"
+          ]
+        },
+        "e8c198e4-adc8-4856-9ce8-440b2775534c-002-curious": {
+          "persona": "curious",
+          "score": 0,
+          "completed": false,
+          "steps": 2,
+          "reason": "model_abstained",
+          "errors": 0,
+          "rooms": [
+            "street"
+          ],
+          "uniqueActions": 2,
+          "mostRepeated": [
+            [
+              "Press ✓ Play as Larry",
+              1
+            ],
+            [
+              "Press Heterosexual",
+              1
+            ]
+          ],
+          "actionMs": {
+            "p50": 61,
+            "p95": 61
+          },
+          "sampledFps": {
+            "min": 1,
+            "p50": 1
+          },
+          "coldLoadMs": 998,
+          "browser": {
+            "fractionWithin20ms": null,
+            "framesWithin20ms": 0,
+            "heapScope": "Browser-reported JS heap; may be shared and excludes total Godot/WASM memory",
+            "hiddenFrameSamples": 0,
+            "histogramBinMs": 1,
+            "histogramOverflowMs": 1000,
+            "jsHeapLimitBytes": 4395630592,
+            "jsHeapUsedBytes": 157287944,
+            "maxRafMs": 0,
+            "rafP50UpperMs": null,
+            "rafP95UpperMs": null,
+            "visibility": "visible",
+            "visibleFrameSamples": 0,
+            "warmupExcludedMs": 2000
+          },
+          "callbackMs": {
+            "p50": 2,
+            "p95": 2
+          },
+          "settledMs": {
+            "p50": 50,
+            "p95": 50
+          },
+          "decisionRoundTripMs": {
+            "p50": 179,
+            "p95": 179
+          },
+          "engineStaticMemoryBytes": {
+            "first": null,
+            "last": null
+          },
+          "choiceConfidence": {
+            "p50": 0.36
+          },
+          "averageClarity": 2.6933333333333334,
+          "visibility": [
+            "visible"
+          ]
+        }
+      }
+    }
+  ],
+  "limits": "Observed browser UI callback experiments with text-driven agents. No pixel recognition or human enjoyment measurement. Policies and seeded order vary, but repeated model decisions are not independent human subjects. Sampled FPS and server RSS do not establish frame-time or browser-memory targets. Cost excludes unknown usage on failures and is not a bill."
+}

@@ -1,0 +1,77 @@
+{
+  "scope": "Final production Web/macOS package checks after screenshot and skills-lock exclusions; does not include Jev or gameplay assertions.",
+  "artifacts": {
+    "generatedAt": "2026-09-23T17:16:55.884Z",
+    "target": "all",
+    "files": [
+      {
+        "path": "exports/macos/Last Call in Lost Wages.app",
+        "bytes": 216081937,
+        "decimalMB": "216.08"
+      },
+      {
+        "path": "exports/Last Call in Lost Wages-macOS.zip",
+        "bytes": 105390081,
+        "decimalMB": "105.39",
+        "sha256": "fa2f886d87205c3dbe23009e256298d57f0d4ac5f42d8a84fcaf0589c99847d9"
+      },
+      {
+        "path": "exports/web",
+        "bytes": 84669631,
+        "decimalMB": "84.67"
+      },
+      {
+        "path": "exports/Last Call in Lost Wages-Web.zip",
+        "bytes": 54928009,
+        "decimalMB": "54.93",
+        "sha256": "88afaaaa55a301170159e910adbeeb186463ce117f3b6efcad7359c75bb68291"
+      }
+    ],
+    "archivesContainAppleDoubleMetadata": false
+  },
+  "packVerification": {
+    "verifiedAt": "2026-09-23T17:16:54.231Z",
+    "passed": true,
+    "target": "all",
+    "packs": [
+      {
+        "file": "exports/macos/Last Call in Lost Wages.app/Contents/Resources/Leisure Suit Larry \u2014 Last Call in Lost Wages.pck",
+        "bytes": 44821284,
+        "sha256": "c4e4bbc8224743714d7326783180c8888aa37f370bd1168191e53ee79d2e1cf4",
+        "formatVersion": 4,
+        "fileCount": 87,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 20,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true,
+        "barStoriesCompiled": true,
+        "barArtCompiled": true,
+        "screenshotsAndSkillsLockExcluded": true
+      },
+      {
+        "file": "exports/web/index.pck",
+        "bytes": 44821284,
+        "sha256": "c4e4bbc8224743714d7326783180c8888aa37f370bd1168191e53ee79d2e1cf4",
+        "formatVersion": 4,
+        "fileCount": 87,
+        "excludedResearchAndTooling": true,
+        "backgroundCount": 20,
+        "fontCount": 3,
+        "fontLicenses": 3,
+        "casinoCompiled": true,
+        "barStoriesCompiled": true,
+        "barArtCompiled": true,
+        "screenshotsAndSkillsLockExcluded": true
+      }
+    ]
+  },
+  "nativeLaunch": {
+    "passed": true,
+    "exportedApp": "exports/macos/Last Call in Lost Wages.app",
+    "signatureValid": true,
+    "frames": 30,
+    "exitCode": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+  }
+}

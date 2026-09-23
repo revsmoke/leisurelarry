@@ -37,9 +37,11 @@ function readPack(buffer) {
 }
 
 const references = await readdir(path.join(root, 'reference/screenshots')).catch(() => []);
-const referenceStems = references.filter(name => !name.startsWith('.')).map(name => path.parse(name).name);
+const localScreenshots = await walk(path.join(root, 'screenshots')).catch(() => []);
+const referenceStems = [...references, ...localScreenshots].filter(name => !path.basename(name).startsWith('.')).map(name => path.parse(name).name);
 const backgrounds = ['alley', 'backroom', 'balcony', 'bar', 'bathroom', 'casino', 'disco', 'garden', 'hotel', 'penthouse', 'rooftop', 'shop', 'street', 'garden-clean', 'penthouse-clean', 'backroom-clean', 'alley-clean', 'balcony-clean', 'balcony-open'];
 const fonts = ['Outfit', 'SpaceGrotesk', 'NotoSansSymbols2'];
+backgrounds.push('bar-social');
 const fontLicenses = ['OFL.txt', 'SpaceGrotesk-OFL.txt', 'NotoSansSymbols2-OFL.txt'];
 const packs = [];
 if (target !== 'web') {
@@ -52,7 +54,8 @@ for (const file of packs) {
   const buffer = await readFile(file);
   const { files, formatVersion } = readPack(buffer);
   const names = files.map(entry => entry.path.replace(/^res:\/\//, ''));
-  const forbidden = names.filter(name => /^(?:docs|reference|tools|tests|\.agents|\.codex|exports)\//.test(name)
+  const forbidden = names.filter(name => /^(?:docs|reference|screenshots|tools|tests|\.agents|\.codex|exports)\//.test(name)
+    || name === 'skills-lock.json'
     || /(?:^|\/)\.env(?:\.|$)/.test(name)
     || /softporn_adventure_walkthrought_snippet/.test(name)
     || /\.(?:py|mjs|sh|toml|md|gd)$/.test(name)
@@ -67,6 +70,8 @@ for (const file of packs) {
   assert.ok(names.includes('scripts/encounter_cutscene.gdc'), 'Missing compiled encounter cutscenes');
   assert.ok(names.includes('scripts/hotspot_layout.gdc'), 'Missing compiled hotspot layout');
   assert.ok(names.includes('scripts/npc_animation.gdc'), 'Missing compiled NPC animation');
+  assert.ok(names.includes('scripts/bar_regulars.gdc'), 'Missing compiled bar stories');
+  assert.ok(names.includes('scripts/bar_actor_art.gdc'), 'Missing compiled bar cast art');
   assert.ok(names.includes('scripts/casino_panel.gd.remap'), 'Missing casino script remap');
   for (const background of backgrounds) {
     assert.ok(names.includes(`assets/backgrounds/${background}.png.import`), `Missing ${background} import`);

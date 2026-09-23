@@ -1,0 +1,213 @@
+{
+  "at": "2026-09-23T17:10:45.397484+00:00",
+  "scope": "Seventeen relevant Godot suites plus the TypeSafe client Node suite. Headless model, UI callback, layout, isolation, and cinematic tests; not live browser or enjoyment evidence.",
+  "passed": true,
+  "godotAssertions": 11571,
+  "nodeTests": 34,
+  "sourceUnchangedDuringChecks": true,
+  "memoryArtifactRestored": true,
+  "checks": [
+    {
+      "test": "tests/test_bar_regulars.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 6757,
+      "summary": [
+        "Bar regular tests: 6757 assertions, 0 failures; six profiles, 5 seeds, all three variants per patron."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_bar_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 264,
+      "summary": [
+        "Bar interface checks: 264 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_npc_animations.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 460,
+      "summary": [
+        "NPC animation checks: 460 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_hotspot_labels.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 333,
+      "summary": [
+        "Hotspot label checks: 333 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_game.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 224,
+      "summary": [
+        "Adventure tests: 224 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 213,
+      "summary": [
+        "Interface tests: 213 assertions, 0 failures. Full UI route: 100/100 and ending verified."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_qa_bridge.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 217,
+      "summary": [
+        "QA bridge checks: 217 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_web_companion.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 32,
+      "summary": [
+        "Web companion: 32 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_window_responsive.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 136,
+      "summary": [
+        "Actual Window responsive layout: 136 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 79,
+      "summary": [
+        "Upgrade visuals: 79 passed, 0 failed"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_encounter_visuals.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 374,
+      "summary": [
+        "Encounter visuals: 374 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_travel_cutscenes.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 334,
+      "summary": [
+        "Travel cutscene tests: 334 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_profile_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 196,
+      "summary": [
+        "Profile interface tests: 196 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_modal_layout.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 558,
+      "summary": [
+        "Modal layout: 558 assertions, 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_memory_lifecycle.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 348,
+      "summary": [
+        "Native lifecycle: 348 checks, 0 failures; 10 cycles after 2 warmups; static baseline 38172337, final 38916633, ratio 1.01949830842162"
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_upgrade_interface.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 167,
+      "summary": [
+        "Upgrade interface tests: 167 assertions, 0 failures."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_identity_romance.gd",
+      "exitCode": 0,
+      "passed": true,
+      "assertions": 879,
+      "summary": [
+        "Identity and romance tests: 879 assertions, 0 failures; six identities, three optional encounters each."
+      ],
+      "errors": []
+    },
+    {
+      "test": "tests/test_jev_client.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "summary": [
+        "\u2139 tests 34",
+        "\u2139 suites 0",
+        "\u2139 pass 34",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 113.079959"
+      ],
+      "errors": []
+    }
+  ],
+  "scriptSha256": {
+    "scripts/actor.gd": "bf687bfdd9b32e8186825024b5ddefea341b9007a336aaca3868099a5ca2637f",
+    "scripts/bar_actor_art.gd": "9e767a8a6bbea5d8e93b89c07c006e127647fd4df4615f932ee50d37d73b5b47",
+    "scripts/bar_regulars.gd": "aff8a4a87639a1a0209aecc1f5678743b2d1e62defb670c6405041fb1ee9159f",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/encounter_cutscene.gd": "5e8d5518012ac26bb64c3295aa9471082a903bff394da3f5a86dcf97d991571e",
+    "scripts/game_state.gd": "388a961dbdaeb5b7a7a5aa2ac2db3e5d197cca31ff3e38ddc7ed4de7fddb6a38",
+    "scripts/hotspot_layout.gd": "66a356ba03c9f3b2e7ae433457f5de9916888982d17516921dfbad6998e1c733",
+    "scripts/main.gd": "922844c125760a66992ab0cfc6e6f063d91121d870c07d1630189e075d216280",
+    "scripts/npc_animation.gd": "e7db6c96e5014865d7df4202c4a80cbc7023ca52aced04d0cbe9aed43b1d6610",
+    "scripts/qa_bridge.gd": "f0251700f243a638e64d1857e3d23138af54aec820d5015b1758ba8f19a26f71",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "d0a6b7f52b07a9aa7e3f012cedc2d14e2007130dbadcb0bd79b7f70f5b1cf990",
+    "scripts/web_companion.gd": "7df4add28edccd7d87b922e346d7f9a401d10e122ecd46f10f1c690e4ffec74a",
+    "scripts/world_effects.gd": "53d5ef5fafb84ca0d639cbcfb5079632c3013dfd8143272d1cb0a7409b20ce79"
+  }
+}

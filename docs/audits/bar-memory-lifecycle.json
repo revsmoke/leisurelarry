@@ -1,0 +1,94 @@
+{
+	"baseline_static_bytes": 38172337,
+	"checks": 348,
+	"display": "headless",
+	"engine": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"final_to_baseline_ratio": 1.01949830842162,
+	"generated_utc": "2026-09-23T17:10:43",
+	"limits": "Native/headless Godot static-allocation monitor and scene lifecycles. Exercises visible UI callbacks, 140 real parser exchanges, reset confirmation and scene create/free per cycle. No hidden quest state injection. Does not measure browser heap, GPU/texture residency, an entire route, or ten browser resets; allocator caches may remain.",
+	"measured_cycles": 10,
+	"samples": [
+		{
+			"after_free_static_bytes": 38172257,
+			"cycle": 1,
+			"loaded_static_bytes": 45939897,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38419321,
+			"cycle": 2,
+			"loaded_static_bytes": 46186961,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38420045,
+			"cycle": 3,
+			"loaded_static_bytes": 46187729,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38420793,
+			"cycle": 4,
+			"loaded_static_bytes": 46188737,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38421565,
+			"cycle": 5,
+			"loaded_static_bytes": 46189509,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38913569,
+			"cycle": 6,
+			"loaded_static_bytes": 46681513,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38914365,
+			"cycle": 7,
+			"loaded_static_bytes": 46682309,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38915089,
+			"cycle": 8,
+			"loaded_static_bytes": 46683033,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38915813,
+			"cycle": 9,
+			"loaded_static_bytes": 46683757,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		},
+		{
+			"after_free_static_bytes": 38916633,
+			"cycle": 10,
+			"loaded_static_bytes": 46684577,
+			"node_count_after_free": 1,
+			"orphan_nodes_after_free": 0
+		}
+	],
+	"warmup_cycles": 2
+}

@@ -2,6 +2,7 @@ extends Control
 ## Original tiny pixel actors, animated in Godot rather than baked into the scenery.
 signal label_bounds_changed
 const NPCAnimation = preload("res://scripts/npc_animation.gd")
+const BarArt = preload("res://scripts/bar_actor_art.gd")
 var npc_animation := NPCAnimation.new()
 var gesture_pose: Dictionary = {}
 var drawing_head := false
@@ -19,6 +20,7 @@ var is_larry := true
 var role := "larry"
 ## Optional adult partners use romance_guest plus this presentation-only gender.
 var gender := "male"
+var seated := false
 var tick := 0.0
 var dance_time_left := 0.0
 var dance_elapsed := 0.0
@@ -29,7 +31,7 @@ var reaction: Dictionary = {}
 func label_obstacle() -> Rect2:
 	# Drawing uses three-unit pixel blocks around the feet, not Control.size.
 	# Include hair, hats and raised hands so labels never sit on the silhouette.
-	return Rect2(-84, -178, 168, 190)
+	return Rect2(-90, -190, 180, 210) if role.begins_with("bar_") else Rect2(-84, -178, 168, 190)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -103,6 +105,10 @@ func _draw() -> void:
 	body_offset += Vector2(gesture_pose.get("offset", Vector2.ZERO))
 	body_transform = Transform2D(sin(beat) * 0.065 if dancing and not reduced_motion else 0.0, body_offset)
 	draw_set_transform_matrix(body_transform)
+	if role.begins_with("bar_"):
+		BarArt.draw(self, stride)
+		_draw_reaction()
+		return
 	if role == "lisa":
 		_draw_lisa(stride, dancing, beat)
 		_draw_reaction()
@@ -153,6 +159,13 @@ func _draw() -> void:
 		block(-10, -15 - stride * 0.3, 4, 4, skin)
 		block(6, -15 + stride * 0.3, 4, 4, skin)
 	drawing_head = true
+	if is_larry and role == "larry":
+		_draw_larry_profile()
+		drawing_head = false
+		block(-4, -27, 1, 5, Color("e7bb56"))
+		block(3, -26, 3, 1, Color("eaddc8"))
+		_draw_reaction()
+		return
 	block(-3, -35, 6, 4, skin.darkened(0.08))
 	block(-6, -45, 12, 11, skin)
 	block(6, -41, 3, 4, skin)
@@ -180,6 +193,25 @@ func _draw() -> void:
 	if role == "bartender":
 		block(-6, -25, 12, 14, Color("e7d4b2"))
 	_draw_reaction()
+
+func _draw_larry_profile() -> void:
+	# The supplied side view: big nose, receding black pompadour and a small
+	# determined chin above that preposterous white collar. Still fully animated.
+	var locks := Color("242337")
+	block(-3, -35, 6, 4, skin.darkened(0.10))
+	block(-7, -48, 14, 13, skin)
+	block(-8, -49, 13, 4, locks)
+	block(-10, -46, 6, 11, locks)
+	block(-8, -51, 9, 3, locks)
+	block(-3, -50, 7, 3, locks)
+	block(1, -48, 6, 4, skin.lightened(0.08))
+	block(-5, -42, 3, 4, skin.darkened(0.16))
+	block(6, -41, 5, 4, skin)
+	block(10, -39, 2, 2, skin.lightened(0.07))
+	block(3, -36, 6, 2, skin)
+	block(2, -44, 5, 1, locks)
+	_draw_eye(5, -42)
+	block(5, -36, 4, float(gesture_pose.get("mouth", 1.0)), Color("9b5262"))
 
 func _draw_lisa(stride: float, dancing: bool, beat: float) -> void:
 	# A grown-up disco heroine: feathered hair, white flares and an enormous

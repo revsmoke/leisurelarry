@@ -98,7 +98,7 @@ func _cycle(index: int) -> Dictionary:
 	var reset := _text_button(app.modal, "Start a new evening")
 	_check(reset != null, "New-evening confirmation control exists")
 	if reset != null: reset.pressed.emit()
-	var start := _text_button(app.modal, "Get lucky as Larry")
+	var start := _text_button(app.modal, "Start evening as Larry")
 	_check(start != null and app.setup_open, "Reset presents real character setup before starting")
 	if start != null: start.pressed.emit()
 	_check(app.game.score == 0 and app.game.cash == 80 and app.game.inventory.is_empty(), "Real reset clears route state")

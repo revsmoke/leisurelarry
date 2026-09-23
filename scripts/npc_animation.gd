@@ -16,6 +16,10 @@ func hover(role: String) -> bool:
 	elif role == "bartender": choices = ["polish", "nod", "wave"]
 	elif role == "bouncer": choices = ["fold", "brow", "shrug"]
 	elif role == "busker": choices = ["tip", "wave", "nod"]
+	elif role in ["bar_quiff", "bar_curls"]: choices = ["preen", "wink", "wave"]
+	elif role == "bar_hat": choices = ["tip", "nod", "wink"]
+	elif role == "bar_round": choices = ["nod", "polish", "wave"]
+	elif role == "bar_biker": choices = ["fold", "wink", "shrug"]
 	_start(choices[hover_index % choices.size()], 1.6)
 	hover_index += 1
 	return true

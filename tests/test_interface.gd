@@ -280,7 +280,7 @@ func _run() -> void:
 	var confirm := _find_button(app.modal, "Start a new evening")
 	_check(confirm != null, "New evening exposes its confirmation control")
 	if confirm != null: confirm.pressed.emit()
-	var start := _find_button(app.modal, "Get lucky as Larry")
+	var start := _find_button(app.modal, "Start evening as Larry")
 	_check(start != null, "Profile draft exposes the actual start control")
 	if start != null: start.pressed.emit()
 	_check(not app.game.completed and app.game.score == 0 and app.game.room == "street" and not app.setup_open, "Committing the character selection resets real UI")

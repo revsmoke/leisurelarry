@@ -22,6 +22,7 @@ var growth := 1.0
 var water_glimmer := 0.0
 
 static func background_path_for(room: String, flags: Dictionary) -> String:
+	if room == "bar": return "res://assets/backgrounds/bar-social.png"
 	var suffix := "-open" if room == "balcony" and flags.get("window_open", false) else "-clean" if room in ["garden", "penthouse", "backroom", "alley", "balcony"] else ""
 	return "res://assets/backgrounds/%s%s.png" % [room, suffix]
 
@@ -311,15 +312,15 @@ func _draw_disco(props: Dictionary) -> void:
 
 func _draw_bar(props: Dictionary) -> void:
 	if props.bowling:
-		draw_rect(Rect2(969, 0, 103, 45), Color("222b43"))
-		draw_string(_font, Vector2(976, 14), "CHANNEL 6", HORIZONTAL_ALIGNMENT_LEFT, 90, 10, CREAM)
-		for x in [999, 1011, 1023]:
+		draw_rect(Rect2(1005, 0, 103, 49), Color("222b43"))
+		draw_string(_font, Vector2(1012, 14), "CHANNEL 6", HORIZONTAL_ALIGNMENT_LEFT, 90, 10, CREAM)
+		for x in [1035, 1047, 1059]:
 			draw_rect(Rect2(x, 22, 4, 12), CREAM)
-		draw_circle(Vector2(989, 34), 6, PINK)
+		draw_circle(Vector2(1025, 34), 6, PINK)
 	if state.get("whiskey_given", false):
-		draw_rect(Rect2(621, 342, 10, 24), BRASS)
-		draw_rect(Rect2(624, 335, 4, 9), CREAM)
-		draw_rect(Rect2(621, 349, 10, 8), PINK)
+		draw_rect(Rect2(1070, 390, 10, 24), BRASS)
+		draw_rect(Rect2(1073, 383, 4, 9), CREAM)
+		draw_rect(Rect2(1070, 397, 10, 8), PINK)
 
 func _draw_hotel(props: Dictionary) -> void:
 	if props.coffee:

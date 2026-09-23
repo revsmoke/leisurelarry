@@ -4,7 +4,8 @@ signal interaction_started(target: String, action: String)
 ## The entire adventure lives here, independent of scenes or rendering.
 ## Every irreversible trade has a renewable source or a permanent reward.
 
-const SAVE_VERSION := 2
+const SAVE_VERSION := 3
+const BarRegulars = preload("res://scripts/bar_regulars.gd")
 const max_score := 100
 const PASSWORD := "bellybutton"
 const PHONE_NUMBER := "5550987"
@@ -24,6 +25,7 @@ var items: Dictionary = {}
 var _dialogue_target: String = ""
 var profile: Dictionary = {"character": "larry", "orientation": "bisexual"}
 var _pending_encounter: Dictionary = {}
+var bar_regulars := BarRegulars.new()
 
 const DATE_IDS := ["lounge_date", "casino_date", "garden_date"]
 const DATE_ROOMS := {"lounge_date": "backroom", "casino_date": "casino", "garden_date": "garden"}
@@ -68,6 +70,7 @@ func present(text: String) -> String:
 
 
 func actor_profile(id: String) -> Dictionary:
+	if BarRegulars.IDS.has(id): return bar_regulars.actor_profile(id, profile)
 	if id in ["larry", "lisa", "player"]: return {"name": player_name(), "gender": player_gender(), "role": profile.character}
 	if id == "eve": return {"name": finale_name(), "gender": finale_gender(), "role": "adam" if finale_gender() == "male" else "eve"}
 	if DATE_IDS.has(id):
@@ -80,7 +83,7 @@ func actor_profile(id: String) -> Dictionary:
 
 
 func is_eligible_partner(id: String) -> bool:
-	if id != "eve" and not DATE_IDS.has(id): return false
+	if id != "eve" and not DATE_IDS.has(id) and not BarRegulars.IDS.has(id): return false
 	var gender: String = actor_profile(id).gender
 	return profile.orientation == "bisexual" or (gender == player_gender() if profile.orientation == "homosexual" else gender != player_gender())
 
@@ -106,7 +109,7 @@ func _init() -> void:
 	new_game()
 
 
-func new_game() -> void:
+func new_game(bar_seed: int = -1) -> void:
 	room = "street"
 	inventory.clear()
 	flags.clear()
@@ -116,6 +119,7 @@ func new_game() -> void:
 	completed = false
 	_dialogue_target = ""
 	_pending_encounter.clear()
+	bar_regulars.new_night(bar_seed)
 	profile = {"character": "larry", "orientation": "bisexual"}
 	configure_profile("larry", "bisexual")
 
@@ -160,7 +164,7 @@ func _build_content() -> void:
 		_spot("newsbox", "Free newspaper", 0.17, 0.72), _spot("flowercart", "Flower cart · $10", 0.70, 0.72), _spot("taxi", "Taxi stand", 0.85, 0.72)
 	], ["bar", "casino", "disco", "shop", "alley", "hotel"])
 	_add_room("bar", "Lefty's Bar", "HAPPY HOUR IS A STATE OF DENIAL", "A bartender polishes the same glass history forgot. A thirsty regular guards a remote; a bouncer guards the backstage door. The television is losing an argument with static.", "bar", [
-		_spot("bartender", "Lefty · bartender", 0.26, 0.46, "person"), _spot("patron", "Thirsty regular", 0.52, 0.64, "person"), _spot("television", "Television", 0.89, 0.22), _spot("bouncer", "Backstage bouncer", 0.84, 0.55, "person"), _spot("promotion", "Bowling-night promotion", 0.70, 0.37)
+		_spot("bartender", "Lefty · bartender", 0.36, 0.28, "person"), _spot("patron", "Thirsty regular", 0.91, 0.80, "person"), _spot("television", "Television", 0.91, 0.17), _spot("bouncer", "Backstage bouncer", 0.79, 0.57, "person"), _spot("promotion", "Bowling-night promotion", 0.51, 0.20)
 	], ["street", "bathroom", "backroom"])
 	_add_room("bathroom", "The Restroom", "THE WRITING IS LITERALLY ON THE WALL", "Avocado tile, optimistic plumbing, and graffiti with unusually good information security. A dish beside the basin offers free costume jewelry.", "bathroom", [
 		_spot("graffiti", "Wall graffiti", 0.35, 0.38), _spot("basin", "Basin & jewelry dish", 0.23, 0.57), _spot("ring", "Costume ring", 0.25, 0.65)
@@ -225,6 +229,9 @@ func get_room(id: String = "") -> Dictionary:
 			hotspot.label = person.name + " · " + person.occupation
 		visible.append(hotspot)
 	result.hotspots = visible
+	if chosen == "bar":
+		result.hotspots.append_array(bar_regulars.hotspots(profile))
+		result.description += " Five adult regulars occupy the pink stools. TALK to any of them for an optional puzzle and possible fling. Each new evening brings different clues; your saved evening keeps its cast and progress."
 	for destination in result.exits:
 		destination["locked"] = not is_unlocked(destination.id)
 	result["id"] = chosen
@@ -435,21 +442,22 @@ func _interact_text(target: String, verb: String = "look", item: String = "") ->
 		return "You cannot see that here. Look around or check your inventory."
 	interaction_started.emit(key, "use" if verb.strip_edges().to_lower() in ["buy", "order"] else action)
 	if action == "look":
-		return _look(key)
+		return _with_bar_clue(_look(key), key)
 	for destination in rooms[room].exits:
 		if destination.id == key:
 			return travel(key)
 	turns += 1
 	if action == "talk":
 		_dialogue_target = key
-		return _talk(key)
+		return _with_bar_clue(_talk(key), key)
 	if action == "take" and not verb.strip_edges().to_lower() in ["buy", "order"]:
-		if DATE_IDS.has(key) or key in ["bartender", "patron", "bouncer", "cashier", "dancer", "clerk", "busker", "receptionist", "eve"]:
+		if DATE_IDS.has(key) or BarRegulars.IDS.has(key) or key in ["bartender", "patron", "bouncer", "cashier", "dancer", "clerk", "busker", "receptionist", "eve"]:
 			return "Lefty stays behind his bar. TALK to him and choose the $10 whiskey offer, or type BUY WHISKEY." if key == "bartender" else "People are not pocket-sized favors. TALK to them, or USE an item to offer it."
 		if key in ["television", "dancefloor", "phone", "railing", "window", "espresso", "elevator", "cabinet", "sink", "planter", "slots", "blackjack"]:
 			return "That belongs here. LOOK for a clue, or USE it. Your pockets have limits after all."
 	if not held.is_empty():
 		return _use_item(held, key)
+	if BarRegulars.IDS.has(key): return _talk(key)
 	if DATE_IDS.has(key): return _date_talk(key)
 	for date_id in DATE_IDS:
 		if DATE_CLUES[date_id] == key: return _date_clue(date_id)
@@ -525,6 +533,7 @@ func _interact_text(target: String, verb: String = "look", item: String = "") ->
 
 
 func _look(key: String) -> String:
+	if BarRegulars.IDS.has(key): return bar_regulars.look(key, profile)
 	if DATE_IDS.has(key):
 		var person := actor_profile(key)
 		return "%s, a grown-up %s with an indecently good sense of timing. TALK before deploying that pickup line." % [person.name, person.occupation]
@@ -630,6 +639,11 @@ func _look(key: String) -> String:
 
 func _talk(key: String) -> String:
 	_dialogue_target = key
+	if BarRegulars.IDS.has(key):
+		var first_meeting: bool = not bar_regulars.night.progress[key].met
+		var response := bar_regulars.talk(key, profile)
+		if first_meeting: _note(response)
+		return response
 	if DATE_IDS.has(key): return _date_talk(key)
 	match key:
 		"dancefloor": return _talk("dancer")
@@ -753,6 +767,7 @@ func _dialogue_options_raw(target: String = "") -> Array:
 	var key := _dialogue_target if target.is_empty() else _resolve_target(target)
 	if key.is_empty() or not _valid_target(key): return []
 	var options: Array = []
+	if BarRegulars.IDS.has(key): return bar_regulars.options(key)
 	if DATE_IDS.has(key): return _date_options(key)
 	match key:
 		"bartender":
@@ -821,6 +836,7 @@ func _choose_dialogue_text(id: String) -> String:
 		if option.id == id: available = true
 	if not available: return "That conversation has moved on. TALK to someone here to see the current choices."
 	turns += 1
+	if id.begins_with("bar|"): return _choose_bar(id)
 	if id.begins_with("date_"): return _choose_date(id)
 	if id.begins_with("eve_") or id == "cultivar_midlife": flags["eve_choices_used"] = true
 	match id:
@@ -1317,7 +1333,7 @@ func _resolve_target(value: String) -> String:
 		if str(spot.id) == key or str(spot.label).to_lower() == key: return spot.id
 	var aliases := {"lefty": "bartender", "drunk": "patron", "regular": "patron", "thirsty regular": "patron", "tv": "television", "wall": "graffiti", "graffiti": "graffiti", "sink basin": "basin", "dish": "basin", "door": "bouncer", "didi": "dancer", "girl": "dancer" if room == "disco" else "eve", "dance floor": "dancefloor", "floor": "dancefloor", "telephone": "phone", "spare rope": "rigging", "stage rope": "rigging" if room == "disco" else "rope", "slot machine": "slots", "slot": "slots", "21": "blackjack", "blackjack": "blackjack", "wine shelf": "wine_shelf", "machine": "espresso" if room == "shop" else "slots", "coffee machine": "espresso", "espresso machine": "espresso", "bum": "busker", "musician": "busker", "garbage": "bin", "trash": "bin", "reception": "receptionist", "service window": "window", "plot": "planter", "bushes": "planter", "apple tree": "tree", "high cabinet": "cabinet", "news": "newsbox", "flower cart": "flowercart", "railing": "railing"}
 	if key == finale_name().to_lower(): return "eve"
-	for date_id in DATE_IDS:
+	for date_id in DATE_IDS + BarRegulars.IDS:
 		if key == str(actor_profile(date_id).name).to_lower(): return date_id
 	if aliases.has(key): return aliases[key]
 	var item_key := _resolve_item(key)
@@ -1390,7 +1406,7 @@ func _command_text(text: String) -> String:
 func save_game(path: String = "user://savegame.json") -> String:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file == null: return "Could not save the game: %s." % error_string(FileAccess.get_open_error())
-	file.store_string(JSON.stringify({"version": SAVE_VERSION, "profile": profile, "room": room, "inventory": inventory, "flags": flags, "cash": cash, "score": score, "turns": turns, "completed": completed, "journal": journal}, "\t"))
+	file.store_string(JSON.stringify({"version": SAVE_VERSION, "profile": profile, "bar_night": bar_regulars.snapshot(), "room": room, "inventory": inventory, "flags": flags, "cash": cash, "score": score, "turns": turns, "completed": completed, "journal": journal}, "\t"))
 	file.close()
 	return "Game saved. Even your questionable decisions deserve a backup."
 
@@ -1406,7 +1422,7 @@ func load_game(path: String = "user://savegame.json") -> String:
 	var parsed: Variant = parser.data
 	if not parsed is Dictionary: return "That save file is unreadable. Your current evening is unchanged."
 	var data: Dictionary = parsed
-	if int(data.get("version", -1)) not in [1, SAVE_VERSION] or not rooms.has(data.get("room", "")):
+	if int(data.get("version", -1)) not in [1, 2, SAVE_VERSION] or not rooms.has(data.get("room", "")):
 		return "That save belongs to an incompatible adventure. Your current evening is unchanged."
 	if not data.get("inventory") is Array or not data.get("flags") is Dictionary or not data.get("journal") is Array:
 		return "That save is incomplete. Your current evening is unchanged."
@@ -1426,8 +1442,16 @@ func load_game(path: String = "user://savegame.json") -> String:
 	var saved_profile: Variant = data.get("profile", {"character": "larry", "orientation": "bisexual"} if int(data.version) == 1 else {})
 	if not saved_profile is Dictionary or saved_profile.get("character") not in ["larry", "lisa"] or saved_profile.get("orientation") not in ["bisexual", "heterosexual", "homosexual"]:
 		return "That save has an invalid character profile. Your current evening is unchanged."
-	if int(data.version) == SAVE_VERSION and data.completed and not data.flags.get("encounter_eve", false):
+	if int(data.version) >= 2 and data.completed and not data.flags.get("encounter_eve", false):
 		return "That save has an invalid ending. Your current evening is unchanged."
+	var saved_bar := BarRegulars.new()
+	if int(data.version) == SAVE_VERSION:
+		if not saved_bar.restore(data.get("bar_night")):
+			return "That save has an invalid bar evening. Your current evening is unchanged."
+	else:
+		# An unchanged legacy file always migrates to the same cast and clues.
+		saved_bar.new_night(int(JSON.stringify(data).hash()) % 2147483647)
+	bar_regulars = saved_bar
 	profile = {"character": saved_profile.character, "orientation": saved_profile.orientation}
 	_refresh_profile_content()
 	room = data.room
@@ -1448,6 +1472,25 @@ func load_game(path: String = "user://savegame.json") -> String:
 	_pending_encounter.clear()
 	_dialogue_target = ""
 	return "Game restored. Your suit is exactly as you left it, for better or worse."
+
+
+func _with_bar_clue(text: String, key: String) -> String:
+	var discovered := bar_regulars.observe(key, profile)
+	if discovered.is_empty(): return text
+	_note(discovered)
+	return text + "\n\n" + discovered
+
+
+func _choose_bar(choice: String) -> String:
+	var id := choice.get_slice("|", 1)
+	if room != "bar" or id != _dialogue_target or not BarRegulars.IDS.has(id) or not is_eligible_partner(id): return "That invitation is unavailable."
+	var outcome := bar_regulars.choose(id, choice, profile, cash, completed)
+	cash -= int(outcome.get("charge", 0))
+	if outcome.has("note"): _note(present(outcome.note))
+	if outcome.has("encounter"):
+		_pending_encounter = outcome.encounter
+		_pending_encounter.caption = present(_pending_encounter.caption)
+	return outcome.text
 
 
 func _date_clue(id: String) -> String:

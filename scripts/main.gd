@@ -480,11 +480,13 @@ func _build_hotspot(h: Dictionary) -> void:
 			npc.npc_animation = Actor.NPCAnimation.new()
 		npc.role = str(casting.get("role", h.id))
 		npc.gender = str(casting.get("gender", "male"))
+		npc.seated = bool(h.get("seated", false))
+		npc.skin = Color(str(casting.get("skin", "dca483")))
 		npc.suit = PINK if str(h.id).length() % 2 == 0 else Color("52b7b1")
 		npc.shirt = Color("2a294d")
 		npc.hair = Color("b77147")
 		npc.position = point + Vector2(0, 76)
-		npc.scale = Vector2.ONE * 0.85
+		npc.scale = Vector2.ONE * float(h.get("scale", 0.85))
 		npc.set_meta("hotspot_id", str(h.id))
 		if fresh:
 			actors.add_child(npc)
@@ -492,8 +494,8 @@ func _build_hotspot(h: Dictionary) -> void:
 			# a real input surface, without adding duplicate keyboard/QA buttons.
 			var body := Control.new()
 			body.name = "BodyHitTarget"
-			body.position = Vector2(-38, -158)
-			body.size = Vector2(76, 164)
+			body.position = Vector2(-50, -186) if npc.role.begins_with("bar_") else Vector2(-38, -158)
+			body.size = Vector2(100, 192) if npc.role.begins_with("bar_") else Vector2(76, 164)
 			body.mouse_filter = Control.MOUSE_FILTER_STOP
 			body.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			npc.add_child(body)
@@ -505,7 +507,7 @@ func _build_hotspot(h: Dictionary) -> void:
 		npc.sync_reaction(game.flags)
 	var label_text := str(h.get("label", h.id))
 	var prefix := ">  " if h.get("kind") == "exit" else "·  "
-	var width := clampf(font.get_string_size(prefix + label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 28, 80, 260)
+	var width := clampf(ceilf(font.get_string_size(prefix + label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x) + 36, 80, 260)
 	width = width if show_hotspots else 32.0
 	var b := _button(hotspots, prefix + label_text if show_hotspots else "+", Rect2(Vector2.ZERO, Vector2(width, 34)), _hotspot_click.bind(h))
 	b.set_meta("hotspot_id", str(h.id))
@@ -636,7 +638,7 @@ func _hotspot_click(h: Dictionary) -> void:
 	_render()
 	if is_cinematic(): return
 	_autosave()
-	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and h.id == "phone")):
+	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and (h.id == "phone" or GameState.BarRegulars.IDS.has(h.id)))):
 		_conversation(str(h.id))
 
 func _background_input(event: InputEvent) -> void:
@@ -828,6 +830,9 @@ func _command(text: String) -> void:
 		return
 	var offer_target := ""
 	if game.room == "bar" and normalized in ["use lefty", "use bartender", "use barman"]: offer_target = "bartender"
+	if game.room == "bar" and normalized.begins_with("use "):
+		var person_target: String = game._resolve_target(normalized.substr(4))
+		if GameState.BarRegulars.IDS.has(person_target): offer_target = person_target
 	if game.room == "disco" and normalized in ["dance", "dance with didi", "use didi", "use dancer", "use dance floor", "use dancefloor", "use floor"]: offer_target = "dancer"
 	if not offer_target.is_empty():
 		selected_item = ""
@@ -1130,7 +1135,7 @@ func _character_setup(can_cancel: bool = true, keep_draft: bool = false, return_
 	var target := "Eve" if target_gender == "female" else "Adam"
 	var summary := _label(p, "Tonight's dream date: %s.\nFlings follow your orientation. Every character is an adult." % target, Rect2(34, 611, 732, 94), 19)
 	summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var start := _button(p, "Get lucky as " + draft_character.capitalize(), Rect2(34, 728, 732 if not can_cancel else 470, 54), _new_game, true)
+	var start := _button(p, "Start evening as " + draft_character.capitalize(), Rect2(34, 728, 732 if not can_cancel else 470, 54), _new_game, true)
 	if can_cancel: _button(p, "Keep this evening", Rect2(524, 728, 242, 54), _close_modal)
 	start.grab_focus()
 	_refresh_companion()
@@ -1338,7 +1343,8 @@ func _conversation(target: String) -> void:
 		row.add_theme_constant_override("separation", 16)
 		column.add_child(row)
 		var stage := Control.new()
-		stage.custom_minimum_size = Vector2(100, 158)
+		var bar_portrait: bool = npc.role.begins_with("bar_")
+		stage.custom_minimum_size = Vector2(124 if bar_portrait else 100, 158)
 		stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(stage)
 		var portrait := Actor.new()
@@ -1350,14 +1356,14 @@ func _conversation(target: String) -> void:
 		portrait.suit = npc.suit
 		portrait.shirt = npc.shirt
 		portrait.hair = npc.hair
-		portrait.position = Vector2(50, 152)
-		portrait.scale = Vector2.ONE * 0.85
+		portrait.position = Vector2(62 if bar_portrait else 50, 152)
+		portrait.scale = Vector2.ONE * (0.8 if bar_portrait else 0.85)
 		stage.add_child(portrait)
 		portrait.set_reduced_motion(reduced_motion)
 		portrait.sync_reaction(game.flags)
 		portrait.interact_react("talk")
 		reply_parent = row
-		reply_width = 581.0
+		reply_width = 557.0 if bar_portrait else 581.0
 	var reply := _label(reply_parent, last_message, Rect2(0, 0, reply_width, 0), 21)
 	reply.custom_minimum_size = Vector2(reply_width, 0)
 	reply.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
