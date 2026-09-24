@@ -1,0 +1,99 @@
+{
+  "verifiedAt": "2026-09-24T01:46:19.707Z",
+  "passed": true,
+  "target": "all",
+  "packs": [
+    {
+      "file": "exports/macos/Last Call in Lost Wages.app/Contents/Resources/Leisure Suit Larry \u2014 Last Call in Lost Wages.pck",
+      "bytes": 44875248,
+      "sha256": "9007d2c5fde2555caec6921de2027fd29e39e41c0d86226f65379f1320c67134",
+      "formatVersion": 4,
+      "fileCount": 97,
+      "excludedResearchAndTooling": true,
+      "backgroundCount": 20,
+      "fontCount": 3,
+      "fontLicenses": 3,
+      "casinoCompiled": true,
+      "partyModulesCompiled": true
+    },
+    {
+      "file": "exports/web/index.pck",
+      "bytes": 44875248,
+      "sha256": "9007d2c5fde2555caec6921de2027fd29e39e41c0d86226f65379f1320c67134",
+      "formatVersion": 4,
+      "fileCount": 97,
+      "excludedResearchAndTooling": true,
+      "backgroundCount": 20,
+      "fontCount": 3,
+      "fontLicenses": 3,
+      "casinoCompiled": true,
+      "partyModulesCompiled": true
+    }
+  ],
+  "nativeSmoke": {
+    "passed": true,
+    "exportedApp": "exports/macos/Last Call in Lost Wages.app",
+    "signatureValid": true,
+    "frames": 30,
+    "exitCode": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org"
+  },
+  "artifacts": {
+    "generatedAt": "2026-09-24T01:46:21.329Z",
+    "target": "all",
+    "files": [
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/macos/Last Call in Lost Wages.app",
+        "bytes": 216135901,
+        "decimalMB": "216.14"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-macOS.zip",
+        "bytes": 105442816,
+        "decimalMB": "105.44",
+        "sha256": "8d8d3960e7bc84fb17a1d2b7f65d2aec4940b52c77f0147af4e45d3cb37220c0"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/web",
+        "bytes": 84723595,
+        "decimalMB": "84.72"
+      },
+      {
+        "path": "/Users/twoedge/Dev/leisuresuitlarry/exports/Last Call in Lost Wages-Web.zip",
+        "bytes": 54980752,
+        "decimalMB": "54.98",
+        "sha256": "d4776b274409c213af043b8c2b8890d459079003a421d09b5433a93676070f30"
+      }
+    ],
+    "archivesContainAppleDoubleMetadata": false
+  },
+  "qaExport": {
+    "file": "exports/qa/index.pck",
+    "bytes": 44875280,
+    "sha256": "b27485aacc15a936a2dc715b6b01cb98704a596f0fcbcea45448b8219af8165b",
+    "exportExitCode": 0,
+    "scope": "Web QA export rebuilt; headless QA bridge and isolation tests in party-code-checks.json. No fresh unaided Jev adventure campaign was run for this update."
+  },
+  "scriptSha256": {
+    "scripts/actor.gd": "0484cbebd5816ff260f57a615b91a67fc094fa92ecde9e7c5507cb0820d235c9",
+    "scripts/bar_actor_art.gd": "9e767a8a6bbea5d8e93b89c07c006e127647fd4df4615f932ee50d37d73b5b47",
+    "scripts/bar_regulars.gd": "aff8a4a87639a1a0209aecc1f5678743b2d1e62defb670c6405041fb1ee9159f",
+    "scripts/casino_panel.gd": "fa72ab5426e3a1ad7bfd01824d3ba111bbf3328f2bf0190774ad4cbe8207a9b0",
+    "scripts/encounter_cutscene.gd": "8273243eac71471dbc1b1f5edc9dc3e86cd95a571bf80a46c557868edfad3eb4",
+    "scripts/game_state.gd": "4b3074b13fa0dd909c11d6e32a4295dba2844831cf97f1f010d1f0b930bd3a6a",
+    "scripts/hotspot_layout.gd": "66a356ba03c9f3b2e7ae433457f5de9916888982d17516921dfbad6998e1c733",
+    "scripts/main.gd": "8181a8d77f18d213ca1fc3bd41a4397fdc52646ea950ad517a2a6b1cf71bd3bd",
+    "scripts/npc_animation.gd": "ebb73cb0e01c13157c25cafaaad3c744c18515a57bb13dbcaf097a8993a9ed11",
+    "scripts/party_actor_art.gd": "fde81ebc32194af01462effaf5604fc7f93085d9a2e76adbee980d1190f60886",
+    "scripts/party_games.gd": "8d085f0d33d6d17b4d3d2d796ac071fdcb25bf810f1f0669545cc54d72525eb2",
+    "scripts/party_hosts.gd": "412acb3d469c7ba23cfb9b9588bdf43eba74d1caaf617b38f2c7c77d6e37dd62",
+    "scripts/party_panel.gd": "91379f91ba5dba5e0e319f09a4a98fb3d4188667cf419861d37027da8b589a05",
+    "scripts/party_table.gd": "a14f65526312a919f80b0a4a166ff51dcd7978bf867b836b29592108639ad670",
+    "scripts/qa_bridge.gd": "1375378ff787e3901649b1c7cc4090d49657e80eaaec92ed4b7e34d380000d78",
+    "scripts/sound_effects.gd": "4384e357115043186dc62147ea725a371e181bb4f9411395b2e13d9fc81d3d04",
+    "scripts/travel_cutscene.gd": "d0a6b7f52b07a9aa7e3f012cedc2d14e2007130dbadcb0bd79b7f70f5b1cf990",
+    "scripts/web_companion.gd": "7df4add28edccd7d87b922e346d7f9a401d10e122ecd46f10f1c690e4ffec74a",
+    "scripts/world_effects.gd": "53d5ef5fafb84ca0d639cbcfb5079632c3013dfd8143272d1cb0a7409b20ce79"
+  },
+  "limitations": "The native smoke check launches for 30 frames; it is not a native gameplay playthrough. Build archives are local and ignored by Git."
+}

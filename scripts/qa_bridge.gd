@@ -127,6 +127,9 @@ func request(message: Dictionary) -> Dictionary:
 	var started := Time.get_ticks_msec()
 	while is_instance_valid(app.casino_panel) and app.casino_panel.slot_pending and Time.get_ticks_msec() - started < 4000:
 		await get_tree().process_frame
+	var party_started := Time.get_ticks_msec()
+	while is_instance_valid(app.party_panel) and (app.party_panel.pending or app.party_panel.interlude_left > 0) and Time.get_ticks_msec() - party_started < 5000:
+		await get_tree().process_frame
 	await _settle_frames()
 	_last_settled_ms = Time.get_ticks_msec() - action_started
 	revision += 1

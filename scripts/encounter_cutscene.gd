@@ -171,7 +171,7 @@ func _build() -> void:
 	partner_actor.suit = Color("b971a6") if partner_actor.gender == "female" else Color("79a9aa")
 	partner_actor.hair = Color("4d3442")
 	var appearance: Dictionary = encounter.get("appearance", {})
-	if str(appearance.get("role", "")).begins_with("bar_"):
+	if str(appearance.get("role", "")).begins_with("bar_") or str(appearance.get("role", "")).begins_with("party_"):
 		partner_actor.role = appearance.role
 		partner_actor.skin = Color(str(appearance.get("skin", "dca483")))
 	partner_actor.set_reduced_motion(reduced_motion)

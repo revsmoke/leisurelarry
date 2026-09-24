@@ -41,6 +41,7 @@ The store image's first generation failed. Its final prompt was:
 ## Other original assets
 
 - `scripts/actor.gd`: original procedural pixel characters and walking animation.
+- `scripts/party_actor_art.gd`: original cabbie, lounge-host and pool-regular pixel silhouettes, in both gender presentations, plus table outfits for Larry/Lisa. Four wardrobe stages share the existing hover/action pose system. `scripts/party_table.gd` draws the cards, felt, pool guide and curtains; no new raster assets or copied commercial sprites are used for the party games.
 - `assets/icon.svg`: original martini-glass application icon.
 - `assets/audio/last_call.wav`: original deterministic synthesis; see [audio.md](audio.md).
 - Outfit, Space Grotesk, and Noto Sans Symbols 2: Google Fonts, SIL Open Font License. Copies of all three licenses are included under `assets/fonts/`.

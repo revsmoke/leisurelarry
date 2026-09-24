@@ -1,0 +1,32 @@
+{
+  "started": "2026-09-24T01:19:16.041Z",
+  "finished": "2026-09-24T01:19:19.548Z",
+  "fixtures": 12,
+  "budgets": {
+    "max_requests": 12,
+    "timeout_ms": 1500,
+    "automatic_retries": 0
+  },
+  "stats": {
+    "requests": 12,
+    "active": 0,
+    "jev": 12,
+    "fallback": 0,
+    "input_tokens": 8536,
+    "output_tokens": 828,
+    "usage_unknown": 0,
+    "enabled": true
+  },
+  "models": [
+    "jev-1.13.0"
+  ],
+  "api_ms": {
+    "p50": 224,
+    "p95": 715
+  },
+  "source_sha256": {
+    "tools/party-jev.mjs": "eaa649bdbbf32396d958025d127f018f6e53532e8d263614bd63af9e4a3d7d35",
+    "scripts/party_games.gd": "74b580eb18f3f38325054c29b26e4f2c43dbd9883337ff5bab4c446b0520dc28"
+  },
+  "limits": "Small authored-fixture experiment. Legal choices and expectation agreement do not demonstrate good poker strategy, visual usability, player enjoyment, or a full gameplay pass."
+}

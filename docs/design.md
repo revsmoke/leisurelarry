@@ -55,6 +55,22 @@ Five additional adult regulars sit at Lefty's, with distinct quiff, curls, cook,
 
 Save version 3 includes validated identity/orientation plus the bar seed, seat order, variants and independent puzzle progress. All bar data is validated before a load can change live state. Version 2 profiles and endings are retained; their file content deterministically supplies a new bar evening during migration. Version 1 saves default to Larry/bisexual and preserve progress and points; an old completed save reopens the revised finale without awarding the existing ending milestone twice. New-game choices remain a draft until the player starts; cancel preserves the current evening.
 
+## Every game on the Strip
+
+Three adults occupy plausible social spaces: Max/Moxie, an off-duty cabbie beside the taxi stand; Chaz/Chloe, a party host in the hotel lounge; and Ace/Dee, a billiards regular at Studio 69. Their appearance and names follow the same orientation rules as the existing cast. In bisexual evenings, the cabbie and pool regular are men and the lounge host is a woman. They inherit face-safe labels, hover/action reactions, portraits, and matching optional encounter cutscenes.
+
+The running joke is that every game here is a strip game. The actual play differs:
+
+- **Strip Poker:** three hands of five-card draw from a 52-card deck. Select up to three discards, draw once, compare standard hand ranks and kickers. One outfit layer per losing hand; ties change neither score nor clothing.
+- **Strip Never Have I Ever:** five unique prompts from a 24-scenario bank. Answer as the fictional protagonist, or Pass. The host has an authored confession, plus a context-selected quip from eight reviewed reactions. There is no winner and no drinking mechanic. A Pass changes no player clothing and needs no explanation.
+- **Strip Pool:** three skill shots with visible cue, object ball, target pocket, angle guide and distance. Tune the angle in five-degree steps and power in ten-unit steps. Each power unit covers ten table units; enough power pockets the ball, and excessive power scratches. This is a compact aiming challenge, not a full billiards simulation.
+
+Each match begins with a curtain introduction. Short, skippable interludes stage reactions and costume changes between rounds. Losing three layers ends in a courtesy robe; subsequent confessions cannot strip it. Reduced motion uses still poses. All games are optional and free, with rematches and an immediate exit. They never change cash, inventory or the main exploration score. Finishing any session, regardless of score, opens a separate flirtation and invitation. A match cannot manufacture consent or complete the Eve/Adam story.
+
+Completed-session and encounter flags use the existing version-3 save format. In-progress hands and costume states are transient: leaving or reloading abandons the match without a penalty. A new match reshuffles or draws a new scenario. The main adventure is saved independently of the party panel.
+
+`party_games.gd` owns deterministic game state and accepts only actions valid at its current revision. `party_panel.gd` handles controls, animation and a cancellable optional rival request; `party_table.gd` draws the cards, prompt stage and pool geometry. The local preview's server-only Jev service receives the rival's own cards and public discard count, or the fictional confession context. It chooses from a closed set of legal policies/reviewed quips. It sees no opposing cards, deck order, save or quest flags. All rules, scoring and execution remain in code. A short deadline, strict validation and local fallback keep the game playable without the service. Closing, rematching and changed revisions invalidate outstanding work; Pass never needs a call. Normal hosted Web exports use local decisions, and QA playtests do not activate this optional service. [Research, bounded experiments and service limits](party-jev-research.md).
+
 ## Visual direction
 
 The backgrounds reinterpret the original game's theatrical room staging with much richer surfaces: saturated magenta and cyan neon, burgundy upholstery, aged brass, emerald tile, violet night skies and wet reflections. The room art is detailed illustration with pixel-like texture, not an attempt to reproduce the original AGI palette or exact pixel grid. Actors are deliberately simple and rendered independently so their movement is readable over the scenery.

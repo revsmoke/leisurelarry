@@ -10,7 +10,7 @@ Named exits connect rooms; the Neon Strip is the hub, and **City Map** follows u
 
 Choose Larry or Lisa and your orientation (default bisexual). The rooftop host is Eve or Adam; use the displayed name in dialogue and commands. Heterosexual and bisexual Larry end with Eve; homosexual Larry ends with Adam. Heterosexual and bisexual Lisa end with Adam; homosexual Lisa ends with Eve. Below, **Eve** means your selected rooftop host.
 
-The goal is to get laid with that host. Three optional flings are available, but none substitutes for the rooftop finale. Friendship and postponing the final invitation keep the night open.
+The goal is to get laid with that host. Eleven optional flings are available: three city encounters, five bar regulars and three party-game hosts. None substitutes for the rooftop finale. Friendship and postponing the final invitation keep the night open.
 
 ## 1. A suit, a paper, and a bar
 
@@ -66,6 +66,18 @@ For any selected profile, each optional NPC's displayed name and gender are comp
 | Moonlight Garden | Lantern instruction card | Set the portrait lantern to amber |
 
 TALK to the person, LOOK at the clue, and choose the solution in conversation. A wrong answer preserves your progress. Choose the flirtation to receive an invitation, then **Yes — let’s get laid**, or take a rain check. Declining has no penalty and a later flirtation reopens the choice. Accepted encounters have a skippable scene and durable memory; they grant no score and do not finish the evening. Afterward, you can share an in-joke rather than replaying the encounter.
+
+Lefty's five seated regulars have separate, randomized clue paths; see [the bar cast guide](audits/bar-regulars.md). Their evening's clues and progress persist in your save.
+
+## Optional party games
+
+Talk to the cabbie on the Neon Strip, the party host in the hotel lobby, or the pool regular at Studio 69. Choose the free game and read its rules. All three offer rematches and a no-penalty exit.
+
+- **Poker:** mark zero to three cards for replacement and select Draw/Showdown. Keep made pairs or stronger combinations; cards use normal five-card hand rankings. Complete three hands. Your rival's hand stays hidden until showdown.
+- **Never Have I Ever:** answer five prompts as your fictional character using Have, Never or Pass. Pass is always valid. There is no winning answer and no required disclosure. A third costume change ends in a robe.
+- **Pool:** adjust the dotted cue guide until it runs through the colored ball toward the pink-ringed pocket. Set power to the displayed distance divided by ten, or ten more. Shoot; excessive power scratches. Feedback gives the exact line after each attempt. Complete three shots.
+
+Winning is not required for a nightcap. Finishing any session enables **Flirt after the game** in that host's conversation, followed by a separate accept/decline invitation. Games change neither your wallet nor adventure score. Leaving abandons that match; saved completion keeps the flirtation available. The optional Live rival switch controls Jev for poker decisions and party banter; all games remain playable with it off.
 
 ## Optional casino games
 

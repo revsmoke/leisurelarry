@@ -1,14 +1,23 @@
 import { createServer } from 'node:http';
-import { createReadStream } from 'node:fs';
+import { createReadStream, appendFileSync, mkdirSync } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createPartyJudge } from './party-jev.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../exports/web');
 const port = Number(process.argv[2] || 8766);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Choose a port between 1024 and 65535.');
+// Opt-in development evidence: reviewed fictional state and judgments, never headers or keys.
+const partyTrace = process.env.PARTY_TRACE_FILE;
+if (partyTrace) mkdirSync(path.dirname(path.resolve(partyTrace)), {recursive: true});
+const partyJudge = createPartyJudge({
+  origin: `http://127.0.0.1:${port}`, envPath: new URL('../.env', import.meta.url),
+  onRecord: partyTrace ? record => appendFileSync(partyTrace, JSON.stringify(record) + '\n') : undefined,
+});
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.wasm': 'application/wasm', '.json': 'application/json', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.pck': 'application/octet-stream' };
 createServer(async (request, response) => {
+	if (await partyJudge.handle(request, response)) return;
   if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405); response.end(); return; }
   let filename;
   try {

@@ -3,6 +3,7 @@ extends Control
 signal label_bounds_changed
 const NPCAnimation = preload("res://scripts/npc_animation.gd")
 const BarArt = preload("res://scripts/bar_actor_art.gd")
+const PartyArt = preload("res://scripts/party_actor_art.gd")
 var npc_animation := NPCAnimation.new()
 var gesture_pose: Dictionary = {}
 var drawing_head := false
@@ -21,6 +22,7 @@ var role := "larry"
 ## Optional adult partners use romance_guest plus this presentation-only gender.
 var gender := "male"
 var seated := false
+var party_loss := 0
 var tick := 0.0
 var dance_time_left := 0.0
 var dance_elapsed := 0.0
@@ -105,6 +107,10 @@ func _draw() -> void:
 	body_offset += Vector2(gesture_pose.get("offset", Vector2.ZERO))
 	body_transform = Transform2D(sin(beat) * 0.065 if dancing and not reduced_motion else 0.0, body_offset)
 	draw_set_transform_matrix(body_transform)
+	if role.begins_with("party_"):
+		PartyArt.draw(self, stride)
+		_draw_reaction()
+		return
 	if role.begins_with("bar_"):
 		BarArt.draw(self, stride)
 		_draw_reaction()

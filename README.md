@@ -13,7 +13,7 @@ A complete, compact **Godot 4.7.2** point-and-click comedy adventure: thirteen i
 - **Editor:** open `project.godot` in Godot, or run `./tools/godot --editor --path .`.
 - **Portable builds:** `exports/Last Call in Lost Wages-macOS.zip` and `exports/Last Call in Lost Wages-Web.zip`. The Mac build is locally ad-hoc signed, not notarized. Serve the extracted Web files over HTTP; opening index.html directly is unsupported.
 
-The game runs locally and needs no account, API key, Jev, or network after loading. TypeSafe is used only by the separate development playtest lab. All game currency is imaginary.
+The game runs locally and needs no account, API key, Jev, or network after loading. The local preview can optionally use Jev for party-game rival decisions, with automatic offline play if unavailable. Turn off **Live rival** at any table. Static Web exports work offline after loading; they never contain an API key. All game currency is imaginary.
 
 ## Choose your evening
 
@@ -21,11 +21,15 @@ Start a new evening as **Leisure Suit Larry** or **Leisure Suit Lisa** (short fo
 
 Your goal is explicit: **get laid with your dream date before sunrise**. Eight optional encounter puzzles offer willing detours: five new seated regulars at Lefty's, plus three around the city. Each bar regular has a separate story, with three possible clue variants and shuffled seats when you start a new evening. Saves preserve that evening's clues and unfinished puzzles. Each has a clue, a recoverable wrong answer, a flirtation, and an invitation you can accept or decline. These encounters do not complete the main story or change the 100-point exploration score. Campy curtain cutscenes keep the intimate action offscreen and state the outcome clearly. The winning invitation gets a dedicated 12-second rooftop-to-sunrise finale starring both characters, with a three-second still version for reduced motion. Completed evenings offer **Replay finale** in the room and ending screen without changing progress or saves. All partners are adults.
 
+Three more optional hosts offer playable party-game detours: an off-duty cabbie at the taxi stand, a hotel-lounge host, and a Studio 69 pool regular. Finish a game to open a separate flirtation; accepting or declining it is independent of your score. All eleven optional encounters leave the main Eve/Adam goal intact.
+
 Profile, encounter history and the bar evening travel with your save. Version 2 saves keep their identity and progress and gain a stable bar evening. Version 1 saves default to bisexual Larry and reopen the revised rooftop invitation without losing points.
 
 ## Controls
 
 Click a scene target after choosing **Look, Talk, Take, or Use**. Select an inventory item, then click a target to use it. Selecting or right-clicking a pocket item also examines it; double-clicking uses it on itself. Click the scenery to move your character. **Take** collects loose objects; **Use** operates machines and activities. Talking to people opens labeled conversation topics. To buy whiskey, talk to Lefty and choose the explicit **Buy a whiskey miniature · $10** offer, or type `buy whiskey`. **Use** on Lefty opens the same offer. The action line shows your selected item; **×** or Escape cancels it. New items receive a pocket-arrival cue; **Tidy** tucks away used souvenirs without deleting them.
+
+Talk to **Max/Moxie** on the Strip for three hands of **Strip Poker**; **Chaz/Chloe** in the hotel for five rounds of **Strip Never Have I Ever**; or **Ace/Dee** at Studio 69 for three **Strip Pool** skill shots. These free games have instructions, rematches, animated wardrobe interludes, and a no-penalty exit. Pool uses angle and power controls; confessions are your character's invented history, with a freely available Pass. Costumes finish at a courtesy robe. Completed sessions are saved; an unfinished match starts fresh when reopened. [Party games and verification](docs/audits/party-games.md).
 
 Meet [the five bar regulars](docs/audits/bar-regulars.md) for the new stories, screenshots and testing results. New evenings shuffle their seats and puzzle clues; revisiting the bar does not.
 
@@ -59,6 +63,7 @@ Manual Save and Load use one slot. Progress also autosaves after actions. When a
 - A player-paced Didi performance with callbacks to your actual choices, a curtain-call skip, and three comic dance styles: confident, careful, or copying Didi.
 - Authored Eve/Adam conversations and a clear winning encounter. Friendship and postponing for an after-party keep the night open. A short epilogue remembers the evening's choices.
 - Eight optional flings: five bar regulars, a backstage costumier, casino magician, and garden photographer, with names and presentation matched to your profile. The bar stories cover a jukebox dedication, discreet appointment, zero-proof recipe, rhythm audition and rally route. The independent escort quotes an optional $20 appointment, charged once only after acceptance. Lisa and Adam have distinct pixel artwork; new signs and private-scene curtains add camp to the existing illustrations.
+- Three additional party-game hosts with original pixel sprites, profile-matched identities, hover/action reactions and optional nightcaps. Poker uses a real shuffled 52-card deck; Never draws five unique prompts from 24 authored scenarios; pool resolves aiming and power deterministically. Jev can choose a legal rival draw strategy or one of eight reviewed comic reactions; it cannot change the rules, deal, score or romance outcome.
 - 18 inventory items, optional discoveries, a 100-point exploration score, and a complete evening that does not require every optional point.
 - Point-and-click and parser input, labeled dialogue choices, contextual objectives, three hint levels, discovered notebook leads, a conversation transcript, and manual/autosaves.
 - Responsive desktop and narrower-window layouts, visible keyboard focus, a readable production-Web HTML companion, reduced motion, and separate music/effects controls.
@@ -126,12 +131,15 @@ Generated exports and installed dependencies are excluded from Git; the source, 
 ./tools/godot --headless --path . --script tests/test_encounter_visuals.gd
 ./tools/godot --headless --path . --script tests/test_qa_bridge.gd
 ./tools/godot --headless --path . --script tests/test_memory_lifecycle.gd
-node --test tests/test_jev_client.mjs
+./tools/godot --headless --path . --script tests/test_party_games.gd
+./tools/godot --headless --path . --script tests/test_party_interface.gd
+./tools/godot --headless --path . --script tests/test_party_ai_interface.gd
+node --test tests/test_jev_client.mjs tests/test_party_jev.mjs
 ./tools/godot --headless --path . -- --smoke-ui
 node tools/mcp-smoke.mjs
 ./tools/package.sh all
 ```
 
-`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `travel_cutscene.gd` presents route-aware travel vignettes; `encounter_cutscene.gd` stages private invitations and comic aftermath; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables. `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
+`game_state.gd` owns the independent model; `main.gd` renders it; `actor.gd` draws the actors; `world_effects.gd` selects state-aware backgrounds and draws puzzle props; `travel_cutscene.gd` presents route-aware travel vignettes; `encounter_cutscene.gd` stages private invitations and comic aftermath; `sound_effects.gd` supplies offline cues; `web_companion.gd` mirrors visible controls into readable HTML; `casino_panel.gd` owns the casino tables; `party_games.gd` owns deterministic party rules; `party_panel.gd` and `party_table.gd` present the games; `party_hosts.gd` and `party_actor_art.gd` supply the hosts. `tools/party-jev.mjs` is the optional server-only local rival service. See [the TypeSafe research and operating limits](docs/party-jev-research.md). `docs/`, `reference/`, development tools and tests are excluded from released game packs. No historical game binaries or original game assets are shipped in the builds.
 
 The supplied walkthrough is retained untouched at the project root. This is an unofficial fan project; the original game names and characters belong to their respective owners.

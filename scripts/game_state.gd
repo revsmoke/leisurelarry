@@ -6,6 +6,7 @@ signal interaction_started(target: String, action: String)
 
 const SAVE_VERSION := 3
 const BarRegulars = preload("res://scripts/bar_regulars.gd")
+const PartyHosts = preload("res://scripts/party_hosts.gd")
 const max_score := 100
 const PASSWORD := "bellybutton"
 const PHONE_NUMBER := "5550987"
@@ -25,6 +26,7 @@ var items: Dictionary = {}
 var _dialogue_target: String = ""
 var profile: Dictionary = {"character": "larry", "orientation": "bisexual"}
 var _pending_encounter: Dictionary = {}
+var _pending_party := ""
 var bar_regulars := BarRegulars.new()
 
 const DATE_IDS := ["lounge_date", "casino_date", "garden_date"]
@@ -70,6 +72,7 @@ func present(text: String) -> String:
 
 
 func actor_profile(id: String) -> Dictionary:
+	if PartyHosts.IDS.has(id): return PartyHosts.actor_profile(id, profile)
 	if BarRegulars.IDS.has(id): return bar_regulars.actor_profile(id, profile)
 	if id in ["larry", "lisa", "player"]: return {"name": player_name(), "gender": player_gender(), "role": profile.character}
 	if id == "eve": return {"name": finale_name(), "gender": finale_gender(), "role": "adam" if finale_gender() == "male" else "eve"}
@@ -83,7 +86,7 @@ func actor_profile(id: String) -> Dictionary:
 
 
 func is_eligible_partner(id: String) -> bool:
-	if id != "eve" and not DATE_IDS.has(id) and not BarRegulars.IDS.has(id): return false
+	if id != "eve" and not DATE_IDS.has(id) and not BarRegulars.IDS.has(id) and not PartyHosts.IDS.has(id): return false
 	var gender: String = actor_profile(id).gender
 	return profile.orientation == "bisexual" or (gender == player_gender() if profile.orientation == "homosexual" else gender != player_gender())
 
@@ -92,6 +95,11 @@ func consume_encounter() -> Dictionary:
 	var event := _pending_encounter.duplicate(true)
 	_pending_encounter.clear()
 	return event
+
+func consume_party_game() -> String:
+	var host := _pending_party
+	_pending_party = ""
+	return host
 
 
 func _present_record(record: Dictionary) -> Dictionary:
@@ -119,6 +127,7 @@ func new_game(bar_seed: int = -1) -> void:
 	completed = false
 	_dialogue_target = ""
 	_pending_encounter.clear()
+	_pending_party = ""
 	bar_regulars.new_night(bar_seed)
 	profile = {"character": "larry", "orientation": "bisexual"}
 	configure_profile("larry", "bisexual")
@@ -229,6 +238,10 @@ func get_room(id: String = "") -> Dictionary:
 			hotspot.label = person.name + " · " + person.occupation
 		visible.append(hotspot)
 	result.hotspots = visible
+	result.hotspots.append_array(PartyHosts.hotspots(chosen, profile))
+	for host in PartyHosts.IDS:
+		if PartyHosts.ROOMS[host] == chosen:
+			result.description += " " + actor_profile(host).name + " is hosting " + {"poker": "Strip Poker beside the parked taxi", "never": "Strip Never Have I Ever in the lobby lounge", "pool": "Strip Pool at the club's side table"}[PartyHosts.mode_for(host)] + ". TALK for a free optional game. Apparently everything on this Strip comes with a wardrobe malfunction."
 	if chosen == "bar":
 		result.hotspots.append_array(bar_regulars.hotspots(profile))
 		result.description += " Five adult regulars occupy the pink stools. TALK to any of them for an optional puzzle and possible fling. Each new evening brings different clues; your saved evening keeps its cast and progress."
@@ -451,13 +464,14 @@ func _interact_text(target: String, verb: String = "look", item: String = "") ->
 		_dialogue_target = key
 		return _with_bar_clue(_talk(key), key)
 	if action == "take" and not verb.strip_edges().to_lower() in ["buy", "order"]:
-		if DATE_IDS.has(key) or BarRegulars.IDS.has(key) or key in ["bartender", "patron", "bouncer", "cashier", "dancer", "clerk", "busker", "receptionist", "eve"]:
+		if DATE_IDS.has(key) or BarRegulars.IDS.has(key) or PartyHosts.IDS.has(key) or key in ["bartender", "patron", "bouncer", "cashier", "dancer", "clerk", "busker", "receptionist", "eve"]:
 			return "Lefty stays behind his bar. TALK to him and choose the $10 whiskey offer, or type BUY WHISKEY." if key == "bartender" else "People are not pocket-sized favors. TALK to them, or USE an item to offer it."
 		if key in ["television", "dancefloor", "phone", "railing", "window", "espresso", "elevator", "cabinet", "sink", "planter", "slots", "blackjack"]:
 			return "That belongs here. LOOK for a clue, or USE it. Your pockets have limits after all."
 	if not held.is_empty():
 		return _use_item(held, key)
 	if BarRegulars.IDS.has(key): return _talk(key)
+	if PartyHosts.IDS.has(key): return _talk(key)
 	if DATE_IDS.has(key): return _date_talk(key)
 	for date_id in DATE_IDS:
 		if DATE_CLUES[date_id] == key: return _date_clue(date_id)
@@ -533,6 +547,7 @@ func _interact_text(target: String, verb: String = "look", item: String = "") ->
 
 
 func _look(key: String) -> String:
+	if PartyHosts.IDS.has(key): return PartyHosts.look(key, profile)
 	if BarRegulars.IDS.has(key): return bar_regulars.look(key, profile)
 	if DATE_IDS.has(key):
 		var person := actor_profile(key)
@@ -639,6 +654,12 @@ func _look(key: String) -> String:
 
 func _talk(key: String) -> String:
 	_dialogue_target = key
+	if PartyHosts.IDS.has(key):
+		var line := PartyHosts.talk(key, profile)
+		_note(actor_profile(key).name + " hosts " + {"poker": "Strip Poker at the taxi stand", "never": "Strip Never Have I Ever in the hotel", "pool": "Strip Pool at Studio 69"}[PartyHosts.mode_for(key)] + ". Free optional rounds; TALK to join.")
+		if flags.get("party_encounter_" + key, false): return actor_profile(key).name + ": 'Welcome back. I've recovered my clothes and most of my dignity. Rematch?'"
+		if flags.get("party_invited_" + key, false): return _party_invitation(key)
+		return line
 	if BarRegulars.IDS.has(key):
 		var first_meeting: bool = not bar_regulars.night.progress[key].met
 		var response := bar_regulars.talk(key, profile)
@@ -767,6 +788,7 @@ func _dialogue_options_raw(target: String = "") -> Array:
 	var key := _dialogue_target if target.is_empty() else _resolve_target(target)
 	if key.is_empty() or not _valid_target(key): return []
 	var options: Array = []
+	if PartyHosts.IDS.has(key): return _party_options(key)
 	if BarRegulars.IDS.has(key): return bar_regulars.options(key)
 	if DATE_IDS.has(key): return _date_options(key)
 	match key:
@@ -836,6 +858,7 @@ func _choose_dialogue_text(id: String) -> String:
 		if option.id == id: available = true
 	if not available: return "That conversation has moved on. TALK to someone here to see the current choices."
 	turns += 1
+	if id.begins_with("party|"): return _choose_party(id)
 	if id.begins_with("bar|"): return _choose_bar(id)
 	if id.begins_with("date_"): return _choose_date(id)
 	if id.begins_with("eve_") or id == "cultivar_midlife": flags["eve_choices_used"] = true
@@ -1316,6 +1339,47 @@ func _resolve_room(value: String) -> String:
 	return str(aliases.get(key, key))
 
 
+func record_party_game(host: String, result: String) -> void:
+	if not PartyHosts.IDS.has(host) or room != PartyHosts.ROOMS[host]: return
+	flags["party_played_" + host] = true
+	_note("Played " + {"poker": "Strip Poker", "never": "Strip Never Have I Ever", "pool": "Strip Pool"}[PartyHosts.mode_for(host)] + " with " + actor_profile(host).name + ". " + result)
+
+func _party_options(host: String) -> Array:
+	var prefix := "party|" + host + "|"
+	if flags.get("party_invited_" + host, false):
+		return [{"id": prefix + "accept", "label": "Yes — a private nightcap and a little more trouble"}, {"id": prefix + "decline", "label": "Keep it friendly tonight"}]
+	var title: String = {"poker": "Strip Poker", "never": "Strip Never Have I Ever", "pool": "Strip Pool"}[PartyHosts.mode_for(host)]
+	var options := [{"id": prefix + "play", "label": "Play " + title + " · free"}]
+	if flags.get("party_played_" + host, false) and not flags.get("party_encounter_" + host, false):
+		options.append({"id": prefix + "flirt", "label": "Flirt after the game · is the attraction mutual?"})
+	return options
+
+func _party_invitation(host: String) -> String:
+	return actor_profile(host).name + ": 'Forget the score. I like your company. Fancy getting laid? A private nightcap, then we see where the night takes us. A no won't spoil the rematch.'"
+
+func _choose_party(choice: String) -> String:
+	var host := choice.get_slice("|", 1)
+	var action := choice.get_slice("|", 2)
+	var person := actor_profile(host)
+	match action:
+		"play":
+			_pending_party = host
+			return person.name + ": 'Pull up a chair. The stakes are clothes, the drinks are imaginary, and my reputation was lost years ago.'"
+		"flirt":
+			flags["party_invited_" + host] = true
+			return _party_invitation(host)
+		"decline":
+			flags["party_invited_" + host] = false
+			return person.name + ": 'Perfectly fine. Your collar is enough excitement for one evening.' You can play again or flirt another time."
+		"accept":
+			flags["party_invited_" + host] = false
+			flags["party_encounter_" + host] = true
+			var caption: String = "You and " + person.name + " got laid. Later, the clothes reappear in an order no card shark could predict. " + ("Your rooftop ending is already complete. The after-party has excellent attendance." if completed else "Your final goal is still a night with {finale}.")
+			_note("Shared a consensual private nightcap with " + person.name + ". The game settled clothes; this invitation was a separate mutual choice.")
+			_pending_encounter = {"partner": host, "name": person.name, "gender": person.gender, "appearance": person, "title": "STRIP: THE AFTER-HOURS EDITION", "caption": present(caption), "finale": false}
+			return caption
+	return "The table is between rounds."
+
 func _resolve_item(value: String) -> String:
 	var key := value.strip_edges().to_lower()
 	var aliases := {"paper": "newspaper", "bouquet": "flowers", "drink": "whiskey", "whisky": "whiskey", "tv remote": "remote", "controller": "remote", "costume ring": "ring", "chocolates": "candy", "chocolate": "candy", "passcard": "pass", "disco pass": "pass", "bottle": "wine", "pocket knife": "knife", "mallet": "hammer", "rubber mallet": "hammer", "apple core": "core", "apple seeds": "seeds", "safety rope": "rope", "stage rope": "rope", "espresso voucher": "voucher", "espresso": "coffee", "folding stool": "stool", "water": "pitcher", "pitcher of water": "pitcher", "water pitcher": "pitcher", "perfect apple": "apple"}
@@ -1333,7 +1397,7 @@ func _resolve_target(value: String) -> String:
 		if str(spot.id) == key or str(spot.label).to_lower() == key: return spot.id
 	var aliases := {"lefty": "bartender", "drunk": "patron", "regular": "patron", "thirsty regular": "patron", "tv": "television", "wall": "graffiti", "graffiti": "graffiti", "sink basin": "basin", "dish": "basin", "door": "bouncer", "didi": "dancer", "girl": "dancer" if room == "disco" else "eve", "dance floor": "dancefloor", "floor": "dancefloor", "telephone": "phone", "spare rope": "rigging", "stage rope": "rigging" if room == "disco" else "rope", "slot machine": "slots", "slot": "slots", "21": "blackjack", "blackjack": "blackjack", "wine shelf": "wine_shelf", "machine": "espresso" if room == "shop" else "slots", "coffee machine": "espresso", "espresso machine": "espresso", "bum": "busker", "musician": "busker", "garbage": "bin", "trash": "bin", "reception": "receptionist", "service window": "window", "plot": "planter", "bushes": "planter", "apple tree": "tree", "high cabinet": "cabinet", "news": "newsbox", "flower cart": "flowercart", "railing": "railing"}
 	if key == finale_name().to_lower(): return "eve"
-	for date_id in DATE_IDS + BarRegulars.IDS:
+	for date_id in DATE_IDS + BarRegulars.IDS + PartyHosts.IDS:
 		if key == str(actor_profile(date_id).name).to_lower(): return date_id
 	if aliases.has(key): return aliases[key]
 	var item_key := _resolve_item(key)
@@ -1452,6 +1516,7 @@ func load_game(path: String = "user://savegame.json") -> String:
 		# An unchanged legacy file always migrates to the same cast and clues.
 		saved_bar.new_night(int(JSON.stringify(data).hash()) % 2147483647)
 	bar_regulars = saved_bar
+	_pending_party = ""
 	profile = {"character": saved_profile.character, "orientation": saved_profile.orientation}
 	_refresh_profile_content()
 	room = data.room

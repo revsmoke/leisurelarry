@@ -72,6 +72,9 @@ for (const file of packs) {
   assert.ok(names.includes('scripts/npc_animation.gdc'), 'Missing compiled NPC animation');
   assert.ok(names.includes('scripts/bar_regulars.gdc'), 'Missing compiled bar stories');
   assert.ok(names.includes('scripts/bar_actor_art.gdc'), 'Missing compiled bar cast art');
+  for (const module of ['party_games', 'party_hosts', 'party_actor_art', 'party_table', 'party_panel']) {
+    assert.ok(names.includes(`scripts/${module}.gdc`), `Missing compiled ${module}`);
+  }
   assert.ok(names.includes('scripts/casino_panel.gd.remap'), 'Missing casino script remap');
   for (const background of backgrounds) {
     assert.ok(names.includes(`assets/backgrounds/${background}.png.import`), `Missing ${background} import`);

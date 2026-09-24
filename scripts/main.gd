@@ -9,6 +9,7 @@ const TravelCutscene = preload("res://scripts/travel_cutscene.gd")
 const EncounterCutscene = preload("res://scripts/encounter_cutscene.gd")
 const HotspotLayout = preload("res://scripts/hotspot_layout.gd")
 const CasinoPanel = preload("res://scripts/casino_panel.gd")
+const PartyPanel = preload("res://scripts/party_panel.gd")
 const INK := Color("0c1020")
 const PANEL := Color("141b2e")
 const EDGE := Color("2a334c")
@@ -54,6 +55,7 @@ var walk_tween: Tween
 var last_message := ""
 var ending_shown := false
 var casino_panel: Control
+var party_panel: Control
 var qa_mode := false
 var qa_bridge: Node
 var inventory_scroll: ScrollContainer
@@ -467,6 +469,8 @@ func _render() -> void:
 	if game.completed and not ending_shown:
 		ending_shown = true
 		_ending.call_deferred()
+	var party_host: String = game.consume_party_game()
+	if not party_host.is_empty(): _open_party(party_host)
 
 func _build_hotspot(h: Dictionary) -> void:
 	var point := Vector2(float(h.get("x", 0.5)) * 1140, float(h.get("y", 0.5)) * 506)
@@ -611,7 +615,7 @@ func _hotspot_click(h: Dictionary) -> void:
 	if h.id in ["slots", "blackjack"] and verb == "use" and selected_item.is_empty():
 		_open_casino(str(h.id))
 		return
-	_move_larry(Vector2(clampf(float(h.get("x", 0.5)) * 1140, 80, 1040), 492))
+	_move_larry(Vector2(clampf(float(h.get("approach_x", h.get("x", 0.5))) * 1140, 80, 1040), 492))
 	if h.get("kind") == "exit":
 		_travel(str(h.id))
 		return
@@ -638,7 +642,7 @@ func _hotspot_click(h: Dictionary) -> void:
 	_render()
 	if is_cinematic(): return
 	_autosave()
-	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and (h.id == "phone" or GameState.BarRegulars.IDS.has(h.id)))):
+	if selected_item.is_empty() and (verb == "talk" or (verb == "use" and (h.id == "phone" or GameState.BarRegulars.IDS.has(h.id) or GameState.PartyHosts.IDS.has(h.id)))):
 		_conversation(str(h.id))
 
 func _background_input(event: InputEvent) -> void:
@@ -829,6 +833,18 @@ func _command(text: String) -> void:
 		_hotspot_click(game.get_hotspot("taxi"))
 		return
 	var offer_target := ""
+	if normalized.begins_with("use "):
+		var party_target: String = game._resolve_target(normalized.substr(4))
+		if GameState.PartyHosts.IDS.has(party_target) and game.room == GameState.PartyHosts.ROOMS[party_target]: offer_target = party_target
+	if normalized.begins_with("play "):
+		for host in GameState.PartyHosts.IDS:
+			var mode: String = GameState.PartyHosts.mode_for(host)
+			if game.room == GameState.PartyHosts.ROOMS[host] and normalized in ["play " + mode, "play strip " + mode, "play never have i ever"] and (mode == "never" or normalized != "play never have i ever"):
+				parser.clear()
+				parser.release_focus()
+				game.interact(host, "talk")
+				_choose_dialogue("party|" + host + "|play")
+				return
 	if game.room == "bar" and normalized in ["use lefty", "use bartender", "use barman"]: offer_target = "bartender"
 	if game.room == "bar" and normalized.begins_with("use "):
 		var person_target: String = game._resolve_target(normalized.substr(4))
@@ -964,6 +980,9 @@ func _close_modal() -> void:
 	if is_instance_valid(casino_panel):
 		casino_panel.close_game()
 		casino_panel = null
+	if is_instance_valid(party_panel):
+		party_panel.close_game()
+		party_panel = null
 	if is_instance_valid(modal):
 		remove_child_if_needed(modal)
 		modal.queue_free()
@@ -988,6 +1007,29 @@ func _open_casino(mode: String) -> void:
 		_autosave()
 	)
 	casino_panel.dismissed.connect(_close_modal)
+
+func _open_party(host: String) -> void:
+	if not GameState.PartyHosts.IDS.has(host) or game.room != GameState.PartyHosts.ROOMS[host]: return
+	var person: Dictionary = game.actor_profile(host)
+	var p := _modal_base(GameState.PartyHosts.TITLES[GameState.PartyHosts.mode_for(host)] + " · " + person.name, "Every game here is a strip game. The city planner has a lot to answer for.", 884)
+	party_panel = PartyPanel.new()
+	party_panel.position = Vector2(34, 134)
+	p.add_child(party_panel)
+	party_panel.setup(game, host, font, reduced_motion, not qa_mode)
+	party_panel.changed.connect(_refresh_companion)
+	party_panel.completed.connect(func(result: String):
+		game.record_party_game(host, result)
+		_say(person.name.to_upper(), result)
+		_autosave()
+	)
+	party_panel.dismissed.connect(_close_modal)
+	party_panel.invitation.connect(func():
+		_close_modal()
+		_say(person.name.to_upper(), game.interact(host, "talk"))
+		_conversation(host)
+		_autosave()
+	)
+	_refresh_companion()
 
 func remove_child_if_needed(node: Node) -> void:
 	if node.get_parent():
@@ -1317,6 +1359,7 @@ func _scroll_to_item(id: String) -> void:
 
 func _conversation(target: String) -> void:
 	if is_cinematic(): return
+	if is_instance_valid(party_panel): return
 	var options: Array = game.dialogue_options(target)
 	if options.is_empty(): return
 	_animate_npc(target, "talk")
